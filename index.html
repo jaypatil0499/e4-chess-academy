@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -1046,14 +1047,41 @@ function toggleFaq(btn){
   setInterval(()=>{ rIdx >= Math.max(0,total-visible()) ? rIdx=0 : rIdx++; updateReviews(); }, 5000);
 })();
 
+// Supabase
+const supabase = window.supabase.createClient(
+  'https://mdagtfvyvxsycvchella.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kYWd0ZnZ5dnhzeWN2Y2hlbGxhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMTExMTUsImV4cCI6MjA5Mjc4NzExNX0.Z7-bhlvykL2pIs0tm1O8TvcMQHByJLxEXmj8YwCH3PU'
+);
+
 // Form
-function submitForm(){
+async function submitForm(){
   const name = document.getElementById('parentName').value.trim();
   const email = document.getElementById('email').value.trim();
   if(!name || !email){
     alert('Please fill in your name and email to continue.');
     return;
   }
+
+  const btn = document.querySelector('.form-submit');
+  btn.textContent = 'Submitting…';
+  btn.disabled = true;
+
+  const { error } = await supabase.from('demo_leads').insert({
+    parent_name: name,
+    email,
+    phone: document.getElementById('phone').value.trim(),
+    child_age: document.getElementById('childAge').value,
+    experience: document.getElementById('experience').value,
+    country: document.getElementById('country').value,
+  });
+
+  if(error){
+    alert('Something went wrong. Please try again.');
+    btn.textContent = 'Book My Free Demo Session →';
+    btn.disabled = false;
+    return;
+  }
+
   document.getElementById('demoForm').style.display = 'none';
   document.getElementById('formSuccess').style.display = 'block';
 }
