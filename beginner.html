@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beginner Course — Pawn to Player | E4 Chess Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --cream:#F7F3EA;--cream2:#EFE9D8;--navy:#0D1F2D;--navy2:#1E3A4A;
+  --ink:#1A1A1A;--ink2:#4A4A4A;--ink3:#888880;
+  --gold:#C9A84C;--gold2:#A8873A;--cyan:#00B4D8;--cyan2:#48CAE4;
+  --rule:#E4DCC8;--green:#5FD991;--green-bg:rgba(46,125,82,0.15);
+}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;padding:12px 24px;display:flex;justify-content:space-between;align-items:center;background:rgba(247,243,234,0.95);backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--rule);}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo-mark{width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:var(--navy2);border-radius:8px;font-size:20px;color:var(--cyan);}
+.nav-logo-text{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--ink);}
+.nav-logo-sub{font-size:10px;color:var(--ink3);font-weight:500;letter-spacing:0.5px;}
+.nav-back{display:flex;align-items:center;gap:8px;color:var(--ink2);text-decoration:none;font-size:13.5px;font-weight:500;padding:8px 16px;border-radius:100px;border:1.5px solid var(--rule);transition:all 0.15s;}
+.nav-back:hover{border-color:var(--ink);color:var(--ink);}
+.nav-cta{background:var(--navy);color:white;padding:9px 20px;border-radius:100px;font-size:13.5px;font-weight:600;text-decoration:none;transition:all 0.15s;}
+.nav-cta:hover{background:var(--navy2);}
+.nav-right{display:flex;align-items:center;gap:12px;}
+
+/* HERO */
+.course-hero{background:var(--navy);padding:80px 80px 0;position:relative;overflow:hidden;}
+.course-hero::before{content:'♙';position:absolute;right:-40px;top:-20px;font-size:400px;opacity:0.04;color:white;pointer-events:none;line-height:1;}
+.hero-inner{max-width:1100px;margin:0 auto;}
+.course-badge{display:inline-flex;align-items:center;gap:8px;background:var(--green-bg);border:1px solid rgba(95,217,145,0.3);color:var(--green);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:6px 14px;border-radius:100px;margin-bottom:24px;}
+.course-hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,5vw,4.5rem);font-weight:700;color:white;line-height:1.05;letter-spacing:-0.03em;margin-bottom:16px;}
+.course-hero h1 em{font-style:italic;color:var(--gold);}
+.course-hero-sub{font-size:18px;color:rgba(255,255,255,0.6);max-width:560px;line-height:1.65;margin-bottom:48px;}
+.course-stats{display:flex;gap:0;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:16px 16px 0 0;padding:32px 40px;margin-top:0;}
+.course-stat{flex:1;text-align:center;position:relative;}
+.course-stat+.course-stat::before{content:'';position:absolute;left:0;top:15%;bottom:15%;width:1px;background:rgba(255,255,255,0.1);}
+.course-stat-num{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:900;color:var(--gold);line-height:1;}
+.course-stat-label{font-size:12px;color:rgba(255,255,255,0.45);margin-top:6px;font-weight:500;}
+
+/* CONTENT */
+.content-wrap{max-width:1100px;margin:0 auto;padding:80px 80px;}
+.section-eyebrow{font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.section-eyebrow::before{content:'♙';opacity:0.6;}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:700;color:var(--ink);letter-spacing:-0.02em;line-height:1.1;margin-bottom:48px;}
+
+/* MONTHS GRID */
+.months-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:80px;}
+.month-card{background:white;border:1px solid var(--rule);border-radius:16px;padding:32px;transition:box-shadow 0.2s;}
+.month-card:hover{box-shadow:0 8px 32px rgba(0,0,0,0.08);}
+.month-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+.month-num{width:44px;height:44px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;color:var(--gold);flex-shrink:0;}
+.month-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--ink);}
+.month-subtitle{font-size:12px;color:var(--ink3);margin-top:2px;}
+.topic-list{list-style:none;}
+.topic-list li{font-size:13.5px;color:var(--ink2);padding:7px 0;border-bottom:1px solid var(--rule);display:flex;align-items:flex-start;gap:10px;line-height:1.4;}
+.topic-list li:last-child{border-bottom:none;}
+.topic-list li::before{content:'▸';color:var(--gold2);flex-shrink:0;font-size:10px;margin-top:3px;}
+
+/* INCLUDED */
+.included-section{background:var(--navy);border-radius:20px;padding:48px;margin-bottom:80px;}
+.included-title{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:white;margin-bottom:32px;}
+.included-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.included-item{display:flex;align-items:flex-start;gap:14px;}
+.included-icon{width:40px;height:40px;background:rgba(201,168,76,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.included-label{font-size:14px;font-weight:600;color:white;margin-bottom:4px;}
+.included-desc{font-size:12px;color:rgba(255,255,255,0.5);line-height:1.5;}
+
+/* CTA */
+.cta-section{text-align:center;padding:60px 40px;background:var(--cream2);border-radius:20px;border:1px solid var(--rule);}
+.cta-title{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--ink);margin-bottom:12px;}
+.cta-sub{font-size:16px;color:var(--ink2);margin-bottom:32px;}
+.btn-primary{background:var(--navy);color:white;padding:14px 32px;border-radius:100px;font-size:15px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;}
+.btn-primary:hover{background:var(--navy2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(13,31,45,0.25);}
+.btn-secondary{background:transparent;color:var(--ink);padding:14px 28px;border-radius:100px;font-size:15px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;border:1.5px solid rgba(0,0,0,0.2);margin-left:12px;}
+.btn-secondary:hover{border-color:var(--ink);}
+
+/* FOOTER */
+footer{background:#111;color:rgba(255,255,255,0.4);text-align:center;padding:28px;font-size:13px;margin-top:0;}
+footer a{color:rgba(255,255,255,0.4);text-decoration:none;}
+
+/* MOBILE */
+@media(max-width:768px){
+  .course-hero{padding:48px 24px 0;}
+  .content-wrap{padding:48px 24px;}
+  .months-grid{grid-template-columns:1fr;}
+  .course-stats{flex-direction:column;gap:24px;padding:24px;}
+  .course-stat+.course-stat::before{display:none;}
+  .included-grid{grid-template-columns:1fr;}
+  nav{padding:12px 16px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-mark">♟</div>
+    <div>
+      <div class="nav-logo-text">E4 Chess Academy</div>
+      <div class="nav-logo-sub">Where Champions Begin</div>
+    </div>
+  </a>
+  <div class="nav-right">
+    <a href="index.html#courses" class="nav-back">← All Courses</a>
+    <a href="index.html#demo" class="nav-cta">Book Free Demo →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="course-hero">
+  <div class="hero-inner">
+    <div class="course-badge">♙ Beginner Level</div>
+    <h1>Pawn to <em>Player</em></h1>
+    <p class="course-hero-sub">Foundation &amp; Fundamentals — a complete 6-month programme designed for children aged 5+ with zero prior chess experience. Learn every rule, tactic, and concept needed to play confidently.</p>
+    <div class="course-stats">
+      <div class="course-stat">
+        <div class="course-stat-num">48</div>
+        <div class="course-stat-label">Live Training Sessions</div>
+      </div>
+      <div class="course-stat">
+        <div class="course-stat-num">12</div>
+        <div class="course-stat-label">Online Tournaments</div>
+      </div>
+      <div class="course-stat">
+        <div class="course-stat-num">12</div>
+        <div class="course-stat-label">Community Sessions</div>
+      </div>
+      <div class="course-stat">
+        <div class="course-stat-num">6</div>
+        <div class="course-stat-label">Months</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CURRICULUM -->
+<div class="content-wrap">
+  <div class="section-eyebrow">Full Curriculum</div>
+  <div class="section-title">Month-by-Month Syllabus</div>
+
+  <div class="months-grid">
+
+    <!-- Month 1 -->
+    <div class="month-card">
+      <div class="month-header">
+        <div class="month-num">01</div>
+        <div>
+          <div class="month-title">Pieces, Coordinates &amp; Basic Moves</div>
+          <div class="month-subtitle">Sessions 1–8 · Test Review 1 &amp; 2</div>
+        </div>
+      </div>
+      <ul class="topic-list">
+        <li>Introduction to Chess — Pieces &amp; Co-ordinates</li>
+        <li>Movement of Rook, Bishop, and Queen</li>
+        <li>Movement of King, Pawn, and Knight</li>
+        <li>Defense</li>
+        <li>Check</li>
+        <li>Defending a Check</li>
+        <li>Test Review 1 &amp; 2</li>
+      </ul>
+    </div>
+
+    <!-- Month 2 -->
+    <div class="month-card">
+      <div class="month-header">
+        <div class="month-num">02</div>
+        <div>
+          <div class="month-title">Checkmate, Stalemate &amp; Promotion</div>
+          <div class="month-subtitle">Sessions 9–16 · Test Review 3 &amp; 4</div>
+        </div>
+      </div>
+      <ul class="topic-list">
+        <li>Pawn Promotion</li>
+        <li>Checkmate</li>
+        <li>Stalemate</li>
+        <li>Checkmate in 1 Move — Easy</li>
+        <li>Checkmate in 1 Move — Medium</li>
+        <li>Checkmate in 1 Move — Difficult</li>
+        <li>Test Review 3 &amp; 4</li>
+      </ul>
+    </div>
+
+    <!-- Month 3 -->
+    <div class="month-card">
+      <div class="month-header">
+        <div class="month-num">03</div>
+        <div>
+          <div class="month-title">Special Rules &amp; Endgame Basics</div>
+          <div class="month-subtitle">Sessions 17–24 · Test Review 5 &amp; 6</div>
+        </div>
+      </div>
+      <ul class="topic-list">
+        <li>Castling</li>
+        <li>En-Passant</li>
+        <li>Fair &amp; Unfair Exchanges</li>
+        <li>Notations</li>
+        <li>Types of Draws</li>
+        <li>Types of Wins, Touch and Move Rule &amp; Illegal Move</li>
+        <li>King &amp; Two Rooks vs King</li>
+        <li>Test Review 5 &amp; 6</li>
+      </ul>
+    </div>
+
+    <!-- Month 4 -->
+    <div class="month-card">
+      <div class="month-header">
+        <div class="month-num">04</div>
+        <div>
+          <div class="month-title">Openings &amp; Checkmate in 2</div>
+          <div class="month-subtitle">Sessions 25–32 · Test Review 7 &amp; 8</div>
+        </div>
+      </div>
+      <ul class="topic-list">
+        <li>King &amp; Queen vs King</li>
+        <li>Basic Opening Principles</li>
+        <li>Fool's Mate &amp; Scholar's Mate (+ drawbacks)</li>
+        <li>Checkmate in 2 Moves — Easy</li>
+        <li>Checkmate in 2 Moves — Difficult</li>
+        <li>Additional Opening Principles</li>
+        <li>Test Review 7 &amp; 8</li>
+      </ul>
+    </div>
+
+    <!-- Month 5 -->
+    <div class="month-card">
+      <div class="month-header">
+        <div class="month-num">05</div>
+        <div>
+          <div class="month-title">Core Tactics — Pin, Fork &amp; Skewer</div>
+          <div class="month-subtitle">Sessions 33–40 · Test Review 9 &amp; 10</div>
+        </div>
+      </div>
+      <ul class="topic-list">
+        <li>Pin — Simple</li>
+        <li>Pin — Advanced</li>
+        <li>Skewer</li>
+        <li>Fork (Double Attack) — Easy</li>
+        <li>Fork (Double Attack) — Difficult</li>
+        <li>Double Check</li>
+        <li>Test Review 9 &amp; 10</li>
+      </ul>
+    </div>
+
+    <!-- Month 6 -->
+    <div class="month-card">
+      <div class="month-header">
+        <div class="month-num">06</div>
+        <div>
+          <div class="month-title">Advanced Concepts &amp; Game Phases</div>
+          <div class="month-subtitle">Sessions 41–48 · Test Review 11 &amp; 12</div>
+        </div>
+      </div>
+      <ul class="topic-list">
+        <li>Three Phases of the Game</li>
+        <li>Discovered Attack</li>
+        <li>Discovered Check</li>
+        <li>Underpromotion</li>
+        <li>Back Rank Mate — Simple</li>
+        <li>Grandmaster Miniature Game Analysis</li>
+        <li>Test Review 11 &amp; 12</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- WHAT'S INCLUDED -->
+  <div class="included-section">
+    <div class="included-title">Everything Included in This Level</div>
+    <div class="included-grid">
+      <div class="included-item">
+        <div class="included-icon">🎓</div>
+        <div>
+          <div class="included-label">48 Live Training Sessions</div>
+          <div class="included-desc">Two expert-led sessions per week with step-by-step topic coverage and Q&amp;A.</div>
+        </div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon">🏆</div>
+        <div>
+          <div class="included-label">12 Online Tournaments</div>
+          <div class="included-desc">Real competitive exposure with peers at the same level, every month.</div>
+        </div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon">🧩</div>
+        <div>
+          <div class="included-label">12 Community Puzzle Sessions</div>
+          <div class="included-desc">Collaborative tactical sessions to build pattern recognition and community.</div>
+        </div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon">📚</div>
+        <div>
+          <div class="included-label">Detailed Study Material</div>
+          <div class="included-desc">Comprehensive notes, diagrams, and revision resources after every session.</div>
+        </div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon">📊</div>
+        <div>
+          <div class="included-label">Performance Tracking &amp; Feedback</div>
+          <div class="included-desc">Regular assessments and personalised feedback to ensure steady progress.</div>
+        </div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon">🕐</div>
+        <div>
+          <div class="included-label">24/7 Practice Platform</div>
+          <div class="included-desc">Practice puzzles and review games anytime via our always-available platform.</div>
+        </div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon">📜</div>
+        <div>
+          <div class="included-label">Level Completion Certificate</div>
+          <div class="included-desc">A signed certificate recognising achievement and readiness to advance.</div>
+        </div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon">♟</div>
+        <div>
+          <div class="included-label">Tournament Guidance</div>
+          <div class="included-desc">Coaches guide participation in external tournaments as readiness grows.</div>
+        </div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon">💬</div>
+        <div>
+          <div class="included-label">Class Summary &amp; Feedback</div>
+          <div class="included-desc">Post-session summaries help students and parents track and reinforce learning.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-title">Ready to Begin?</div>
+    <p class="cta-sub">Book a free 45-minute demo session — no credit card, no commitment.</p>
+    <a href="index.html#demo" class="btn-primary">Book Your Free Demo →</a>
+    <a href="index.html#courses" class="btn-secondary">View All Courses</a>
+  </div>
+</div>
+
+<footer>© 2026 E4 Chess Academy · <a href="index.html">e4chessacademy.com</a></footer>
+
+</body>
+</html>

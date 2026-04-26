@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Course — Champion's Path | E4 Chess Academy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --cream:#F7F3EA;--cream2:#EFE9D8;--navy:#0D1F2D;--navy2:#1E3A4A;
+  --ink:#1A1A1A;--ink2:#4A4A4A;--ink3:#888880;
+  --gold:#C9A84C;--gold2:#A8873A;--cyan:#00B4D8;--cyan2:#48CAE4;
+  --rule:#E4DCC8;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;}
+
+nav{position:sticky;top:0;z-index:100;padding:12px 24px;display:flex;justify-content:space-between;align-items:center;background:rgba(247,243,234,0.95);backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--rule);}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo-mark{width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:var(--navy2);border-radius:8px;font-size:20px;color:var(--cyan);}
+.nav-logo-text{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--ink);}
+.nav-logo-sub{font-size:10px;color:var(--ink3);font-weight:500;letter-spacing:0.5px;}
+.nav-back{display:flex;align-items:center;gap:8px;color:var(--ink2);text-decoration:none;font-size:13.5px;font-weight:500;padding:8px 16px;border-radius:100px;border:1.5px solid var(--rule);transition:all 0.15s;}
+.nav-back:hover{border-color:var(--ink);color:var(--ink);}
+.nav-cta{background:var(--navy);color:white;padding:9px 20px;border-radius:100px;font-size:13.5px;font-weight:600;text-decoration:none;transition:all 0.15s;}
+.nav-cta:hover{background:var(--navy2);}
+.nav-right{display:flex;align-items:center;gap:12px;}
+
+.course-hero{background:var(--navy);padding:80px 80px 0;position:relative;overflow:hidden;}
+.course-hero::before{content:'♛';position:absolute;right:-40px;top:-20px;font-size:400px;opacity:0.04;color:white;pointer-events:none;line-height:1;}
+.hero-inner{max-width:1100px;margin:0 auto;}
+.course-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,0.15);border:1px solid rgba(201,168,76,0.35);color:var(--gold);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:6px 14px;border-radius:100px;margin-bottom:24px;}
+.course-hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,5vw,4.5rem);font-weight:700;color:white;line-height:1.05;letter-spacing:-0.03em;margin-bottom:16px;}
+.course-hero h1 em{font-style:italic;color:var(--gold);}
+.course-hero-sub{font-size:18px;color:rgba(255,255,255,0.6);max-width:560px;line-height:1.65;margin-bottom:48px;}
+.course-stats{display:flex;gap:0;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:16px 16px 0 0;padding:32px 40px;}
+.course-stat{flex:1;text-align:center;position:relative;}
+.course-stat+.course-stat::before{content:'';position:absolute;left:0;top:15%;bottom:15%;width:1px;background:rgba(255,255,255,0.1);}
+.course-stat-num{font-family:'Playfair Display',serif;font-size:2.5rem;font-weight:900;color:var(--gold);line-height:1;}
+.course-stat-label{font-size:12px;color:rgba(255,255,255,0.45);margin-top:6px;font-weight:500;}
+
+.content-wrap{max-width:1100px;margin:0 auto;padding:80px 80px;}
+.section-eyebrow{font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold2);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.section-eyebrow::before{content:'♛';opacity:0.6;}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:700;color:var(--ink);letter-spacing:-0.02em;line-height:1.1;margin-bottom:48px;}
+
+/* Advanced uses a 3-col grid for months since there are 10-11 topics per month */
+.months-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:80px;}
+.month-card{background:white;border:1px solid var(--rule);border-radius:16px;padding:32px;transition:box-shadow 0.2s;}
+.month-card:hover{box-shadow:0 8px 32px rgba(0,0,0,0.08);}
+.month-card.featured{background:var(--navy);border-color:var(--navy);}
+.month-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+.month-num{width:44px;height:44px;background:var(--navy);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:1rem;color:var(--gold);flex-shrink:0;}
+.month-card.featured .month-num{background:rgba(201,168,76,0.2);}
+.month-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--ink);}
+.month-card.featured .month-title{color:white;}
+.month-subtitle{font-size:12px;color:var(--ink3);margin-top:2px;}
+.month-card.featured .month-subtitle{color:rgba(255,255,255,0.4);}
+.topic-list{list-style:none;}
+.topic-list li{font-size:13.5px;color:var(--ink2);padding:6px 0;border-bottom:1px solid var(--rule);display:flex;align-items:flex-start;gap:10px;line-height:1.4;}
+.month-card.featured .topic-list li{color:rgba(255,255,255,0.7);border-bottom-color:rgba(255,255,255,0.08);}
+.topic-list li:last-child{border-bottom:none;}
+.topic-list li::before{content:'▸';color:var(--gold2);flex-shrink:0;font-size:10px;margin-top:3px;}
+.month-card.featured .topic-list li::before{color:var(--gold);}
+
+.included-section{background:var(--navy);border-radius:20px;padding:48px;margin-bottom:80px;}
+.included-title{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:white;margin-bottom:32px;}
+.included-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.included-item{display:flex;align-items:flex-start;gap:14px;}
+.included-icon{width:40px;height:40px;background:rgba(201,168,76,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.included-label{font-size:14px;font-weight:600;color:white;margin-bottom:4px;}
+.included-desc{font-size:12px;color:rgba(255,255,255,0.5);line-height:1.5;}
+
+.cta-section{text-align:center;padding:60px 40px;background:var(--cream2);border-radius:20px;border:1px solid var(--rule);}
+.cta-title{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--ink);margin-bottom:12px;}
+.cta-sub{font-size:16px;color:var(--ink2);margin-bottom:32px;}
+.btn-primary{background:var(--navy);color:white;padding:14px 32px;border-radius:100px;font-size:15px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;}
+.btn-primary:hover{background:var(--navy2);transform:translateY(-2px);box-shadow:0 8px 24px rgba(13,31,45,0.25);}
+.btn-secondary{background:transparent;color:var(--ink);padding:14px 28px;border-radius:100px;font-size:15px;font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;border:1.5px solid rgba(0,0,0,0.2);margin-left:12px;}
+.btn-secondary:hover{border-color:var(--ink);}
+
+footer{background:#111;color:rgba(255,255,255,0.4);text-align:center;padding:28px;font-size:13px;}
+footer a{color:rgba(255,255,255,0.4);text-decoration:none;}
+
+@media(max-width:768px){
+  .course-hero{padding:48px 24px 0;}
+  .content-wrap{padding:48px 24px;}
+  .months-grid{grid-template-columns:1fr;}
+  .course-stats{flex-direction:column;gap:24px;padding:24px;}
+  .course-stat+.course-stat::before{display:none;}
+  .included-grid{grid-template-columns:1fr;}
+  nav{padding:12px 16px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-mark">♟</div>
+    <div>
+      <div class="nav-logo-text">E4 Chess Academy</div>
+      <div class="nav-logo-sub">Where Champions Begin</div>
+    </div>
+  </a>
+  <div class="nav-right">
+    <a href="index.html#courses" class="nav-back">← All Courses</a>
+    <a href="index.html#demo" class="nav-cta">Book Free Demo →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="course-hero">
+  <div class="hero-inner">
+    <div class="course-badge">♛ Advanced Level</div>
+    <h1>Champion's <em>Path</em></h1>
+    <p class="course-hero-sub">Mastery &amp; Competition — a 6-month elite programme for ages 10+ who compete seriously. Deep opening repertoires, GM-level game analysis, and full tournament preparation for national and international play.</p>
+    <div class="course-stats">
+      <div class="course-stat">
+        <div class="course-stat-num">48</div>
+        <div class="course-stat-label">Live Training Sessions</div>
+      </div>
+      <div class="course-stat">
+        <div class="course-stat-num">24</div>
+        <div class="course-stat-label">Online Tournaments</div>
+      </div>
+      <div class="course-stat">
+        <div class="course-stat-num">24</div>
+        <div class="course-stat-label">Tactical Puzzle Sessions</div>
+      </div>
+      <div class="course-stat">
+        <div class="course-stat-num">6</div>
+        <div class="course-stat-label">Months</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CURRICULUM -->
+<div class="content-wrap">
+  <div class="section-eyebrow">Full Curriculum</div>
+  <div class="section-title">Month-by-Month Syllabus</div>
+
+  <div class="months-grid">
+
+    <!-- Month 1 -->
+    <div class="month-card">
+      <div class="month-header">
+        <div class="month-num">01</div>
+        <div>
+          <div class="month-title">Decoying, Bishop Games &amp; Complex Tactics</div>
+          <div class="month-subtitle">Sessions 1–8 · Test Review 25 &amp; 26</div>
+        </div>
+      </div>
+      <ul class="topic-list">
+        <li>Decoying</li>
+        <li>Bishop End Games</li>
+        <li>Pawn Wedge</li>
+        <li>Fortress</li>
+        <li>Wind Mill</li>
+        <li>Knight Tactics &amp; Bishop Tactics</li>
+        <li>Perpetual Check &amp; Counter Check</li>
+        <li>Rooks on the 7th Rank</li>
+        <li>Desperado</li>
+        <li>Checkmate in Four Moves</li>
+        <li>Test Review 25 &amp; 26</li>
+      </ul>
+    </div>
+
+    <!-- Month 2 -->
+    <div class="month-card">
+      <div class="month-header">
+        <div class="month-num">02</div>
+        <div>
+          <div class="month-title">Vancura, Knight Endings &amp; King Attacks</div>
+          <div class="month-subtitle">Sessions 9–16 · Test Review 27 &amp; 28</div>
+        </div>
+      </div>
+      <ul class="topic-list">
+        <li>The Vancura Defense</li>
+        <li>Trapping Pieces — Easy &amp; Difficult</li>
+        <li>Importance of 7th Rank</li>
+        <li>Knight End Games — Easy and Medium</li>
+        <li>Attacking the Hook Pawn</li>
+        <li>Greek Gift</li>
+        <li>Pawn Storm — Attacking the King</li>
+        <li>Exchange Sacrifice</li>
+        <li>Checkmate in 5 Moves or More</li>
+        <li>Swindle Tactics in Lost Positions</li>
+        <li>Test Review 27 &amp; 28</li>
+      </ul>
+    </div>
+
+    <!-- Month 3 -->
+    <div class="month-card">
+      <div class="month-header">
+        <div class="month-num">03</div>
+        <div>
+          <div class="month-title">Deep Middle Game &amp; GM Game Study</div>
+          <div class="month-subtitle">Sessions 17–24 · Test Review 29 &amp; 30</div>
+        </div>
+      </div>
+      <ul class="topic-list">
+        <li>Attacking the King</li>
+        <li>Stalemate Combinations</li>
+        <li>Depth in Middle Games</li>
+        <li>Counterthreats</li>
+        <li>Improving Pieces with Visualisation</li>
+        <li>The Principle of Two Weaknesses</li>
+        <li>Static vs Dynamic Play</li>
+        <li>Combination of Tactics — 3 &amp; 4</li>
+        <li>GM Game Analysis — Attacking &amp; Positional Games</li>
+        <li>GM Game Study: Kasparov vs Topalov, 1999</li>
+        <li>Test Review 29 &amp; 30</li>
+      </ul>
+    </div>
+
+    <!-- Month 4 -->
+    <div class="month-card">
+      <div class="month-header">
+        <div class="month-num">04</div>
+        <div>
+          <div class="month-title">Openings, Traps &amp; Queen vs Rook</div>
+          <div class="month-subtitle">Sessions 25–32 · Test Review 31 &amp; 32</div>
+        </div>
+      </div>
+      <ul class="topic-list">
+        <li>Queen vs Rook</li>
+        <li>Types of Weakness &amp; Exploiting the Weakness</li>
+        <li>Perpetual Check &amp; Mobilization</li>
+        <li>Tempo — Grandmaster Game Analysis</li>
+        <li>English Opening — White &amp; Black</li>
+        <li>Zukertort / Réti Opening (Transposition)</li>
+        <li>Master's Opening Traps: Noah's Arc, Albin Countergambit, Rubinstein, Fantasy Trap</li>
+        <li>The Poisoned Pawn</li>
+        <li>Opposite Colored Bishops</li>
+        <li>Two Bishops Checkmate &amp; Knight and Bishop Checkmate</li>
+        <li>Test Review 31 &amp; 32</li>
+      </ul>
+    </div>
+
+    <!-- Month 5 -->
+    <div class="month-card">
+      <div class="month-header">
+        <div class="month-num">05</div>
+        <div>
+          <div class="month-title">Positional Mastery &amp; Active Rooks</div>
+          <div class="month-subtitle">Sessions 33–40 · Test Review 33 &amp; 34</div>
+        </div>
+      </div>
+      <ul class="topic-list">
+        <li>Combination of Diagonals</li>
+        <li>Playing on Squares — Bishops</li>
+        <li>Queen vs 2 Minor Pieces</li>
+        <li>Positional Evaluation &amp; Sacrifice</li>
+        <li>Pawn End Games</li>
+        <li>Bishop vs Knight Comparison</li>
+        <li>Active Rooks, Open File Mastery &amp; Batteries</li>
+        <li>Playing on Open and Semi-Open Files</li>
+        <li>Minority Attack</li>
+        <li>The Game of Tension &amp; Limiting the Damage</li>
+        <li>Test Review 33 &amp; 34</li>
+      </ul>
+    </div>
+
+    <!-- Month 6 -->
+    <div class="month-card featured">
+      <div class="month-header">
+        <div class="month-num">06</div>
+        <div>
+          <div class="month-title">Complete Endgame Mastery &amp; Tournament Prep</div>
+          <div class="month-subtitle">Sessions 41–48 · Test Review 35 &amp; 36</div>
+        </div>
+      </div>
+      <ul class="topic-list">
+        <li>Play Against / Same Side Castling</li>
+        <li>Identifying and Attacking Pieces on Weak Squares</li>
+        <li>End Games — Combination of All Pieces</li>
+        <li>Queen Endgames</li>
+        <li>Bishop Endgames</li>
+        <li>Knight Endgames</li>
+        <li>Practical Rook Endgames</li>
+        <li>Triangulation &amp; Pawn Breakthrough</li>
+        <li>Fortresses</li>
+        <li>Endgame Training Positions</li>
+        <li>Test Review 35 &amp; 36</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <!-- WHAT'S INCLUDED -->
+  <div class="included-section">
+    <div class="included-title">Everything Included in This Level</div>
+    <div class="included-grid">
+      <div class="included-item">
+        <div class="included-icon">🎓</div>
+        <div>
+          <div class="included-label">48 Live Training Sessions</div>
+          <div class="included-desc">Weekly sessions with titled coaches — Grandmaster-level content every class.</div>
+        </div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon">🏆</div>
+        <div>
+          <div class="included-label">24 Online Tournaments</div>
+          <div class="included-desc">Four tournaments per month, including preparation for FIDE-rated external events.</div>
+        </div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon">🧩</div>
+        <div>
+          <div class="included-label">24 Tactical Puzzle Sessions</div>
+          <div class="included-desc">Advanced combinational puzzles to build calculation depth and speed.</div>
+        </div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon">♟</div>
+        <div>
+          <div class="included-label">GM-Level Game Analysis</div>
+          <div class="included-desc">In-depth study of Grandmaster games — Kasparov, Fischer, Carlsen and more.</div>
+        </div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon">🎯</div>
+        <div>
+          <div class="included-label">Tournament Guidance</div>
+          <div class="included-desc">Dedicated support for national and international rating events and qualifiers.</div>
+        </div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon">🕐</div>
+        <div>
+          <div class="included-label">24/7 Practice Platform</div>
+          <div class="included-desc">Opening databases, endgame trainers, and game analysis tools available anytime.</div>
+        </div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon">📜</div>
+        <div>
+          <div class="included-label">Level Completion Certificate</div>
+          <div class="included-desc">A signed certificate recognising Advanced-level mastery and competitive readiness.</div>
+        </div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon">📊</div>
+        <div>
+          <div class="included-label">Performance Tracking</div>
+          <div class="included-desc">Detailed rating analytics and personalised feedback after every session and tournament.</div>
+        </div>
+      </div>
+      <div class="included-item">
+        <div class="included-icon">📚</div>
+        <div>
+          <div class="included-label">Detailed Study Material</div>
+          <div class="included-desc">Opening repertoire sheets, endgame theory notes, and GM game annotations.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-title">Ready to Compete at the Top?</div>
+    <p class="cta-sub">Book a free 45-minute assessment session — no credit card, no commitment.</p>
+    <a href="index.html#demo" class="btn-primary">Book Your Free Demo →</a>
+    <a href="index.html#courses" class="btn-secondary">View All Courses</a>
+  </div>
+</div>
+
+<footer>© 2026 E4 Chess Academy · <a href="index.html">e4chessacademy.com</a></footer>
+</body>
+</html>
