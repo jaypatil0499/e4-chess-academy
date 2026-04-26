@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -1047,26 +1047,48 @@ function toggleFaq(btn){
   setInterval(()=>{ rIdx >= Math.max(0,total-visible()) ? rIdx=0 : rIdx++; updateReviews(); }, 5000);
 })();
 
-// Supabase
-const supabase = window.supabase.createClient(
-  'https://mdagtfvyvxsycvchella.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kYWd0ZnZ5dnhzeWN2Y2hlbGxhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMTExMTUsImV4cCI6MjA5Mjc4NzExNX0.Z7-bhlvykL2pIs0tm1O8TvcMQHByJLxEXmj8YwCH3PU'
-);
+// Supabase — lazy init so a CDN hiccup never breaks the rest of the page
+let _sb = null;
+function getSupabase() {
+  if (!_sb) {
+    if (!window.supabase) { console.error('Supabase SDK not loaded'); return null; }
+    _sb = window.supabase.createClient(
+      'https://mdagtfvyvxsycvchella.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kYWd0ZnZ5dnhzeWN2Y2hlbGxhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMTExMTUsImV4cCI6MjA5Mjc4NzExNX0.Z7-bhlvykL2pIs0tm1O8TvcMQHByJLxEXmj8YwCH3PU'
+    );
+  }
+  return _sb;
+}
+
+function showFormError(msg) {
+  let el = document.getElementById('formError');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'formError';
+    el.style.cssText = 'background:rgba(255,80,80,0.15);border:1px solid rgba(255,80,80,0.4);color:#ff8a80;border-radius:10px;padding:12px 16px;font-size:13px;margin-top:12px;text-align:left;';
+    document.querySelector('.form-submit').after(el);
+  }
+  el.textContent = msg;
+  el.style.display = 'block';
+}
 
 // Form
 async function submitForm(){
   const name = document.getElementById('parentName').value.trim();
   const email = document.getElementById('email').value.trim();
   if(!name || !email){
-    alert('Please fill in your name and email to continue.');
+    showFormError('Please fill in your name and email to continue.');
     return;
   }
+
+  const sb = getSupabase();
+  if (!sb) { showFormError('Connection error — please refresh and try again.'); return; }
 
   const btn = document.querySelector('.form-submit');
   btn.textContent = 'Submitting…';
   btn.disabled = true;
 
-  const { error } = await supabase.from('demo_leads').insert({
+  const { error } = await sb.from('demo_leads').insert({
     parent_name: name,
     email,
     phone: document.getElementById('phone').value.trim(),
@@ -1076,7 +1098,8 @@ async function submitForm(){
   });
 
   if(error){
-    alert('Something went wrong. Please try again.');
+    console.error('Supabase error:', error);
+    showFormError('Something went wrong: ' + error.message);
     btn.textContent = 'Book My Free Demo Session →';
     btn.disabled = false;
     return;

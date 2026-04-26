@@ -1,7 +1,7 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY')!
-const TO_EMAIL = 'e4cacademy@gmail.com'
+const TO_EMAIL = 'jaypatil0499@gmail.com' // swap to e4cacademy@gmail.com after verifying it on resend.com/settings/emails
 const FROM_EMAIL = 'E4 Chess Academy <onboarding@resend.dev>'
 
 serve(async (req) => {
