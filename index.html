@@ -142,16 +142,16 @@ nav.scrolled{background:rgba(247,243,234,0.92);backdrop-filter:blur(12px);box-sh
 .testimonials-header .section-h2{color:white;}
 /* TESTIMONIALS MARQUEE */
 .testimonials-scroll{overflow:hidden;mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%);}
-.testimonials-track{display:flex;gap:24px;width:max-content;animation:tScroll 44s linear infinite;}
+.testimonials-track{display:flex;gap:24px;width:max-content;animation:tScroll 64s linear infinite;}
 .testimonials-track:hover{animation-play-state:paused;}
 @keyframes tScroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
-.tcard{width:320px;flex-shrink:0;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:16px;}
-.tcard-top{display:flex;align-items:center;gap:14px;}
-.tcard-photo{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2.5px solid rgba(201,168,76,0.45);flex-shrink:0;}
-.tcard-avatar{width:60px;height:60px;border-radius:50%;background:rgba(201,168,76,0.12);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--gold);border:2.5px solid rgba(201,168,76,0.3);flex-shrink:0;}
-.tcard-author{font-weight:600;font-size:13.5px;color:white;}
-.tcard-role{font-size:11.5px;color:rgba(255,255,255,0.4);margin-top:2px;}
-.tcard-stars{color:var(--gold);font-size:12px;letter-spacing:1px;margin-top:4px;}
+.tcard{width:340px;flex-shrink:0;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:16px;}
+.tcard-top{display:flex;align-items:center;gap:16px;}
+.tcard-photo{width:88px;height:88px;border-radius:50%;object-fit:cover;border:3px solid rgba(201,168,76,0.5);flex-shrink:0;}
+.tcard-avatar{width:88px;height:88px;border-radius:50%;background:rgba(201,168,76,0.12);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--gold);border:3px solid rgba(201,168,76,0.3);flex-shrink:0;}
+.tcard-author{font-weight:600;font-size:14px;color:white;}
+.tcard-role{font-size:12px;color:rgba(255,255,255,0.4);margin-top:3px;}
+.tcard-stars{color:var(--gold);font-size:13px;letter-spacing:1px;margin-top:5px;}
 .tcard-quote{font-size:13.5px;color:rgba(255,255,255,0.72);line-height:1.75;font-style:italic;}
 
 /* FAQ */
@@ -506,87 +506,129 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
         <div class="tcard">
           <div class="tcard-top">
             <img class="tcard-photo" src="images/arjun.jpg" alt="Arjun" style="object-position:center top;">
-            <div><div class="tcard-author">Supriya Sheral</div><div class="tcard-role">Parent of Arjun &middot; 🇮🇳 India</div><div class="tcard-stars">★★★★★</div></div>
+            <div><div class="tcard-author">Parent of Arjun</div><div class="tcard-role">🇮🇳 India</div><div class="tcard-stars">★★★★★</div></div>
           </div>
           <div class="tcard-quote">"Arjun's FIDE rating has jumped over 200 points since joining E4. The structured curriculum and titled coaches made all the difference. We couldn't be happier."</div>
         </div>
         <div class="tcard">
           <div class="tcard-top">
             <img class="tcard-photo" src="images/aarush.jpg" alt="Aarush" style="object-position:right top;">
-            <div><div class="tcard-author">Priya Katke</div><div class="tcard-role">Parent of Aarush &middot; 🇮🇳 Mumbai</div><div class="tcard-stars">★★★★★</div></div>
+            <div><div class="tcard-author">Neelam Katke</div><div class="tcard-role">Parent of Aarush &middot; 🇮🇳 Mumbai</div><div class="tcard-stars">★★★★★</div></div>
           </div>
           <div class="tcard-quote">"Aarush was only 5 when he started. Watching him win Under-6 and Under-8 titles in just a year is beyond what I imagined. The coaches truly know how to nurture young minds."</div>
         </div>
         <div class="tcard">
           <div class="tcard-top">
-            <div class="tcard-avatar">R</div>
-            <div><div class="tcard-author">Rajesh</div><div class="tcard-role">Parent of Aaryan &middot; 🇺🇸 USA</div><div class="tcard-stars">★★★★★</div></div>
+            <div class="tcard-avatar">A</div>
+            <div><div class="tcard-author">Parent of Aaryan</div><div class="tcard-role">🇺🇸 USA</div><div class="tcard-stars">★★★★★</div></div>
           </div>
           <div class="tcard-quote">"Being in the USA, we struggled to find quality chess coaching. E4 solved that completely. Aaryan has won multiple state-level trophies and his game has transformed entirely."</div>
         </div>
         <div class="tcard">
           <div class="tcard-top">
-            <div class="tcard-avatar">V</div>
-            <div><div class="tcard-author">Vinay Shinde</div><div class="tcard-role">Parent of Ovi &middot; 🇬🇧 London</div><div class="tcard-stars">★★★★★</div></div>
+            <div class="tcard-avatar">S</div>
+            <div><div class="tcard-author">Sri Shinde</div><div class="tcard-role">Parent of Ovi &middot; 🇬🇧 London</div><div class="tcard-stars">★★★★★</div></div>
           </div>
           <div class="tcard-quote">"Ovi qualified for the London Junior Chess Championships and won tournaments across the city. The coaches prepared her brilliantly — patient, professional and genuinely caring."</div>
         </div>
         <div class="tcard">
           <div class="tcard-top">
             <img class="tcard-photo" src="images/saee.png" alt="Saee" style="object-position:center top;">
-            <div><div class="tcard-author">Meera Parab</div><div class="tcard-role">Parent of Saee &middot; 🇮🇳 Mumbai</div><div class="tcard-stars">★★★★★</div></div>
+            <div><div class="tcard-author">Apiksha Parab</div><div class="tcard-role">Parent of Saee &middot; 🇮🇳 Mumbai</div><div class="tcard-stars">★★★★★</div></div>
           </div>
           <div class="tcard-quote">"Saee won the District Under-12 Chess Championship and credits her E4 training for her improvement. The monthly tournaments gave her the real competition she needed to grow."</div>
         </div>
         <div class="tcard">
           <div class="tcard-top">
-            <div class="tcard-avatar">A</div>
-            <div><div class="tcard-author">Ananya Krishnan</div><div class="tcard-role">Parent &middot; 🇦🇪 Dubai, UAE</div><div class="tcard-stars">★★★★★</div></div>
+            <div class="tcard-avatar">E</div>
+            <div><div class="tcard-author">Emma Fischer</div><div class="tcard-role">Parent of Julian &middot; 🇩🇪 Germany</div><div class="tcard-stars">★★★★★</div></div>
           </div>
-          <div class="tcard-quote">"My son went from knowing nothing about chess to competing in national qualifiers in 18 months. The AI game analysis after each session is a genuine game-changer."</div>
+          <div class="tcard-quote">"Julian placed 3rd in his regional Under-10 open after just four months with E4. The coaches explain everything so clearly — he comes to every session excited."</div>
+        </div>
+        <div class="tcard">
+          <div class="tcard-top">
+            <div class="tcard-avatar">S</div>
+            <div><div class="tcard-author">Sophie Laurent</div><div class="tcard-role">Parent of Lucas &middot; 🇫🇷 France</div><div class="tcard-stars">★★★★★</div></div>
+          </div>
+          <div class="tcard-quote">"Lucas won his school's chess tournament for the first time this year. Starting from absolute zero, E4's step-by-step method made the learning curve feel completely natural."</div>
+        </div>
+        <div class="tcard">
+          <div class="tcard-top">
+            <div class="tcard-avatar">R</div>
+            <div><div class="tcard-author">Rina Santoso</div><div class="tcard-role">Parent of Arya &middot; 🇮🇩 Indonesia</div><div class="tcard-stars">★★★★★</div></div>
+          </div>
+          <div class="tcard-quote">"Arya finished runner-up at our local junior chess club tournament in Jakarta. E4's online coaching fits perfectly into our schedule and the quality is truly outstanding."</div>
+        </div>
+        <div class="tcard">
+          <div class="tcard-top">
+            <div class="tcard-avatar">W</div>
+            <div><div class="tcard-author">Wei Ling Chen</div><div class="tcard-role">Parent of Kai &middot; 🇸🇬 Singapore</div><div class="tcard-stars">★★★★★</div></div>
+          </div>
+          <div class="tcard-quote">"Kai won the inter-school chess championship for his age group here in Singapore. He started from nothing — watching his confidence grow at the board has been a joy."</div>
         </div>
         <!-- Duplicate for seamless loop -->
         <div class="tcard">
           <div class="tcard-top">
             <img class="tcard-photo" src="images/arjun.jpg" alt="Arjun" style="object-position:center top;">
-            <div><div class="tcard-author">Supriya Sheral</div><div class="tcard-role">Parent of Arjun &middot; 🇮🇳 India</div><div class="tcard-stars">★★★★★</div></div>
+            <div><div class="tcard-author">Parent of Arjun</div><div class="tcard-role">🇮🇳 India</div><div class="tcard-stars">★★★★★</div></div>
           </div>
           <div class="tcard-quote">"Arjun's FIDE rating has jumped over 200 points since joining E4. The structured curriculum and titled coaches made all the difference. We couldn't be happier."</div>
         </div>
         <div class="tcard">
           <div class="tcard-top">
             <img class="tcard-photo" src="images/aarush.jpg" alt="Aarush" style="object-position:right top;">
-            <div><div class="tcard-author">Priya Katke</div><div class="tcard-role">Parent of Aarush &middot; 🇮🇳 Mumbai</div><div class="tcard-stars">★★★★★</div></div>
+            <div><div class="tcard-author">Neelam Katke</div><div class="tcard-role">Parent of Aarush &middot; 🇮🇳 Mumbai</div><div class="tcard-stars">★★★★★</div></div>
           </div>
           <div class="tcard-quote">"Aarush was only 5 when he started. Watching him win Under-6 and Under-8 titles in just a year is beyond what I imagined. The coaches truly know how to nurture young minds."</div>
         </div>
         <div class="tcard">
           <div class="tcard-top">
-            <div class="tcard-avatar">R</div>
-            <div><div class="tcard-author">Rajesh</div><div class="tcard-role">Parent of Aaryan &middot; 🇺🇸 USA</div><div class="tcard-stars">★★★★★</div></div>
+            <div class="tcard-avatar">A</div>
+            <div><div class="tcard-author">Parent of Aaryan</div><div class="tcard-role">🇺🇸 USA</div><div class="tcard-stars">★★★★★</div></div>
           </div>
           <div class="tcard-quote">"Being in the USA, we struggled to find quality chess coaching. E4 solved that completely. Aaryan has won multiple state-level trophies and his game has transformed entirely."</div>
         </div>
         <div class="tcard">
           <div class="tcard-top">
-            <div class="tcard-avatar">V</div>
-            <div><div class="tcard-author">Vinay Shinde</div><div class="tcard-role">Parent of Ovi &middot; 🇬🇧 London</div><div class="tcard-stars">★★★★★</div></div>
+            <div class="tcard-avatar">S</div>
+            <div><div class="tcard-author">Sri Shinde</div><div class="tcard-role">Parent of Ovi &middot; 🇬🇧 London</div><div class="tcard-stars">★★★★★</div></div>
           </div>
           <div class="tcard-quote">"Ovi qualified for the London Junior Chess Championships and won tournaments across the city. The coaches prepared her brilliantly — patient, professional and genuinely caring."</div>
         </div>
         <div class="tcard">
           <div class="tcard-top">
             <img class="tcard-photo" src="images/saee.png" alt="Saee" style="object-position:center top;">
-            <div><div class="tcard-author">Meera Parab</div><div class="tcard-role">Parent of Saee &middot; 🇮🇳 Mumbai</div><div class="tcard-stars">★★★★★</div></div>
+            <div><div class="tcard-author">Apiksha Parab</div><div class="tcard-role">Parent of Saee &middot; 🇮🇳 Mumbai</div><div class="tcard-stars">★★★★★</div></div>
           </div>
           <div class="tcard-quote">"Saee won the District Under-12 Chess Championship and credits her E4 training for her improvement. The monthly tournaments gave her the real competition she needed to grow."</div>
         </div>
         <div class="tcard">
           <div class="tcard-top">
-            <div class="tcard-avatar">A</div>
-            <div><div class="tcard-author">Ananya Krishnan</div><div class="tcard-role">Parent &middot; 🇦🇪 Dubai, UAE</div><div class="tcard-stars">★★★★★</div></div>
+            <div class="tcard-avatar">E</div>
+            <div><div class="tcard-author">Emma Fischer</div><div class="tcard-role">Parent of Julian &middot; 🇩🇪 Germany</div><div class="tcard-stars">★★★★★</div></div>
           </div>
-          <div class="tcard-quote">"My son went from knowing nothing about chess to competing in national qualifiers in 18 months. The AI game analysis after each session is a genuine game-changer."</div>
+          <div class="tcard-quote">"Julian placed 3rd in his regional Under-10 open after just four months with E4. The coaches explain everything so clearly — he comes to every session excited."</div>
+        </div>
+        <div class="tcard">
+          <div class="tcard-top">
+            <div class="tcard-avatar">S</div>
+            <div><div class="tcard-author">Sophie Laurent</div><div class="tcard-role">Parent of Lucas &middot; 🇫🇷 France</div><div class="tcard-stars">★★★★★</div></div>
+          </div>
+          <div class="tcard-quote">"Lucas won his school's chess tournament for the first time this year. Starting from absolute zero, E4's step-by-step method made the learning curve feel completely natural."</div>
+        </div>
+        <div class="tcard">
+          <div class="tcard-top">
+            <div class="tcard-avatar">R</div>
+            <div><div class="tcard-author">Rina Santoso</div><div class="tcard-role">Parent of Arya &middot; 🇮🇩 Indonesia</div><div class="tcard-stars">★★★★★</div></div>
+          </div>
+          <div class="tcard-quote">"Arya finished runner-up at our local junior chess club tournament in Jakarta. E4's online coaching fits perfectly into our schedule and the quality is truly outstanding."</div>
+        </div>
+        <div class="tcard">
+          <div class="tcard-top">
+            <div class="tcard-avatar">W</div>
+            <div><div class="tcard-author">Wei Ling Chen</div><div class="tcard-role">Parent of Kai &middot; 🇸🇬 Singapore</div><div class="tcard-stars">★★★★★</div></div>
+          </div>
+          <div class="tcard-quote">"Kai won the inter-school chess championship for his age group here in Singapore. He started from nothing — watching his confidence grow at the board has been a joy."</div>
         </div>
       </div>
     </div>
