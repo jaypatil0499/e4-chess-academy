@@ -36,7 +36,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);o
 nav{position:sticky;top:0;z-index:100;padding:12px 24px;display:flex;justify-content:space-between;align-items:center;transition:background 0.3s,box-shadow 0.3s;background:var(--cream);}
 nav.scrolled{background:rgba(247,243,234,0.92);backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--rule);}
 .nav-logo{display:flex;align-items:center;gap:10px;}
-.nav-logo-mark{width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:var(--navy2);border-radius:8px;font-size:20px;color:var(--cyan);}
+.nav-logo-mark{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}.nav-logo-mark img{width:44px;height:44px;object-fit:contain;}
 .nav-logo-text{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;color:var(--ink);letter-spacing:-0.02em;}
 .nav-logo-sub{font-size:10px;color:var(--ink3);font-weight:500;letter-spacing:0.5px;margin-top:1px;}
 .nav-links{display:flex;gap:4px;align-items:center;}
@@ -140,30 +140,19 @@ nav.scrolled{background:rgba(247,243,234,0.92);backdrop-filter:blur(12px);box-sh
 .testimonials-inner{padding:100px 80px;max-width:1400px;margin:0 auto;}
 .testimonials-header .eyebrow{color:var(--cyan2);}
 .testimonials-header .section-h2{color:white;}
-.testimonial-card{min-width:360px;flex-shrink:0;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:28px;}
-.testimonial-stars{color:var(--gold);font-size:14px;margin-bottom:14px;letter-spacing:2px;}
-.testimonial-text{font-size:14.5px;color:rgba(255,255,255,0.75);line-height:1.7;margin-bottom:20px;font-style:italic;}
-.testimonial-author{display:flex;align-items:center;gap:12px;}
-.testimonial-avatar{width:40px;height:40px;border-radius:50%;background:rgba(201,168,76,0.2);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:16px;color:var(--gold);flex-shrink:0;}
-.testimonial-name{font-weight:600;font-size:13.5px;color:white;}
-.testimonial-role{font-size:12px;color:rgba(255,255,255,0.4);}
-
-/* STUDENT CARDS */
-.student-card{min-width:280px;flex-shrink:0;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:20px;overflow:hidden;transition:all 0.2s;}
-.student-card:hover{background:rgba(255,255,255,0.1);transform:translateY(-4px);}
-.student-photo-wrap{position:relative;height:300px;overflow:hidden;background:var(--navy2);display:flex;align-items:center;justify-content:center;}
-.student-photo-placeholder{font-size:80px;opacity:0.4;}
-.student-badge{position:absolute;bottom:12px;left:12px;background:rgba(13,31,45,0.85);backdrop-filter:blur(8px);color:white;font-size:11px;font-weight:600;padding:4px 10px;border-radius:100px;border:1px solid rgba(255,255,255,0.15);}
-.student-info{padding:20px;}
-.student-name{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:white;margin-bottom:4px;}
-.student-achievement{font-size:11px;font-weight:600;color:var(--gold);letter-spacing:0.5px;margin-bottom:10px;text-transform:uppercase;}
-.student-desc{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.6;}
-.slide-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.1);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);color:white;width:40px;height:40px;border-radius:50%;font-size:18px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;z-index:10;}
-.slide-btn:hover{background:var(--gold);border-color:var(--gold);color:var(--navy);}
-.slide-btn-left{left:0;}
-.slide-btn-right{right:0;}
-.slide-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.25);cursor:pointer;transition:all 0.2s;}
-.slide-dot.active{background:var(--gold);width:24px;border-radius:4px;}
+/* TESTIMONIALS MARQUEE */
+.testimonials-scroll{overflow:hidden;mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0%,black 8%,black 92%,transparent 100%);}
+.testimonials-track{display:flex;gap:24px;width:max-content;animation:tScroll 44s linear infinite;}
+.testimonials-track:hover{animation-play-state:paused;}
+@keyframes tScroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.tcard{width:320px;flex-shrink:0;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:16px;}
+.tcard-top{display:flex;align-items:center;gap:14px;}
+.tcard-photo{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2.5px solid rgba(201,168,76,0.45);flex-shrink:0;}
+.tcard-avatar{width:60px;height:60px;border-radius:50%;background:rgba(201,168,76,0.12);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--gold);border:2.5px solid rgba(201,168,76,0.3);flex-shrink:0;}
+.tcard-author{font-weight:600;font-size:13.5px;color:white;}
+.tcard-role{font-size:11.5px;color:rgba(255,255,255,0.4);margin-top:2px;}
+.tcard-stars{color:var(--gold);font-size:12px;letter-spacing:1px;margin-top:4px;}
+.tcard-quote{font-size:13.5px;color:rgba(255,255,255,0.72);line-height:1.75;font-style:italic;}
 
 /* FAQ */
 .faq-section{background:var(--cream);padding:100px 80px;}
@@ -199,7 +188,7 @@ nav.scrolled{background:rgba(247,243,234,0.92);backdrop-filter:blur(12px);box-sh
 footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
 .footer-inner{max-width:1400px;margin:0 auto;}
 .footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:48px;}
-.footer-mark{width:48px;height:48px;background:var(--navy2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:24px;color:var(--cyan);}
+.footer-mark{width:48px;height:48px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}.footer-mark img{width:48px;height:48px;object-fit:contain;filter:brightness(0) invert(1);}
 .footer-brand-name{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:white;margin:16px 0 8px;}
 .footer-brand-sub{font-size:13px;line-height:1.6;color:rgba(255,255,255,0.35);}
 .footer-col-title{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:16px;}
@@ -259,7 +248,7 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
 <!-- NAV -->
 <nav id="mainNav">
   <a href="#" class="nav-logo" style="text-decoration:none;">
-    <div class="nav-logo-mark">♟</div>
+    <div class="nav-logo-mark"><img src="images/logo.png" alt="E4 Chess Academy"></div>
     <div>
       <div class="nav-logo-text">E4 Chess Academy</div>
       <div class="nav-logo-sub">Where Champions Begin</div>
@@ -407,7 +396,6 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
       <div class="course-card">
         <div class="course-level level-beginner">♙ Beginner</div>
         <div class="course-title">Pawn to Player</div>
-        <div class="course-age">Ages 5+ · Complete Newcomers</div>
         <hr class="course-divider">
         <ul class="course-topics">
           <li>Board setup, piece names &amp; movements</li>
@@ -422,7 +410,6 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
       <div class="course-card active">
         <div class="course-level level-inter">♞ Intermediate</div>
         <div class="course-title">Knight's Journey</div>
-        <div class="course-age">Ages 8+ · Some Experience</div>
         <hr class="course-divider">
         <ul class="course-topics">
           <li>Advanced tactics: discovered attack, deflection</li>
@@ -437,7 +424,6 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
       <div class="course-card">
         <div class="course-level level-advanced">♛ Advanced</div>
         <div class="course-title">Champion's Path</div>
-        <div class="course-age">Ages 10+ · Competitive Players</div>
         <hr class="course-divider">
         <ul class="course-topics">
           <li>Deep opening repertoire &amp; novelties</li>
@@ -513,133 +499,97 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
     <div class="testimonials-header">
       <span class="eyebrow">Our Students</span>
       <h2 class="section-h2">Real Students.<br>Real Champions.</h2>
-      <p style="color:rgba(255,255,255,0.5);font-size:16px;max-width:520px;line-height:1.6;margin-bottom:48px;">From FIDE ratings to international trophies — our students are making their mark across the globe.</p>
+      <p style="color:rgba(255,255,255,0.5);font-size:16px;max-width:520px;line-height:1.6;margin-bottom:48px;">Our students are making their mark across the globe.</p>
     </div>
-
-    <!-- Student cards carousel -->
-    <div style="position:relative;overflow:hidden;margin-bottom:56px;">
-      <div id="studentTrack" style="display:flex;gap:20px;transition:transform 0.5s cubic-bezier(0.4,0,0.2,1);">
-        <div class="student-card">
-          <div class="student-photo-wrap">
-            <div class="student-photo-placeholder">♟</div>
-            <div class="student-badge">🇮🇳 India</div>
+    <div class="testimonials-scroll">
+      <div class="testimonials-track">
+        <div class="tcard">
+          <div class="tcard-top">
+            <img class="tcard-photo" src="images/arjun.jpg" alt="Arjun" style="object-position:center top;">
+            <div><div class="tcard-author">Supriya Sheral</div><div class="tcard-role">Parent of Arjun &middot; 🇮🇳 India</div><div class="tcard-stars">★★★★★</div></div>
           </div>
-          <div class="student-info">
-            <div class="student-name">Arjun Sheral</div>
-            <div class="student-achievement">FIDE Rating: 1570</div>
-            <div class="student-desc">Playing high-level competitive chess across India, Arjun's rating continues to climb after joining E4's Advanced programme.</div>
-          </div>
+          <div class="tcard-quote">"Arjun's FIDE rating has jumped over 200 points since joining E4. The structured curriculum and titled coaches made all the difference. We couldn't be happier."</div>
         </div>
-        <div class="student-card">
-          <div class="student-photo-wrap">
-            <div class="student-photo-placeholder">♙</div>
-            <div class="student-badge">🇮🇳 Mumbai</div>
+        <div class="tcard">
+          <div class="tcard-top">
+            <img class="tcard-photo" src="images/aarush.jpg" alt="Aarush" style="object-position:right top;">
+            <div><div class="tcard-author">Priya Katke</div><div class="tcard-role">Parent of Aarush &middot; 🇮🇳 Mumbai</div><div class="tcard-stars">★★★★★</div></div>
           </div>
-          <div class="student-info">
-            <div class="student-name">Aarush Katke</div>
-            <div class="student-achievement">Under-6 &amp; Under-8 Champion</div>
-            <div class="student-desc">Won both the Under-6 and Under-8 titles at interschool competitions in Mumbai — a remarkable double from one of our youngest students.</div>
-          </div>
+          <div class="tcard-quote">"Aarush was only 5 when he started. Watching him win Under-6 and Under-8 titles in just a year is beyond what I imagined. The coaches truly know how to nurture young minds."</div>
         </div>
-        <div class="student-card">
-          <div class="student-photo-wrap">
-            <div class="student-photo-placeholder">♞</div>
-            <div class="student-badge">🇺🇸 USA</div>
+        <div class="tcard">
+          <div class="tcard-top">
+            <div class="tcard-avatar">R</div>
+            <div><div class="tcard-author">Rajesh</div><div class="tcard-role">Parent of Aaryan &middot; 🇺🇸 USA</div><div class="tcard-stars">★★★★★</div></div>
           </div>
-          <div class="student-info">
-            <div class="student-name">Aaryan</div>
-            <div class="student-achievement">State-Level Champion, USA</div>
-            <div class="student-desc">A high-level competitive player in the USA, Aaryan has won multiple state-level trophies and continues to represent E4 at the national stage.</div>
-          </div>
+          <div class="tcard-quote">"Being in the USA, we struggled to find quality chess coaching. E4 solved that completely. Aaryan has won multiple state-level trophies and his game has transformed entirely."</div>
         </div>
-        <div class="student-card">
-          <div class="student-photo-wrap">
-            <div class="student-photo-placeholder">♛</div>
-            <div class="student-badge">🇬🇧 London</div>
+        <div class="tcard">
+          <div class="tcard-top">
+            <div class="tcard-avatar">V</div>
+            <div><div class="tcard-author">Vinay Shinde</div><div class="tcard-role">Parent of Ovi &middot; 🇬🇧 London</div><div class="tcard-stars">★★★★★</div></div>
           </div>
-          <div class="student-info">
-            <div class="student-name">Ovi Shinde</div>
-            <div class="student-achievement">London Junior Championships</div>
-            <div class="student-desc">Qualified for and won multiple Under-8 and Under-10 tournaments across London, including the prestigious London Junior Chess Championships.</div>
-          </div>
+          <div class="tcard-quote">"Ovi qualified for the London Junior Chess Championships and won tournaments across the city. The coaches prepared her brilliantly — patient, professional and genuinely caring."</div>
         </div>
-        <div class="student-card">
-          <div class="student-photo-wrap">
-            <div class="student-photo-placeholder">♜</div>
-            <div class="student-badge">🇮🇳 Mumbai</div>
+        <div class="tcard">
+          <div class="tcard-top">
+            <img class="tcard-photo" src="images/saee.png" alt="Saee" style="object-position:center top;">
+            <div><div class="tcard-author">Meera Parab</div><div class="tcard-role">Parent of Saee &middot; 🇮🇳 Mumbai</div><div class="tcard-stars">★★★★★</div></div>
           </div>
-          <div class="student-info">
-            <div class="student-name">Saee Parab</div>
-            <div class="student-achievement">District Chess Champion Under-12</div>
-            <div class="student-desc">Won the District Chess Championship in the Under-12 category in Mumbai — a testament to her dedication and E4's structured curriculum.</div>
+          <div class="tcard-quote">"Saee won the District Under-12 Chess Championship and credits her E4 training for her improvement. The monthly tournaments gave her the real competition she needed to grow."</div>
+        </div>
+        <div class="tcard">
+          <div class="tcard-top">
+            <div class="tcard-avatar">A</div>
+            <div><div class="tcard-author">Ananya Krishnan</div><div class="tcard-role">Parent &middot; 🇦🇪 Dubai, UAE</div><div class="tcard-stars">★★★★★</div></div>
           </div>
+          <div class="tcard-quote">"My son went from knowing nothing about chess to competing in national qualifiers in 18 months. The AI game analysis after each session is a genuine game-changer."</div>
+        </div>
+        <!-- Duplicate for seamless loop -->
+        <div class="tcard">
+          <div class="tcard-top">
+            <img class="tcard-photo" src="images/arjun.jpg" alt="Arjun" style="object-position:center top;">
+            <div><div class="tcard-author">Supriya Sheral</div><div class="tcard-role">Parent of Arjun &middot; 🇮🇳 India</div><div class="tcard-stars">★★★★★</div></div>
+          </div>
+          <div class="tcard-quote">"Arjun's FIDE rating has jumped over 200 points since joining E4. The structured curriculum and titled coaches made all the difference. We couldn't be happier."</div>
+        </div>
+        <div class="tcard">
+          <div class="tcard-top">
+            <img class="tcard-photo" src="images/aarush.jpg" alt="Aarush" style="object-position:right top;">
+            <div><div class="tcard-author">Priya Katke</div><div class="tcard-role">Parent of Aarush &middot; 🇮🇳 Mumbai</div><div class="tcard-stars">★★★★★</div></div>
+          </div>
+          <div class="tcard-quote">"Aarush was only 5 when he started. Watching him win Under-6 and Under-8 titles in just a year is beyond what I imagined. The coaches truly know how to nurture young minds."</div>
+        </div>
+        <div class="tcard">
+          <div class="tcard-top">
+            <div class="tcard-avatar">R</div>
+            <div><div class="tcard-author">Rajesh</div><div class="tcard-role">Parent of Aaryan &middot; 🇺🇸 USA</div><div class="tcard-stars">★★★★★</div></div>
+          </div>
+          <div class="tcard-quote">"Being in the USA, we struggled to find quality chess coaching. E4 solved that completely. Aaryan has won multiple state-level trophies and his game has transformed entirely."</div>
+        </div>
+        <div class="tcard">
+          <div class="tcard-top">
+            <div class="tcard-avatar">V</div>
+            <div><div class="tcard-author">Vinay Shinde</div><div class="tcard-role">Parent of Ovi &middot; 🇬🇧 London</div><div class="tcard-stars">★★★★★</div></div>
+          </div>
+          <div class="tcard-quote">"Ovi qualified for the London Junior Chess Championships and won tournaments across the city. The coaches prepared her brilliantly — patient, professional and genuinely caring."</div>
+        </div>
+        <div class="tcard">
+          <div class="tcard-top">
+            <img class="tcard-photo" src="images/saee.png" alt="Saee" style="object-position:center top;">
+            <div><div class="tcard-author">Meera Parab</div><div class="tcard-role">Parent of Saee &middot; 🇮🇳 Mumbai</div><div class="tcard-stars">★★★★★</div></div>
+          </div>
+          <div class="tcard-quote">"Saee won the District Under-12 Chess Championship and credits her E4 training for her improvement. The monthly tournaments gave her the real competition she needed to grow."</div>
+        </div>
+        <div class="tcard">
+          <div class="tcard-top">
+            <div class="tcard-avatar">A</div>
+            <div><div class="tcard-author">Ananya Krishnan</div><div class="tcard-role">Parent &middot; 🇦🇪 Dubai, UAE</div><div class="tcard-stars">★★★★★</div></div>
+          </div>
+          <div class="tcard-quote">"My son went from knowing nothing about chess to competing in national qualifiers in 18 months. The AI game analysis after each session is a genuine game-changer."</div>
         </div>
       </div>
-      <button onclick="slideStudents(-1)" class="slide-btn slide-btn-left">←</button>
-      <button onclick="slideStudents(1)" class="slide-btn slide-btn-right">→</button>
     </div>
-    <div id="studentDots" style="display:flex;justify-content:center;gap:8px;margin-bottom:56px;"></div>
-
-    <!-- Parent testimonials carousel -->
-    <div class="testimonials-header" style="margin-top:0;">
-      <span class="eyebrow">Parent Reviews</span>
-      <h2 class="section-h2" style="color:white;margin-bottom:40px;">What Parents Say</h2>
-    </div>
-    <div style="position:relative;overflow:hidden;">
-      <div id="reviewTrack" style="display:flex;gap:20px;transition:transform 0.5s cubic-bezier(0.4,0,0.2,1);">
-        <div class="testimonial-card">
-          <div class="testimonial-stars">★★★★★</div>
-          <div class="testimonial-text">"Arjun's FIDE rating has jumped over 200 points since joining E4. The structured curriculum and titled coaches made all the difference. We couldn't be happier."</div>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">S</div>
-            <div><div class="testimonial-name">Supriya Sheral</div><div class="testimonial-role">Parent of Arjun · India</div></div>
-          </div>
-        </div>
-        <div class="testimonial-card">
-          <div class="testimonial-stars">★★★★★</div>
-          <div class="testimonial-text">"Aarush was only 5 when he started. Watching him win Under-6 and Under-8 titles in just a year is beyond what I imagined. The coaches here truly know how to nurture young minds."</div>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">P</div>
-            <div><div class="testimonial-name">Priya Katke</div><div class="testimonial-role">Parent of Aarush · Mumbai, India</div></div>
-          </div>
-        </div>
-        <div class="testimonial-card">
-          <div class="testimonial-stars">★★★★★</div>
-          <div class="testimonial-text">"Being in the USA, we struggled to find quality chess coaching. E4 solved that completely. Aaryan has won multiple state-level trophies and his game has transformed entirely."</div>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">R</div>
-            <div><div class="testimonial-name">Rajesh (Aaryan's Parent)</div><div class="testimonial-role">Parent of Aaryan · USA</div></div>
-          </div>
-        </div>
-        <div class="testimonial-card">
-          <div class="testimonial-stars">★★★★★</div>
-          <div class="testimonial-text">"Ovi qualified for the London Junior Chess Championships and won tournaments across the city. The E4 coaches prepared her brilliantly — patient, professional and genuinely caring."</div>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">V</div>
-            <div><div class="testimonial-name">Vinay Shinde</div><div class="testimonial-role">Parent of Ovi · London, UK</div></div>
-          </div>
-        </div>
-        <div class="testimonial-card">
-          <div class="testimonial-stars">★★★★★</div>
-          <div class="testimonial-text">"Saee won the District Under-12 Chess Championship and credits her E4 training for her strategic improvement. The monthly tournaments gave her the real competition she needed to grow."</div>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">M</div>
-            <div><div class="testimonial-name">Meera Parab</div><div class="testimonial-role">Parent of Saee · Mumbai, India</div></div>
-          </div>
-        </div>
-        <div class="testimonial-card">
-          <div class="testimonial-stars">★★★★★</div>
-          <div class="testimonial-text">"My son went from knowing nothing about chess to competing in national qualifiers in under 18 months. The AI game analysis after each session is a game-changer for improvement."</div>
-          <div class="testimonial-author">
-            <div class="testimonial-avatar">A</div>
-            <div><div class="testimonial-name">Ananya Krishnan</div><div class="testimonial-role">Parent · Dubai, UAE</div></div>
-          </div>
-        </div>
-      </div>
-      <button onclick="slideReviews(-1)" class="slide-btn slide-btn-left">←</button>
-      <button onclick="slideReviews(1)" class="slide-btn slide-btn-right">→</button>
-    </div>
-    <div id="reviewDots" style="display:flex;justify-content:center;gap:8px;margin-top:24px;"></div>
   </div>
 </div>
 
@@ -754,7 +704,7 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
   <div class="footer-inner">
     <div class="footer-top">
       <div>
-        <div class="footer-mark">♟</div>
+        <div class="footer-mark"><img src="images/logo.png" alt="E4 Chess Academy"></div>
         <div class="footer-brand-name">E4 Chess Academy</div>
         <div class="footer-brand-sub">World-class elite chess training for children aged 5 years and above. Learn from FIDE-titled coaches, from anywhere in the world.</div>
       </div>
@@ -971,81 +921,6 @@ function toggleFaq(btn){
   if(!isOpen) item.classList.add('open');
 }
 
-// Student cards slider
-(function(){
-  let sIdx = 0;
-  const track = document.getElementById('studentTrack');
-  const dotsEl = document.getElementById('studentDots');
-  if(!track) return;
-  const cards = Array.from(track.children);
-  const total = cards.length;
-  const visible = () => window.innerWidth < 700 ? 1 : window.innerWidth < 1100 ? 2 : 3;
-
-  function buildDots(el, count, active, handler){
-    if(!el) return;
-    el.innerHTML = '';
-    for(let i=0;i<count;i++){
-      const d = document.createElement('div');
-      d.className = 'slide-dot' + (i===active?' active':'');
-      d.onclick = (()=>{const ii=i; return ()=>handler(ii - sIdx);})();
-      el.appendChild(d);
-    }
-  }
-
-  function updateStudents(){
-    const cardW = cards[0].offsetWidth + 20;
-    track.style.transform = `translateX(-${sIdx * cardW}px)`;
-    buildDots(dotsEl, Math.max(1, total - visible() + 1), sIdx, slideStudents);
-  }
-
-  window.slideStudents = function(dir){
-    const max = Math.max(0, total - visible());
-    sIdx = Math.min(max, Math.max(0, sIdx + dir));
-    updateStudents();
-  };
-
-  updateStudents();
-  window.addEventListener('resize', updateStudents);
-  setInterval(()=>{ sIdx >= Math.max(0,total-visible()) ? sIdx=0 : sIdx++; updateStudents(); }, 4000);
-})();
-
-// Review slider
-(function(){
-  let rIdx = 0;
-  const track = document.getElementById('reviewTrack');
-  const dotsEl = document.getElementById('reviewDots');
-  if(!track) return;
-  const cards = Array.from(track.children);
-  const total = cards.length;
-  const visible = () => window.innerWidth < 700 ? 1 : window.innerWidth < 1100 ? 2 : 3;
-
-  function buildDots2(el, count, active){
-    if(!el) return;
-    el.innerHTML = '';
-    for(let i=0;i<count;i++){
-      const d = document.createElement('div');
-      d.className = 'slide-dot' + (i===active?' active':'');
-      d.onclick = (()=>{const ii=i; return ()=>{ rIdx=ii; updateReviews(); };})();
-      el.appendChild(d);
-    }
-  }
-
-  function updateReviews(){
-    const cardW = cards[0].offsetWidth + 20;
-    track.style.transform = `translateX(-${rIdx * cardW}px)`;
-    buildDots2(dotsEl, Math.max(1, total - visible() + 1), rIdx);
-  }
-
-  window.slideReviews = function(dir){
-    const max = Math.max(0, total - visible());
-    rIdx = Math.min(max, Math.max(0, rIdx + dir));
-    updateReviews();
-  };
-
-  updateReviews();
-  window.addEventListener('resize', updateReviews);
-  setInterval(()=>{ rIdx >= Math.max(0,total-visible()) ? rIdx=0 : rIdx++; updateReviews(); }, 5000);
-})();
 
 // Supabase — lazy init so a CDN hiccup never breaks the rest of the page
 let _sb = null;
