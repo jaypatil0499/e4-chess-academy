@@ -215,8 +215,9 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
 /* MOBILE */
 @media(max-width:900px){
   .hero{grid-template-columns:1fr;padding:60px 0 0;min-height:auto;}
-  .hero-right{display:none;}
-  .hero-left{padding-bottom:60px;}
+  .hero-right{display:flex;justify-content:center;padding:0 24px 48px;}
+  .hero-right .hero-board{border-radius:20px;max-width:100%;padding:24px 20px 28px;width:100%;}
+  .hero-left{padding-bottom:32px;}
   .hero-wrapper{padding:0 24px;}
   .why-grid,.courses-grid,.testimonials-grid{grid-template-columns:1fr;}
   .how-steps{grid-template-columns:1fr 1fr;gap:40px;}
@@ -826,12 +827,16 @@ window.addEventListener('scroll', () => {
   ];
 
   function resize(){
-    const size = canvas.clientWidth;
-    canvas.width = size * window.devicePixelRatio;
-    canvas.height = size * window.devicePixelRatio;
+    const size = canvas.clientWidth || canvas.parentElement.clientWidth || 300;
+    canvas.width = size * (window.devicePixelRatio || 1);
+    canvas.height = size * (window.devicePixelRatio || 1);
   }
   resize();
   window.addEventListener('resize', resize);
+  window.addEventListener('orientationchange', ()=>{ setTimeout(resize, 100); });
+  if(window.ResizeObserver){
+    new ResizeObserver(resize).observe(canvas.parentElement);
+  }
 
   function sq(){ return canvas.width / 8; }
 
