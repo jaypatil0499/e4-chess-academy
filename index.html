@@ -23,10 +23,14 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="E4 Chess Academy — Where Champions Begin">
 <meta name="twitter:image" content="https://e4chessacademy.com/og-image.png">
+<!-- Preload critical assets -->
+<link rel="preload" as="image" href="images/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<!-- Slimmed font load: removed unused weight 300, only load what's used -->
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,400&display=swap" rel="stylesheet">
+<!-- Supabase deferred — does not block page render -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -268,7 +272,7 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
 <!-- NAV -->
 <nav id="mainNav">
   <a href="#" class="nav-logo" style="text-decoration:none;">
-    <div class="nav-logo-mark"><img src="images/logo.png" alt="E4 Chess Academy"></div>
+    <div class="nav-logo-mark"><img src="images/logo.png" alt="E4 Chess Academy" width="56" height="56" fetchpriority="high"></div>
     <div>
       <div class="nav-logo-text">E4 Chess Academy</div>
       <div class="nav-logo-sub">Where Champions Begin</div>
@@ -525,7 +529,7 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
       <div class="testimonials-track">
         <div class="tcard">
           <div class="tcard-top">
-            <img class="tcard-photo" src="images/arjun.jpg" alt="Arjun" style="object-position:center top;">
+            <img class="tcard-photo" src="images/arjun.jpg" alt="Arjun" loading="lazy" width="88" height="88" style="object-position:center top;">
             <div><div class="tcard-author">Parent of Arjun</div><div class="tcard-role">🇮🇳 India</div><div class="tcard-stars">★★★★★</div></div>
           </div>
           <div class="tcard-quote">"Arjun's FIDE rating has jumped over 200 points since joining E4. The structured curriculum and titled coaches made all the difference. We couldn't be happier."</div>
@@ -539,7 +543,7 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
         </div>
         <div class="tcard">
           <div class="tcard-top">
-            <img class="tcard-photo" src="images/aarush.jpg" alt="Aarush" style="object-position:55% 12%;">
+            <img class="tcard-photo" src="images/aarush.jpg" alt="Aarush" loading="lazy" width="88" height="88" style="object-position:55% 12%;">
             <div><div class="tcard-author">Neelam Katke</div><div class="tcard-role">Parent of Aarush &middot; 🇮🇳 Mumbai</div><div class="tcard-stars">★★★★★</div></div>
           </div>
           <div class="tcard-quote">"Aarush was only 5 when he started. Watching him win Under-6 and Under-8 titles in just a year is beyond what I imagined. The coaches truly know how to nurture young minds."</div>
@@ -553,7 +557,7 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
         </div>
         <div class="tcard">
           <div class="tcard-top">
-            <img class="tcard-photo" src="images/aaryan.jpg" alt="Aaryan" style="object-position:center 12%;">
+            <img class="tcard-photo" src="images/aaryan.jpg" alt="Aaryan" loading="lazy" width="88" height="88" style="object-position:center 12%;">
             <div><div class="tcard-author">Parent of Aaryan</div><div class="tcard-role">🇺🇸 USA</div><div class="tcard-stars">★★★★★</div></div>
           </div>
           <div class="tcard-quote">"Being in the USA, we struggled to find quality chess coaching. E4 solved that completely. Aaryan has won multiple state-level trophies and his game has transformed entirely."</div>
@@ -567,7 +571,7 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
         </div>
         <div class="tcard">
           <div class="tcard-top">
-            <img class="tcard-photo" src="images/ovi.jpg" alt="Sri & Ovi Shinde" style="object-position:center 8%;">
+            <img class="tcard-photo" src="images/ovi.jpg" alt="Sri & Ovi Shinde" loading="lazy" width="88" height="88" style="object-position:center 8%;">
             <div><div class="tcard-author">Shri Shinde</div><div class="tcard-role">Parent of Ovi &middot; 🇬🇧 London</div><div class="tcard-stars">★★★★★</div></div>
           </div>
           <div class="tcard-quote">"Ovi has played in many local tournaments across London and the surrounding areas, and she's done brilliantly — winning consistently and growing with every game. The E4 coaches have been fantastic throughout."</div>
@@ -581,7 +585,7 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
         </div>
         <div class="tcard">
           <div class="tcard-top">
-            <img class="tcard-photo" src="images/saee.png" alt="Saee" style="object-position:center top;">
+            <img class="tcard-photo" src="images/saee.png" alt="Saee" loading="lazy" width="88" height="88" style="object-position:center top;">
             <div><div class="tcard-author">Apeksha Parab</div><div class="tcard-role">Parent of Saee &middot; 🇮🇳 Mumbai</div><div class="tcard-stars">★★★★★</div></div>
           </div>
           <div class="tcard-quote">"Saee won the District Under-12 Chess Championship and credits her E4 training for her improvement. The monthly tournaments gave her the real competition she needed to grow."</div>
@@ -589,7 +593,7 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
         <!-- Duplicate for seamless loop -->
         <div class="tcard">
           <div class="tcard-top">
-            <img class="tcard-photo" src="images/arjun.jpg" alt="Arjun" style="object-position:center top;">
+            <img class="tcard-photo" src="images/arjun.jpg" alt="Arjun" loading="lazy" width="88" height="88" style="object-position:center top;">
             <div><div class="tcard-author">Parent of Arjun</div><div class="tcard-role">🇮🇳 India</div><div class="tcard-stars">★★★★★</div></div>
           </div>
           <div class="tcard-quote">"Arjun's FIDE rating has jumped over 200 points since joining E4. The structured curriculum and titled coaches made all the difference. We couldn't be happier."</div>
@@ -603,7 +607,7 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
         </div>
         <div class="tcard">
           <div class="tcard-top">
-            <img class="tcard-photo" src="images/aarush.jpg" alt="Aarush" style="object-position:55% 12%;">
+            <img class="tcard-photo" src="images/aarush.jpg" alt="Aarush" loading="lazy" width="88" height="88" style="object-position:55% 12%;">
             <div><div class="tcard-author">Neelam Katke</div><div class="tcard-role">Parent of Aarush &middot; 🇮🇳 Mumbai</div><div class="tcard-stars">★★★★★</div></div>
           </div>
           <div class="tcard-quote">"Aarush was only 5 when he started. Watching him win Under-6 and Under-8 titles in just a year is beyond what I imagined. The coaches truly know how to nurture young minds."</div>
@@ -617,7 +621,7 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
         </div>
         <div class="tcard">
           <div class="tcard-top">
-            <img class="tcard-photo" src="images/aaryan.jpg" alt="Aaryan" style="object-position:center 12%;">
+            <img class="tcard-photo" src="images/aaryan.jpg" alt="Aaryan" loading="lazy" width="88" height="88" style="object-position:center 12%;">
             <div><div class="tcard-author">Parent of Aaryan</div><div class="tcard-role">🇺🇸 USA</div><div class="tcard-stars">★★★★★</div></div>
           </div>
           <div class="tcard-quote">"Being in the USA, we struggled to find quality chess coaching. E4 solved that completely. Aaryan has won multiple state-level trophies and his game has transformed entirely."</div>
@@ -631,7 +635,7 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
         </div>
         <div class="tcard">
           <div class="tcard-top">
-            <img class="tcard-photo" src="images/ovi.jpg" alt="Sri & Ovi Shinde" style="object-position:center 8%;">
+            <img class="tcard-photo" src="images/ovi.jpg" alt="Sri & Ovi Shinde" loading="lazy" width="88" height="88" style="object-position:center 8%;">
             <div><div class="tcard-author">Shri Shinde</div><div class="tcard-role">Parent of Ovi &middot; 🇬🇧 London</div><div class="tcard-stars">★★★★★</div></div>
           </div>
           <div class="tcard-quote">"Ovi has played in many local tournaments across London and the surrounding areas, and she's done brilliantly — winning consistently and growing with every game. The E4 coaches have been fantastic throughout."</div>
@@ -645,7 +649,7 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
         </div>
         <div class="tcard">
           <div class="tcard-top">
-            <img class="tcard-photo" src="images/saee.png" alt="Saee" style="object-position:center top;">
+            <img class="tcard-photo" src="images/saee.png" alt="Saee" loading="lazy" width="88" height="88" style="object-position:center top;">
             <div><div class="tcard-author">Apeksha Parab</div><div class="tcard-role">Parent of Saee &middot; 🇮🇳 Mumbai</div><div class="tcard-stars">★★★★★</div></div>
           </div>
           <div class="tcard-quote">"Saee won the District Under-12 Chess Championship and credits her E4 training for her improvement. The monthly tournaments gave her the real competition she needed to grow."</div>
@@ -915,6 +919,7 @@ window.addEventListener('scroll', () => {
   }
 
   function tick(ts){
+    if(!canvasVisible) return;
     if(!lastTime) lastTime = ts;
     const dt = ts - lastTime;
     lastTime = ts;
@@ -948,7 +953,14 @@ window.addEventListener('scroll', () => {
     }
     requestAnimationFrame(tick);
   }
-  requestAnimationFrame(tick);
+  // Pause animation when canvas is off-screen to save CPU/battery on mobile
+  let canvasVisible = true;
+  const canvasObs = new IntersectionObserver(entries => {
+    canvasVisible = entries[0].isIntersecting;
+    if(canvasVisible) { lastTime = null; requestAnimationFrame(tick); }
+  }, {threshold:0});
+  canvasObs.observe(canvas);
+  if(canvasVisible) requestAnimationFrame(tick);
 })();
 
 // Stats count-up
