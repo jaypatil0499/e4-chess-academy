@@ -29,8 +29,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Slimmed font load: removed unused weight 300, only load what's used -->
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,400&display=swap" rel="stylesheet">
-<!-- Supabase deferred — does not block page render -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -700,18 +698,19 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
     <h2 class="section-h2">Book Your Child's<br>Free Demo Today</h2>
     <p class="section-sub">Join 5,000+ families who gave their child the gift of chess. One session. Zero risk. Lifelong skill.</p>
     <div class="demo-form" id="demoForm">
+      <form onsubmit="submitForm(event)" novalidate>
       <div class="form-grid">
         <div class="form-field">
           <label for="parentName">Parent Name</label>
-          <input type="text" placeholder="Your full name" id="parentName">
+          <input type="text" placeholder="Your full name" id="parentName" name="parentName" autocomplete="name" required>
         </div>
         <div class="form-field">
           <label for="email">Email Address</label>
-          <input type="email" placeholder="email@example.com" id="email">
+          <input type="email" placeholder="email@example.com" id="email" name="email" autocomplete="email" required>
         </div>
         <div class="form-field">
           <label for="phone">Phone Number</label>
-          <input type="tel" placeholder="+91 98765 43210" id="phone">
+          <input type="tel" placeholder="+91 98765 43210" id="phone" name="phone" autocomplete="tel">
         </div>
         <div class="form-field">
           <label for="childAge">Child's Age</label>
@@ -744,7 +743,8 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
           </select>
         </div>
       </div>
-      <button class="form-submit" onclick="submitForm()">Book My Free Demo Session →</button>
+      <button type="submit" class="form-submit">Book My Free Demo Session →</button>
+      </form>
       <div class="form-note">✓ 100% free &nbsp;·&nbsp; ✓ No credit card &nbsp;·&nbsp; ✓ Cancel anytime</div>
     </div>
     <div class="form-success" id="formSuccess">
@@ -756,7 +756,7 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
 </div>
 
 <!-- WHATSAPP FLOATING BUTTON -->
-<a href="https://wa.me/919999999999?text=Hi%20E4%20Chess%20Academy!%20I%27d%20like%20to%20know%20more%20about%20your%20chess%20courses." target="_blank" id="waBtn" title="Chat on WhatsApp" style="position:fixed;bottom:28px;right:28px;z-index:999;display:flex;align-items:center;gap:10px;background:#25D366;color:white;text-decoration:none;border-radius:100px;padding:12px 20px 12px 14px;box-shadow:0 4px 20px rgba(37,211,102,0.45);font-family:'DM Sans',sans-serif;font-weight:600;font-size:14px;transition:all 0.2s;">
+<a href="mailto:e4cacademy@gmail.com" target="_blank" rel="noopener" id="waBtn" title="Chat on WhatsApp" style="position:fixed;bottom:28px;right:28px;z-index:999;display:flex;align-items:center;gap:10px;background:#25D366;color:white;text-decoration:none;border-radius:100px;padding:12px 20px 12px 14px;box-shadow:0 4px 20px rgba(37,211,102,0.45);font-family:'DM Sans',sans-serif;font-weight:600;font-size:14px;transition:all 0.2s;">
   <svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
     <circle cx="16" cy="16" r="16" fill="#25D366"/>
     <path d="M23.5 8.5A10.44 10.44 0 0 0 16 5.5C10.2 5.5 5.5 10.2 5.5 16c0 1.85.48 3.65 1.4 5.24L5.5 26.5l5.42-1.38A10.45 10.45 0 0 0 16 26.5c5.8 0 10.5-4.7 10.5-10.5 0-2.8-1.09-5.43-3-7.5z" fill="white"/>
@@ -795,7 +795,7 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
         <ul class="footer-links">
           <li><a href="mailto:e4cacademy@gmail.com">📧 e4cacademy@gmail.com</a></li>
           <li><a href="https://www.instagram.com/e4.chess.academy" target="_blank" title="E4 Chess Academy on Instagram" style="display:flex;align-items:center;gap:8px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg> Instagram</a></li>
-          <li><a href="https://wa.me/919999999999" target="_blank">💬 WhatsApp Us</a></li>
+          <li><a class="wa-link" href="mailto:e4cacademy@gmail.com" target="_blank" rel="noopener">💬 WhatsApp Us</a></li>
         </ul>
       </div>
     </div>
@@ -1000,66 +1000,159 @@ function toggleFaq(btn){
 }
 
 
-// Supabase — lazy init so a CDN hiccup never breaks the rest of the page
-let _sb = null;
-function getSupabase() {
-  if (!_sb) {
-    if (!window.supabase) { console.error('Supabase SDK not loaded'); return null; }
-    _sb = window.supabase.createClient(
-      'https://mdagtfvyvxsycvchella.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1kYWd0ZnZ5dnhzeWN2Y2hlbGxhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyMTExMTUsImV4cCI6MjA5Mjc4NzExNX0.Z7-bhlvykL2pIs0tm1O8TvcMQHByJLxEXmj8YwCH3PU'
-    );
-  }
-  return _sb;
+/* ============================================================
+   LEAD CAPTURE CONFIG  —  the only two lines you need to edit
+   ============================================================
+   1. WEB3FORMS_KEY: get a free access key at https://web3forms.com
+      (enter e4cacademy@gmail.com, they email you the key instantly).
+      Paste it between the quotes below. Leads then arrive as email.
+   2. WHATSAPP_NUMBER: your real number, country code first,
+      digits only — no +, spaces or dashes. e.g. '919876543210'
+   Until these are filled in, the form still works: it hands the
+   lead straight to email/WhatsApp instead of showing an error.
+   ============================================================ */
+const WEB3FORMS_KEY  = '';
+const WHATSAPP_NUMBER = '917676782072';
+const CONTACT_EMAIL   = 'e4cacademy@gmail.com';
+
+function waLink(text) {
+  const msg = encodeURIComponent(text || "Hi E4 Chess Academy! I'd like to know more about your chess courses.");
+  return WHATSAPP_NUMBER
+    ? 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + msg
+    : 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('Chess course enquiry') + '&body=' + msg;
 }
 
-function showFormError(msg) {
+// Point the WhatsApp button + footer link at the configured number,
+// and fall back to email rather than an invalid-number popup.
+document.addEventListener('DOMContentLoaded', function () {
+  const wa = waLink();
+  const btn = document.getElementById('waBtn');
+  if (btn) btn.href = wa;
+  document.querySelectorAll('.wa-link').forEach(function (a) {
+    a.href = wa;
+    if (!WHATSAPP_NUMBER) a.innerHTML = '📧 Email Us';
+  });
+});
+
+const ERROR_STYLE  = 'background:rgba(255,80,80,0.15);border:1px solid rgba(255,80,80,0.4);color:#ff8a80;';
+const HANDOFF_STYLE = 'background:rgba(201,168,76,0.14);border:1px solid rgba(201,168,76,0.45);color:#E8D9A8;';
+
+function showFormError(msg, tone) {
   let el = document.getElementById('formError');
   if (!el) {
     el = document.createElement('div');
     el.id = 'formError';
-    el.style.cssText = 'background:rgba(255,80,80,0.15);border:1px solid rgba(255,80,80,0.4);color:#ff8a80;border-radius:10px;padding:12px 16px;font-size:13px;margin-top:12px;text-align:left;';
+    el.setAttribute('role', 'alert');
     document.querySelector('.form-submit').after(el);
   }
-  el.textContent = msg;
+  el.style.cssText = (tone === 'handoff' ? HANDOFF_STYLE : ERROR_STYLE)
+    + 'border-radius:10px;padding:14px 16px;font-size:13px;line-height:1.6;margin-top:12px;text-align:left;';
+  el.innerHTML = msg;
   el.style.display = 'block';
 }
 
+function hideFormError() {
+  const el = document.getElementById('formError');
+  if (el) el.style.display = 'none';
+}
+
+function collectLead() {
+  const val = id => (document.getElementById(id) || {}).value ? document.getElementById(id).value.trim() : '';
+  return {
+    name: val('parentName'),
+    email: val('email'),
+    phone: val('phone'),
+    childAge: val('childAge'),
+    experience: val('experience'),
+    country: val('country'),
+  };
+}
+
+function leadSummary(d) {
+  return 'Hi E4 Chess Academy! I would like to book a free demo session.\n\n'
+    + 'Parent name: ' + d.name + '\n'
+    + 'Email: ' + d.email + '\n'
+    + (d.phone ? 'Phone: ' + d.phone + '\n' : '')
+    + (d.childAge ? "Child's age: " + d.childAge + '\n' : '')
+    + (d.experience ? 'Chess experience: ' + d.experience + '\n' : '')
+    + (d.country ? 'Country: ' + d.country + '\n' : '');
+}
+
+// If the booking can't be stored, never dead-end the lead — hand them
+// straight to WhatsApp/email with every detail they typed prefilled.
+function offerDirectContact(d) {
+  const body = leadSummary(d);
+  const mail = 'mailto:' + CONTACT_EMAIL
+    + '?subject=' + encodeURIComponent('Free demo booking — ' + (d.name || 'New enquiry'))
+    + '&body=' + encodeURIComponent(body);
+  const links = '<a href="' + waLink(body) + '" target="_blank" rel="noopener" style="color:#C9A84C;font-weight:700;text-decoration:underline;">'
+    + (WHATSAPP_NUMBER ? 'Send on WhatsApp' : 'Send by email')
+    + '</a>'
+    + (WHATSAPP_NUMBER ? ' &nbsp;·&nbsp; <a href="' + mail + '" style="color:#C9A84C;font-weight:700;text-decoration:underline;">Send by email</a>' : '');
+  showFormError('<strong>One last step</strong> — send us your details directly and we\'ll '
+    + 'confirm your free demo within 24 hours.<br><br>' + links, 'handoff');
+}
+
+function showSuccess() {
+  document.getElementById('demoForm').style.display = 'none';
+  const ok = document.getElementById('formSuccess');
+  ok.style.display = 'block';
+  ok.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
 // Form
-async function submitForm(){
-  const name = document.getElementById('parentName').value.trim();
-  const email = document.getElementById('email').value.trim();
-  if(!name || !email){
-    showFormError('Please fill in your name and email to continue.');
+async function submitForm(ev) {
+  if (ev && ev.preventDefault) ev.preventDefault();
+  hideFormError();
+
+  const d = collectLead();
+
+  if (!d.name) { showFormError('Please tell us your name to continue.'); document.getElementById('parentName').focus(); return; }
+  if (!d.email) { showFormError('Please add your email so we can confirm your session.'); document.getElementById('email').focus(); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.email)) {
+    showFormError('That email address doesn\'t look right — please check it and try again.');
+    document.getElementById('email').focus();
     return;
   }
 
-  const sb = getSupabase();
-  if (!sb) { showFormError('Connection error — please refresh and try again.'); return; }
-
   const btn = document.querySelector('.form-submit');
+  const label = btn.textContent;
   btn.textContent = 'Submitting…';
   btn.disabled = true;
 
-  const { error } = await sb.from('demo_leads').insert({
-    parent_name: name,
-    email,
-    phone: document.getElementById('phone').value.trim(),
-    child_age: document.getElementById('childAge').value,
-    experience: document.getElementById('experience').value,
-    country: document.getElementById('country').value,
-  });
-
-  if(error){
-    console.error('Supabase error:', error);
-    showFormError('Something went wrong: ' + error.message);
-    btn.textContent = 'Book My Free Demo Session →';
+  // No key configured yet — hand off directly rather than fail silently.
+  if (!WEB3FORMS_KEY) {
+    offerDirectContact(d);
+    btn.textContent = label;
     btn.disabled = false;
     return;
   }
 
-  document.getElementById('demoForm').style.display = 'none';
-  document.getElementById('formSuccess').style.display = 'block';
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        access_key: WEB3FORMS_KEY,
+        subject: '🎯 New Demo Booking — ' + d.name + ' (' + (d.country || 'Unknown') + ')',
+        from_name: 'E4 Chess Academy Website',
+        'Parent Name': d.name,
+        'Email': d.email,
+        'Phone': d.phone || '—',
+        "Child's Age": d.childAge || '—',
+        'Chess Experience': d.experience || '—',
+        'Country': d.country || '—',
+      }),
+    });
+    const out = await res.json().catch(() => ({}));
+    if (!res.ok || out.success === false) throw new Error(out.message || 'Submission failed');
+    showSuccess();
+  } catch (err) {
+    console.error('Lead submission failed:', err);
+    offerDirectContact(d);
+    btn.textContent = label;
+    btn.disabled = false;
+  }
 }
 </script>
 </body>
