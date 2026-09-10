@@ -1104,22 +1104,50 @@ function showSuccess() {
   ok.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-// Mirror the lead into Google Sheets. Deliberately fire-and-forget:
-// it must never delay or fail a booking, so the UI ignores the result.
-function sendToSheet(d) {
-  if (!SHEETS_ENDPOINT) return;
+// Primary destination: appends the lead to the Google Sheet and sends the
+// email/WhatsApp alerts server-side. Returns true only if the row was written.
+async function saveToSheet(d) {
+  if (!SHEETS_ENDPOINT) return false;
   try {
-    fetch(SHEETS_ENDPOINT, {
+    const res = await fetch(SHEETS_ENDPOINT, {
       method: 'POST',
-      mode: 'no-cors',
-      keepalive: true,
-      // text/plain keeps this a "simple" request — Apps Script web apps
-      // do not answer CORS preflight, so application/json would be blocked.
+      // text/plain keeps this a "simple" request — Apps Script web apps do not
+      // answer CORS preflight, so application/json would be blocked.
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(d),
-    }).catch(function (e) { console.warn('Sheet copy failed:', e); });
-  } catch (e) {
-    console.warn('Sheet copy failed:', e);
+    });
+    const out = await res.json().catch(() => ({}));
+    return res.ok && out.ok === true;
+  } catch (err) {
+    console.error('Sheet save failed:', err);
+    return false;
+  }
+}
+
+// Fallback only, so a working primary never sends a duplicate email.
+async function emailFallback(d) {
+  if (!WEB3FORMS_KEY) return false;
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        access_key: WEB3FORMS_KEY,
+        subject: 'New Demo Booking — ' + d.name + ' (' + (d.country || 'Unknown') + ')',
+        from_name: 'E4 Chess Academy Website',
+        'Parent Name': d.name,
+        'Email': d.email,
+        'Phone': d.phone || '—',
+        "Child's Age": d.childAge || '—',
+        'Chess Experience': d.experience || '—',
+        'Country': d.country || '—',
+      }),
+    });
+    const out = await res.json().catch(() => ({}));
+    return res.ok && out.success !== false;
+  } catch (err) {
+    console.error('Email fallback failed:', err);
+    return false;
   }
 }
 
@@ -1138,48 +1166,27 @@ async function submitForm(ev) {
     return;
   }
 
-  // Capture to the sheet first: even if email delivery fails, the lead is saved.
-  sendToSheet(d);
-
   const btn = document.querySelector('.form-submit');
   const label = btn.textContent;
   btn.textContent = 'Submitting…';
   btn.disabled = true;
 
-  // No key configured yet — hand off directly rather than fail silently.
-  if (!WEB3FORMS_KEY) {
-    offerDirectContact(d);
-    btn.textContent = label;
-    btn.disabled = false;
+  // Sheet first — it also triggers the email and WhatsApp alerts server-side.
+  // Only if that fails do we try the backup email service, so a healthy
+  // primary path never produces two notifications for one booking.
+  let saved = await saveToSheet(d);
+  if (!saved) saved = await emailFallback(d);
+
+  if (saved) {
+    showSuccess();
     return;
   }
 
-  try {
-    const res = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({
-        access_key: WEB3FORMS_KEY,
-        subject: '🎯 New Demo Booking — ' + d.name + ' (' + (d.country || 'Unknown') + ')',
-        from_name: 'E4 Chess Academy Website',
-        'Parent Name': d.name,
-        'Email': d.email,
-        'Phone': d.phone || '—',
-        "Child's Age": d.childAge || '—',
-        'Chess Experience': d.experience || '—',
-        'Country': d.country || '—',
-      }),
-    });
-    const out = await res.json().catch(() => ({}));
-    if (!res.ok || out.success === false) throw new Error(out.message || 'Submission failed');
-    showSuccess();
-  } catch (err) {
-    console.error('Lead submission failed:', err);
-    offerDirectContact(d);
-    btn.textContent = label;
-    btn.disabled = false;
-  }
+  offerDirectContact(d);
+  btn.textContent = label;
+  btn.disabled = false;
 }
+
 </script>
 </body>
 </html>
