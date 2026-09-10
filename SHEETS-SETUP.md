@@ -1,16 +1,22 @@
-# Free lead database — finishing the setup
+# Lead capture — live
 
-Bookings already arrive as **email**. This adds a permanent copy as a row in a
-Google Sheet. Completely free, unlimited rows, no plan or card required.
+Every demo booking is captured **twice, independently**:
 
-Sheet: <https://docs.google.com/spreadsheets/d/1c-73hXboypy7btbS1AnimRfbcpxv5UYEPGuB0CJh508/edit>
-Script project: <https://script.google.com/u/0/home/projects/1KOi0JaACm3_ewv1nYgfrwxWSJj3QsU1ifDUFe62ELCNxQ0VLIgk5-bs1/edit>
+1. **Email** to e4cacademy@gmail.com via Web3Forms (free plan, 250/month)
+2. **A row** in the leads sheet via a Google Apps Script web app (free, unlimited)
 
-The script addresses the sheet by its ID, so it works as a **standalone**
-project — it does not need to be created from the sheet's Extensions menu.
+Neither can take the other down. The sheet write runs first and is
+fire-and-forget, so a Sheets outage cannot delay or fail a booking; if email
+delivery fails, the visitor is offered a prefilled WhatsApp/email handoff.
 
-Steps 1 and 2 are already done. Only 3 and 4 remain, and they need your Google
-login, so they can't be done for you.
+- Sheet: <https://docs.google.com/spreadsheets/d/1c-73hXboypy7btbS1AnimRfbcpxv5UYEPGuB0CJh508/edit>
+- Script project: <https://script.google.com/u/0/home/projects/1KOi0JaACm3_ewv1nYgfrwxWSJj3QsU1ifDUFe62ELCNxQ0VLIgk5-bs1/edit>
+- Endpoint: `.../macros/s/AKfycbz38fhpHeU3rSYN.../exec` (set in `index.html`)
+
+Verified working on 2026-09-10: health check returns ok, direct POSTs append
+rows, and a booking submitted on the live site fired both destinations.
+
+**Setup is complete. The steps below are only for reference if it ever breaks.**
 
 ---
 
