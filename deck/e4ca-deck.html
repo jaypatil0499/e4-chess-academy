@@ -355,16 +355,101 @@ h2 em{font-style:italic;font-weight:400;color:var(--gold);}
 
 /* &#9472;&#9472; print / save-as-PDF: one slide per page &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472; */
 @media print{
+  /* One slide, one page. Viewport-relative clamps resolve against the page
+     box in print and blow past it, so every size that matters is pinned in
+     points here rather than left to vw. */
   @page{size:A4 landscape;margin:0;}
-  body{background:#fff;}
+  html,body{background:#fff;}
+
   .deck{display:block;height:auto;overflow:visible;}
   .slide{
-    height:auto;min-height:100vh;
+    width:100%;
+    height:100vh;min-height:0;max-height:100vh;
+    overflow:hidden;
     page-break-after:always;break-after:page;
-    padding:30px 40px;
+    page-break-inside:avoid;break-inside:avoid;
+    padding:26pt 30pt 24pt;
+    display:flex;flex-direction:column;justify-content:center;
     -webkit-print-color-adjust:exact;print-color-adjust:exact;
   }
+  .slide:last-child{page-break-after:auto;break-after:auto;}
+  /* On screen the dense slides read from the top because they can scroll;
+     on a fixed page they should sit centred like every other page. */
+  .slide.dense{justify-content:center;}
+  .slide-inner{max-width:none;}
+
   .rail,.arrow{display:none!important;}
+
+  .mark{top:14pt;left:30pt;}
+  .mark-logo{width:11pt;height:20pt;flex:0 0 11pt;}
+  .mark span{font-size:6.5pt;}
+  .move{top:14pt;right:30pt;font-size:7.5pt;}
+
+  h1{font-size:40pt;}
+  h2{font-size:27pt;margin-bottom:7pt;}
+  .eyebrow{font-size:8pt;margin-bottom:7pt;}
+  .lede{font-size:11pt;margin-bottom:15pt;max-width:70ch;}
+
+  .cover-logo{width:64pt!important;margin-bottom:12pt;}
+  .cover-sub{font-size:11.5pt;margin-top:12pt;}
+  .cover-rule{margin:14pt auto;}
+  .cover-meta{font-size:7pt;}
+
+  .stats{gap:16pt;margin-top:14pt;}
+  .stat-n{font-size:40pt;}
+  .stat-l{font-size:8.5pt;margin-top:5pt;}
+
+  .reasons{grid-template-columns:repeat(2,1fr);gap:15pt 34pt;}
+  .reason{padding-bottom:12pt;gap:9pt;}
+  .reason-pc{font-size:16pt;}
+  .reason h3{font-size:10.5pt;margin-bottom:2pt;}
+  .reason p{font-size:9.4pt;line-height:1.42;}
+
+  .ladder{gap:20pt;}
+  .rung-bar{height:44pt;font-size:16pt;padding-left:16pt;}
+  .rung-note{font-size:9.5pt;}
+
+  .course-head{margin-bottom:9pt;gap:8pt 16pt;}
+  .course-badge{font-size:8pt;padding:3pt 8pt;}
+  .specs{
+    grid-template-columns:repeat(3,1fr);
+    gap:7pt 20pt;padding:12pt 15pt;margin-bottom:15pt;border-radius:6pt;
+  }
+  .spec{font-size:9.4pt;line-height:1.35;gap:6pt;}
+
+  .months{grid-template-columns:repeat(3,1fr);gap:16pt 26pt;}
+  .month h3{font-size:9.2pt;padding-bottom:5pt;margin-bottom:7pt;}
+  .month-theme{font-size:10.5pt;margin-top:2pt;}
+  .month ul{gap:3.4pt;}
+  .month li{font-size:8.6pt;line-height:1.34;padding-left:11pt;}
+  .month li::before{width:2.6pt;height:2.6pt;}
+
+  .included{grid-template-columns:repeat(3,1fr);gap:18pt 30pt;}
+  .inc{padding-top:8pt;gap:4pt;}
+  .inc h3{font-size:10.5pt;}
+  .inc p{font-size:9.4pt;line-height:1.42;}
+
+  .wins{grid-template-columns:repeat(4,1fr);gap:20pt 24pt;}
+  .win-t{font-size:12.5pt;}
+  .win-w{font-size:8pt;}
+
+  .voices{grid-template-columns:repeat(2,1fr);gap:20pt 30pt;}
+  .voice blockquote{font-size:11pt;line-height:1.42;}
+  .voice-win{font-size:9pt;}
+  .voice-by{font-size:8pt;}
+
+  .steps{grid-template-columns:repeat(4,1fr);gap:18pt;}
+  .step::before{font-size:22pt;margin-bottom:6pt;}
+  .step h3{font-size:10.5pt;}
+  .step p{font-size:9.4pt;line-height:1.42;}
+
+  .pillars{grid-template-columns:repeat(3,1fr);gap:26pt;}
+  .pillar-k{font-size:15pt;}
+  .pillar p{font-size:10pt;line-height:1.5;}
+
+  .cta{font-size:10pt;padding:9pt 22pt;margin-top:12pt;}
+  .contacts{font-size:10pt;margin-top:16pt;gap:8pt 26pt;}
+  .close-note{font-size:6.8pt;margin-top:14pt;}
 }
 </style>
 
