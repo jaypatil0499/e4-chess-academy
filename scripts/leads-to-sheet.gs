@@ -5,12 +5,16 @@
  * The tab and header row are created automatically on the first booking.
  */
 
+// This sheet: https://docs.google.com/spreadsheets/d/1c-73hXboypy7btbS1AnimRfbcpxv5UYEPGuB0CJh508/edit
+// Addressed by ID so the script works whether it is bound to the sheet or
+// standalone — getActiveSpreadsheet() returns null in a standalone project.
+var SHEET_ID = '1c-73hXboypy7btbS1AnimRfbcpxv5UYEPGuB0CJh508';
 var TAB_NAME = 'Leads';
 var HEADERS = ['Received', 'Parent Name', 'Email', 'Phone',
                "Child's Age", 'Experience', 'Country'];
 
 function getSheet_() {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = SpreadsheetApp.openById(SHEET_ID);
   var sheet = ss.getSheetByName(TAB_NAME);
 
   if (!sheet) {

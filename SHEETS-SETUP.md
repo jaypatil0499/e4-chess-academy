@@ -1,22 +1,29 @@
-# Free lead database — 4 steps, ~5 minutes
+# Free lead database — finishing the setup
 
 Bookings already arrive as **email**. This adds a permanent copy as a row in a
 Google Sheet. Completely free, unlimited rows, no plan or card required.
 
-You do steps 1–4. Send Jay's Claude the URL from step 4 and it does the rest.
+Sheet: <https://docs.google.com/spreadsheets/d/1c-73hXboypy7btbS1AnimRfbcpxv5UYEPGuB0CJh508/edit>
+Script project: <https://script.google.com/u/0/home/projects/1KOi0JaACm3_ewv1nYgfrwxWSJj3QsU1ifDUFe62ELCNxQ0VLIgk5-bs1/edit>
+
+The script addresses the sheet by its ID, so it works as a **standalone**
+project — it does not need to be created from the sheet's Extensions menu.
+
+Steps 1 and 2 are already done. Only 3 and 4 remain, and they need your Google
+login, so they can't be done for you.
 
 ---
 
-### 1. Make the sheet
-Open **<https://sheets.new>** — a blank sheet appears. Name it `E4CA Leads`.
-Don't type any headers. The script builds them for you.
+### 1. Make the sheet — ✅ done
+No headers needed; the script writes them on the first booking.
 
-### 2. Open the editor
-In that sheet: **Extensions → Apps Script**.
-Select everything in the editor and delete it.
+### 2. Create the script project — ✅ done
 
 ### 3. Paste the script
-Paste the whole of `scripts/leads-to-sheet.gs` in, then press **Cmd+S** to save.
+Open the script project, select everything in the editor, delete it, then paste
+the whole of `scripts/leads-to-sheet.gs` in and press **Cmd+S**.
+
+The sheet ID is already filled in — nothing to edit.
 
 ### 4. Publish and copy the URL
 - **Deploy → New deployment**
