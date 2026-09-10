@@ -1014,6 +1014,10 @@ function toggleFaq(btn){
 const WEB3FORMS_KEY  = 'e6a26003-3533-4f50-b2e5-f925f5c034ad';
 const WHATSAPP_NUMBER = '917676782072';
 const CONTACT_EMAIL   = 'e4cacademy@gmail.com';
+/* Optional Google Sheet copy of every lead. Paste the Apps Script web-app
+   URL here (see SHEETS-SETUP.md). Leave empty to send email only — the
+   form works either way, and a Sheets failure never blocks a booking. */
+const SHEETS_ENDPOINT = '';
 
 function waLink(text) {
   const msg = encodeURIComponent(text || "Hi E4 Chess Academy! I'd like to know more about your chess courses.");
@@ -1100,6 +1104,25 @@ function showSuccess() {
   ok.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
+// Mirror the lead into Google Sheets. Deliberately fire-and-forget:
+// it must never delay or fail a booking, so the UI ignores the result.
+function sendToSheet(d) {
+  if (!SHEETS_ENDPOINT) return;
+  try {
+    fetch(SHEETS_ENDPOINT, {
+      method: 'POST',
+      mode: 'no-cors',
+      keepalive: true,
+      // text/plain keeps this a "simple" request — Apps Script web apps
+      // do not answer CORS preflight, so application/json would be blocked.
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(d),
+    }).catch(function (e) { console.warn('Sheet copy failed:', e); });
+  } catch (e) {
+    console.warn('Sheet copy failed:', e);
+  }
+}
+
 // Form
 async function submitForm(ev) {
   if (ev && ev.preventDefault) ev.preventDefault();
@@ -1114,6 +1137,9 @@ async function submitForm(ev) {
     document.getElementById('email').focus();
     return;
   }
+
+  // Capture to the sheet first: even if email delivery fails, the lead is saved.
+  sendToSheet(d);
 
   const btn = document.querySelector('.form-submit');
   const label = btn.textContent;
