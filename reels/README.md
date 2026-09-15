@@ -74,3 +74,22 @@ The hosted voice service (Higgsfield presets such as Fraser or Romy) needs
 credits on the account; while the workspace balance is zero, every voice
 there fails to submit regardless of which is chosen, so the local voices
 are the working path.
+
+## Reel 02 — Mate in two
+
+Position `5r1k/1p4pp/7N/q7/8/1Q6/5PPP/6K1`, White to play. Black is up the
+exchange; White gives the queen away and mates.
+
+`1.Qg8+!! Rxg8` (forced — the king cannot take because the knight on h6
+guards g8) `2.Nf7#`, a smothered mate.
+
+Checked before building, not after: `verify-mate-in-2.py` generates every
+legal move and confirms there is no mate in one, that `Qg8+` is the **only**
+first move forcing mate in two, and that Black has exactly one legal reply.
+Run it before publishing any change to the position.
+
+```bash
+python3 reels/verify-mate-in-2.py
+./reels/build-reel.sh mate-in-2 Tara
+```
+

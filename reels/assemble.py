@@ -7,7 +7,9 @@ REEL = pathlib.Path(os.environ['REEL'])
 VOICE, RATE = os.environ['VOICE'], os.environ['RATE']
 
 VO = {int(k): v for k, v in json.loads((REEL / 'narration.json').read_text()).items()}
-LEAD, TAIL, GLIDE, ORDER = 0.12, 0.38, 0.13, list(range(13))
+LEAD, TAIL, GLIDE = 0.12, 0.38, 0.13
+ORDER = list(range(max(VO) + 1))
+GLIDES = [n for n in ORDER if n not in VO]   # frames with no line are motion beats
 
 def dur(p):
     return float(subprocess.run(
@@ -23,15 +25,16 @@ for i, text in VO.items():
                     '-ar', '44100', '-ac', '2', str(wav)], check=True)
     lengths[i] = dur(wav)
 
-scene = {n: (GLIDE if n in (2, 3, 4)
-             else round(LEAD + lengths[n] + (0.62 if n == 12 else TAIL), 3))
+LAST = ORDER[-1]
+scene = {n: (GLIDE if n in GLIDES
+             else round(LEAD + lengths[n] + (0.62 if n == LAST else TAIL), 3))
          for n in ORDER}
 
 video, audio = [], []
 for n in ORDER:
     video += [f"file '{WORK}/frames/f{n:02d}.png'", f"duration {scene[n]}"]
     blk = WORK / 'vo' / f'blk{n:02d}.wav'
-    if n in (2, 3, 4):
+    if n in GLIDES:
         subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'lavfi', '-i',
                         'anullsrc=channel_layout=stereo:sample_rate=44100',
                         '-t', str(scene[n]), str(blk)], check=True)

@@ -1,0 +1,11 @@
+{
+ "0": "White to play. Black is winning on material.",
+ "1": "And White mates in two. Every move is forced. Can you see it?",
+ "4": "Queen to g 8. White gives away the queen.",
+ "5": "The king cannot take it, because the knight on h 6 guards g 8.",
+ "6": "So the rook must take.",
+ "7": "Knight to f 7. Checkmate.",
+ "8": "This is a smothered mate. The king is trapped by its own pieces, and the knight jumps over all of them.",
+ "9": "Queen g 8. Rook takes. Knight f 7. Checkmate.",
+ "10": "Learn tactics like this at E4 Chess Academy. Book your free demo class today."
+}
