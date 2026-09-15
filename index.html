@@ -2,6 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<!-- Google tag (gtag.js) -->
+<link rel="preconnect" href="https://www.googletagmanager.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-34JMV8X5WG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-34JMV8X5WG');
+</script>
 <meta name="google-site-verification" content="Knq4M6jFOqJXQdbhE6g-MHuteL1vuZs98nobFjCAjhI" />
 <link rel="canonical" href="https://e4chessacademy.com/" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1028,6 +1037,16 @@ function waLink(text) {
 
 // Point the WhatsApp button + footer link at the configured number,
 // and fall back to email rather than an invalid-number popup.
+// Outbound clicks: which channel a visitor actually uses is as useful as
+// pageviews, and none of these fire a page_view on their own.
+document.addEventListener('click', function (e) {
+  const a = e.target.closest && e.target.closest('a');
+  if (!a || !a.href) return;
+  if (a.href.indexOf('wa.me') > -1) track('contact_click', { method: 'whatsapp' });
+  else if (a.href.indexOf('mailto:') === 0) track('contact_click', { method: 'email' });
+  else if (a.href.indexOf('instagram.com') > -1) track('contact_click', { method: 'instagram' });
+}, true);
+
 document.addEventListener('DOMContentLoaded', function () {
   const wa = waLink();
   const btn = document.getElementById('waBtn');
@@ -1085,6 +1104,7 @@ function leadSummary(d) {
 // If the booking can't be stored, never dead-end the lead — hand them
 // straight to WhatsApp/email with every detail they typed prefilled.
 function offerDirectContact(d) {
+  track('lead_handoff');   // primary submission failed; visitor offered WhatsApp/email
   const body = leadSummary(d);
   const mail = 'mailto:' + CONTACT_EMAIL
     + '?subject=' + encodeURIComponent('Free demo booking — ' + (d.name || 'New enquiry'))
@@ -1097,7 +1117,21 @@ function offerDirectContact(d) {
     + 'confirm your free demo within 24 hours.<br><br>' + links, 'handoff');
 }
 
+// Analytics helper. Never let a blocked or missing gtag break a booking —
+// ad blockers remove it routinely, and the form matters more than the metric.
+function track(event, params) {
+  try {
+    if (typeof gtag === 'function') gtag('event', event, params || {});
+  } catch (e) { /* analytics is never worth an exception */ }
+}
+
 function showSuccess() {
+  const val = id => (document.getElementById(id) || {}).value || 'not given';
+  track('generate_lead', {
+    country: val('country'),
+    child_age: val('childAge'),
+    experience: val('experience')
+  });
   document.getElementById('demoForm').style.display = 'none';
   const ok = document.getElementById('formSuccess');
   ok.style.display = 'block';
