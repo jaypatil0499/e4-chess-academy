@@ -1,0 +1,12 @@
+{
+ "0": "White to play. Can you find the winning move?",
+ "1": "Start with the knight.",
+ "5": "Knight to c 7. Check.",
+ "6": "It attacks two pieces. The king, and the rook, at the same time.",
+ "7": "That's a fork.",
+ "8": "One piece attacking two or more enemy pieces at the same time.",
+ "9": "The king must move. A check cannot be ignored.",
+ "10": "So the rook falls.",
+ "11": "One move. Two targets. That's why the knight is the trickiest piece on the board.",
+ "12": "Learn tactics like this at E4 Chess Academy. Book your free demo class today."
+}

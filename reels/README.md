@@ -39,5 +39,28 @@ Position `r3k3/5ppp/8/1N6/8/8/5PPP/4K3`, White to play.
 `2.Nxa8` wins the exchange. If `1...Kd8 2.Nxa8`, the knight is not trapped —
 it comes back out via b6.
 
-Silent by design: reels autoplay muted, and leaving the audio track empty
-lets trending audio be added inside Instagram, which is better for reach.
+Two cuts are exported:
+
+- `E4CA-Reel-01-Fork.mp4` — silent, 24s. Reels autoplay muted and the
+  captions carry the whole lesson, so this cut lets trending audio be added
+  inside Instagram, which is better for reach.
+- `E4CA-Reel-01-Fork-VO.mp4` — narrated, 33.6s.
+
+## Narration
+
+`narration.json` holds one line per scene, written to mirror the on-screen
+captions so what is heard and what is read agree.
+
+Voiced with the macOS `say` command (`Rishi`, an Indian-English voice, at
+rate 178) rather than a hosted model — it is free, offline and repeatable.
+`voice-sample-*.m4a` are the alternatives: Aman and Tara are also
+Indian-English, Daniel is British.
+
+Sync is structural rather than hand-aligned: each scene gets an audio block
+padded to exactly the scene's length (`scene-timings.json`), so the same
+list drives both the frame hold times and the narration track and the two
+cannot drift. The glide frames get real silence. The mix is normalised to
+-16 LUFS, the usual target for social playback.
+
+To use a different voice, change the `say -v` argument and rebuild; the
+timings recompute from the new clip lengths.
