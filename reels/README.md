@@ -62,5 +62,15 @@ list drives both the frame hold times and the narration track and the two
 cannot drift. The glide frames get real silence. The mix is normalised to
 -16 LUFS, the usual target for social playback.
 
-To use a different voice, change the `say -v` argument and rebuild; the
-timings recompute from the new clip lengths.
+To change voice, rebuild with it as the argument — frames, narration,
+timings and encode all regenerate:
+
+```bash
+./reels/build-reel.sh Tara      # or Rishi, Aman, Daniel
+say -v '?' | grep en_IN         # the Indian-English voices
+```
+
+The hosted voice service (Higgsfield presets such as Fraser or Romy) needs
+credits on the account; while the workspace balance is zero, every voice
+there fails to submit regardless of which is chosen, so the local voices
+are the working path.
