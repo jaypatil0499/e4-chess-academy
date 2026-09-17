@@ -36,11 +36,33 @@ once.
 No third-party packages, by design. A scheduled job that installs dependencies
 is a job that eventually breaks on someone else's release.
 
-## The weekly job
+## Live pages: news and rankings
 
-`.github/workflows/publish-blog.yml` runs every Monday at 09:00 IST, builds,
-and commits whatever became due. Vercel deploys from that commit. If nothing
-is due it does nothing. "Run workflow" on the Actions tab publishes by hand.
+`blog/live.py` writes two pages that cannot come from a queue:
+
+- `rankings.html` — the current FIDE number one in Open, Women, Juniors and
+  Girls, across Standard, Rapid and Blitz. Parsed from the FIDE homepage,
+  which renders those tables server-side. Attributed and linked.
+- `chess-news.html` — headlines from Chess.com, ChessBase and Lichess. Headline,
+  source, date and link only. The article text belongs to the publisher and is
+  never reproduced.
+
+Each section writes only if its fetch succeeded. If FIDE is down or changes its
+markup, the previous page stays up and the run still passes, which is the right
+behaviour for a job nobody is watching. The script prints what it skipped.
+
+If rankings ever stop updating, check whether FIDE changed the `front_top`
+table markup that `parse_fide` looks for.
+
+## The scheduled job
+
+`.github/workflows/publish-blog.yml` runs daily at 09:00 IST: build articles,
+refresh live data, commit anything that changed. Vercel deploys from that
+commit.
+
+Daily rather than weekly because news and rankings go stale. Articles still
+appear once a week, because every post is dated a Monday and publishing is
+gated on that date. "Run workflow" on the Actions tab triggers it by hand.
 
 Because the build is driven by dates rather than by a queue it mutates, a run
 that fires late, twice, or not at all is harmless.

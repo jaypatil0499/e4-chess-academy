@@ -159,7 +159,9 @@ NAV = f"""<nav>
     </div>
   </a>
   <div class="nav-right">
-    <a href="index.html" class="nav-back">All Articles</a>
+    <a href="index.html" class="nav-back">Articles</a>
+    <a href="chess-news.html" class="nav-back">News</a>
+    <a href="rankings.html" class="nav-back">Rankings</a>
     <a href="{LOGIN}" class="nav-login" target="_blank" rel="noopener">Login</a>
     <a href="../index.html#demo" class="nav-cta"><span class="cta-full">Book Free Demo →</span><span class="cta-short">Demo →</span></a>
   </div>
@@ -234,7 +236,9 @@ def index_page(posts):
     body = ('<div class="blog-hero"><span class="eyebrow">The E4 Journal</span>'
             '<h1>Chess, explained <em>clearly</em>.</h1>'
             '<p>Tactics, openings and honest advice for chess parents. '
-            'A new article every Monday.</p></div>'
+            'A new article every Monday.</p>'
+            '<div class="hero-links"><a href="chess-news.html">This week in chess &rarr;</a>'
+            '<a href="rankings.html">World rankings &rarr;</a></div></div>'
             '<div class="cards">%s</div>' % ''.join(cards)) if cards else \
            ('<div class="blog-hero"><h1>The E4 Journal</h1>'
             '<p>First article coming soon.</p></div>')
@@ -251,6 +255,8 @@ def write_sitemap(live):
     """Search engines need to be told the new pages exist; a stale sitemap is
     the most common reason fresh posts sit unindexed for weeks."""
     pages = [(SITE + '/', '1.0'), (SITE + '/blog/', '0.9'),
+             (SITE + '/blog/chess-news.html', '0.8'),
+             (SITE + '/blog/rankings.html', '0.8'),
              (SITE + '/beginner.html', '0.8'), (SITE + '/intermediate.html', '0.8'),
              (SITE + '/advanced.html', '0.8')]
     rows = ''.join(
@@ -283,7 +289,9 @@ def main():
     # Remove pages for posts that are no longer live. Without this a --preview
     # run would leave scheduled posts sitting on disk, and the next commit would
     # publish the whole queue at once.
-    keep = {'index.html'} | {'%s.html' % p['slug'] for p in live}
+    # chess-news and rankings are written by live.py, not from posts/
+    keep = {'index.html', 'chess-news.html', 'rankings.html'} \
+        | {'%s.html' % p['slug'] for p in live}
     for stale in OUT.glob('*.html'):
         if stale.name not in keep:
             stale.unlink()

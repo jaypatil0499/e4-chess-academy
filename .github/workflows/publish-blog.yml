@@ -1,12 +1,18 @@
-name: Publish weekly blog post
+name: Publish blog and refresh live data
 
-# Monday 09:00 IST (03:30 UTC). GitHub may start scheduled runs a little late,
-# which is harmless here: the build is idempotent and driven by each post's own
-# date, so a run that fires late still publishes exactly what is due.
+# Runs daily at 09:00 IST (03:30 UTC).
+#
+# Daily rather than weekly on purpose: articles are gated on their own date and
+# every one is dated a Monday, so a post still appears exactly once a week. The
+# daily run is for the two pages that go stale, chess news and world rankings.
+#
+# GitHub may start scheduled runs late. That is harmless here: the build is
+# driven by dates rather than by a queue it consumes, so a late, repeated or
+# manually triggered run all produce the same result.
 on:
   schedule:
-    - cron: '30 3 * * 1'
-  workflow_dispatch:          # lets you publish by hand from the Actions tab
+    - cron: '30 3 * * *'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -17,17 +23,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build the blog
+      - name: Build articles
         run: python3 blog/build.py
 
-      - name: Commit anything that became due
+      - name: Refresh rankings and news
+        run: python3 blog/live.py
+
+      - name: Commit anything that changed
         run: |
           if [ -z "$(git status --porcelain)" ]; then
-            echo "Nothing due this week."
+            echo "Nothing changed today."
             exit 0
           fi
           git config user.name  "E4CA blog"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add blog sitemap.xml
-          git commit -m "Publish scheduled blog post(s)"
+          git commit -m "Publish due posts and refresh live data"
           git push
