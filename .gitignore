@@ -1,0 +1,7 @@
+# Python bytecode. live.py imports build.py, so a run leaves __pycache__
+# behind; without this the scheduled job commits it every time.
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
