@@ -1,0 +1,33 @@
+name: Publish weekly blog post
+
+# Monday 09:00 IST (03:30 UTC). GitHub may start scheduled runs a little late,
+# which is harmless here: the build is idempotent and driven by each post's own
+# date, so a run that fires late still publishes exactly what is due.
+on:
+  schedule:
+    - cron: '30 3 * * 1'
+  workflow_dispatch:          # lets you publish by hand from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build the blog
+        run: python3 blog/build.py
+
+      - name: Commit anything that became due
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "Nothing due this week."
+            exit 0
+          fi
+          git config user.name  "E4CA blog"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add blog sitemap.xml
+          git commit -m "Publish scheduled blog post(s)"
+          git push

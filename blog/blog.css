@@ -1,0 +1,104 @@
+/* E4CA blog. Palette and type taken from the main site so the journal and
+   the marketing pages read as one brand. */
+:root{
+  --cream:#F7F3EA; --cream2:#EFE9D8; --navy:#0D1F2D; --navy2:#1E3A4A;
+  --ink:#1A1A1A; --ink2:#4A4A4A; --ink3:#5E5E58;
+  --gold:#C9A84C; --gold-dim:#7A611F; --cyan:#00B4D8; --rule:#E4DCC8;
+  --f-display:'Playfair Display',Georgia,serif;
+  --f-body:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
+body{background:var(--cream);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased;}
+img{max-width:100%;display:block;}
+a{color:inherit;}
+
+/* ── nav, mirroring the course pages ─────────────────────────── */
+nav{position:sticky;top:0;z-index:100;padding:12px 24px;display:flex;justify-content:space-between;align-items:center;background:rgba(247,243,234,0.95);backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--rule);}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.nav-logo-mark img{width:44px;height:44px;object-fit:contain;}
+.nav-logo-text{font-family:var(--f-display);font-size:19px;font-weight:700;color:var(--navy);line-height:1.1;}
+.nav-logo-sub{font-size:10px;color:var(--ink3);font-weight:500;letter-spacing:.5px;margin-top:1px;}
+.nav-right{display:flex;align-items:center;gap:10px;}
+.nav-back{font-size:13.5px;font-weight:500;color:var(--ink2);text-decoration:none;padding:7px 14px;border-radius:100px;transition:background .15s;}
+.nav-back:hover{background:rgba(0,0,0,.06);color:var(--ink);}
+.nav-login{display:inline-flex;align-items:center;padding:8px 18px;border-radius:100px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--navy);border:1.5px solid rgba(13,31,45,.22);transition:all .15s;white-space:nowrap;}
+.nav-login:hover{border-color:var(--navy);background:rgba(13,31,45,.06);}
+.nav-cta{background:var(--navy);color:#fff;padding:9px 20px;border-radius:100px;font-size:13.5px;font-weight:600;text-decoration:none;transition:all .15s;white-space:nowrap;}
+.nav-cta:hover{background:var(--navy2);transform:translateY(-1px);}
+.nav-cta .cta-short{display:none;}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;}
+
+/* ── blog index ──────────────────────────────────────────────── */
+.blog-main{max-width:1060px;margin:0 auto;padding:clamp(40px,7vw,76px) 24px 80px;}
+.blog-hero{max-width:620px;margin-bottom:clamp(34px,5vw,56px);}
+.eyebrow{display:block;font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold-dim);margin-bottom:16px;}
+.blog-hero h1{font-family:var(--f-display);font-size:clamp(2.1rem,5.6vw,3.4rem);font-weight:900;line-height:1.05;letter-spacing:-.02em;color:var(--navy);}
+.blog-hero h1 em{font-style:italic;font-weight:400;color:var(--gold);}
+.blog-hero p{margin-top:16px;font-size:1.05rem;color:var(--ink2);}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:clamp(16px,2.4vw,26px);}
+.card{display:flex;flex-direction:column;gap:9px;background:#fff;border:1px solid var(--rule);border-radius:16px;padding:clamp(20px,2.6vw,28px);text-decoration:none;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;}
+.card:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(13,31,45,.09);border-color:rgba(201,168,76,.5);}
+.card-meta{font-size:11px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;color:var(--ink3);}
+.card h2{font-family:var(--f-display);font-size:1.32rem;font-weight:700;line-height:1.24;color:var(--navy);}
+.card p{font-size:.93rem;color:var(--ink2);line-height:1.55;}
+.card-more{margin-top:4px;font-size:.86rem;font-weight:700;color:var(--gold-dim);}
+
+/* ── article ─────────────────────────────────────────────────── */
+.post{max-width:720px;margin:0 auto;padding:clamp(36px,6vw,68px) 24px 72px;}
+.post-head{border-bottom:1px solid var(--rule);padding-bottom:clamp(22px,3vw,30px);margin-bottom:clamp(26px,3.4vw,38px);}
+.post-meta{font-size:11px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;color:var(--ink3);margin-bottom:14px;}
+.post h1{font-family:var(--f-display);font-size:clamp(1.95rem,5.4vw,3rem);font-weight:900;line-height:1.06;letter-spacing:-.02em;color:var(--navy);text-wrap:balance;}
+.post-standfirst{margin-top:16px;font-size:1.1rem;color:var(--ink2);line-height:1.55;}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;}
+.tag{font-size:10.5px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--gold-dim);background:rgba(201,168,76,.14);border:1px solid rgba(201,168,76,.32);padding:4px 11px;border-radius:100px;}
+
+.post-body{font-size:1.06rem;line-height:1.75;color:var(--ink);}
+.post-body>*+*{margin-top:1.15em;}
+.post-body h2{font-family:var(--f-display);font-size:1.62rem;font-weight:700;color:var(--navy);margin-top:1.9em;line-height:1.25;}
+.post-body h3{font-family:var(--f-body);font-size:1.12rem;font-weight:700;color:var(--navy);margin-top:1.6em;}
+.post-body ul,.post-body ol{padding-left:1.3em;}
+.post-body li+li{margin-top:.5em;}
+.post-body li::marker{color:var(--gold-dim);}
+.post-body a{color:var(--gold-dim);text-decoration:underline;text-underline-offset:2px;}
+.post-body a:hover{color:var(--navy);}
+.post-body blockquote{border-left:3px solid var(--gold);padding:2px 0 2px 20px;font-family:var(--f-display);font-style:italic;font-size:1.16rem;color:var(--navy);}
+.post-body code{background:var(--cream2);border:1px solid var(--rule);border-radius:5px;padding:1px 6px;font-size:.92em;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;}
+.post-body hr{border:none;border-top:1px solid var(--rule);margin:2.2em 0;}
+.post-body strong{font-weight:700;color:var(--navy);}
+
+/* a board diagram, when a post needs one */
+.board{display:grid;grid-template-columns:repeat(8,1fr);width:min(100%,440px);margin:1.6em auto;border-radius:8px;overflow:hidden;box-shadow:0 12px 30px rgba(13,31,45,.18);}
+.board div{aspect-ratio:1;display:grid;place-items:center;font-size:clamp(24px,6.4vw,38px);line-height:1;}
+.board .l{background:#E8DFC8;} .board .d{background:#A8894B;}
+/* A thicker outline closes up the fine detail on a king or queen at this
+   size and the piece reads as black. Keep it hairline. */
+.board .w{color:#FFFDF7;-webkit-text-stroke:0.9px #24323f;paint-order:stroke fill;}
+.board .b{color:#14202B;}
+.caption{text-align:center;font-size:.86rem;color:var(--ink3);margin-top:-.6em;}
+
+/* ── footer ──────────────────────────────────────────────────── */
+footer{background:var(--navy);color:rgba(255,255,255,.5);margin-top:40px;}
+.foot-inner{max-width:900px;margin:0 auto;padding:clamp(44px,6vw,68px) 24px 40px;text-align:center;}
+.foot-cta{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:18px;padding:clamp(24px,4vw,38px);margin-bottom:38px;}
+.foot-cta-title{font-family:var(--f-display);font-size:clamp(1.4rem,3.4vw,1.9rem);font-weight:700;color:#fff;margin-bottom:10px;}
+.foot-cta p{font-size:.97rem;color:rgba(255,255,255,.6);max-width:52ch;margin:0 auto 22px;}
+.foot-btn{display:inline-block;background:var(--gold);color:var(--navy);font-weight:700;font-size:.97rem;padding:13px 30px;border-radius:100px;text-decoration:none;transition:all .18s;}
+.foot-btn:hover{background:#48CAE4;transform:translateY(-2px);}
+.foot-links{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 26px;font-size:.88rem;margin-bottom:22px;}
+.foot-links a{color:rgba(255,255,255,.5);text-decoration:none;}
+.foot-links a:hover{color:#fff;}
+.foot-legal{font-size:.78rem;color:rgba(255,255,255,.28);}
+
+@media (max-width:600px){
+  nav{padding:12px 16px;}
+  .nav-logo-sub,.nav-back{display:none;}
+  .nav-logo-text{font-size:14px;white-space:nowrap;}
+  .nav-logo-mark img{width:36px;height:36px;}
+  .nav-right{gap:6px;}
+  .nav-login,.nav-cta{padding:7px 12px;font-size:12px;white-space:nowrap;}
+  .nav-cta .cta-full{display:none;}
+  .nav-cta .cta-short{display:inline;}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;}}
