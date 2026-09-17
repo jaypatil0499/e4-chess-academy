@@ -72,6 +72,12 @@ nav.scrolled{background:rgba(247,243,234,0.92);backdrop-filter:blur(12px);box-sh
 .nav-links{display:flex;gap:4px;align-items:center;}
 .nav-links a{padding:7px 14px;font-size:13.5px;font-weight:500;color:var(--ink2);text-decoration:none;border-radius:100px;transition:all 0.15s;}
 .nav-links a:hover{background:rgba(0,0,0,0.06);color:var(--ink);}
+.nav-cta .cta-short{display:none;}
+.nav-actions{display:flex;align-items:center;gap:10px;}
+.nav-login{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:100px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--navy);background:transparent;border:1.5px solid rgba(13,31,45,0.22);transition:all 0.15s;white-space:nowrap;}
+.nav-login:hover{border-color:var(--navy);background:rgba(13,31,45,0.06);}
+.nav-login:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;}
+.nav-login svg{flex:0 0 auto;}
 .nav-cta{background:var(--navy);color:white;padding:9px 20px;border-radius:100px;font-size:13.5px;font-weight:600;text-decoration:none;transition:all 0.15s;border:none;cursor:pointer;}
 .nav-cta:hover{background:var(--navy2);transform:translateY(-1px);}
 
@@ -257,6 +263,14 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
   .why-inner,.courses-bg,.how-section,.testimonials-inner,.faq-section,.demo-inner,.stats-section{padding:60px 24px;}
   nav{padding:12px 16px;}
   .nav-links{display:none;}
+  .nav-logo-sub{display:none;}
+  .nav-logo-text{font-size:14px;white-space:nowrap;}
+  .nav-logo-mark img{width:36px;height:36px;}
+  .nav-actions{gap:6px;}
+  .nav-login,.nav-cta{padding:7px 12px;font-size:12px;white-space:nowrap;}
+  .nav-cta .cta-full{display:none;}
+  .nav-cta .cta-short{display:inline;}
+
   .ticker-label{display:none;}
   .ticker-track{padding-left:24px;}
   .footer-top{grid-template-columns:1fr;gap:32px;}
@@ -291,7 +305,10 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
     <a href="#coaches">Coaches</a>
     <a href="#faq">FAQ</a>
   </div>
-  <a href="#demo" class="nav-cta">Book Free Demo →</a>
+  <div class="nav-actions">
+    <a href="https://classroom.e4chessacademy.com/login" class="nav-login" target="_blank" rel="noopener"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Login</a>
+    <a href="#demo" class="nav-cta"><span class="cta-full">Book Free Demo →</span><span class="cta-short">Demo →</span></a>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -1042,7 +1059,8 @@ function waLink(text) {
 document.addEventListener('click', function (e) {
   const a = e.target.closest && e.target.closest('a');
   if (!a || !a.href) return;
-  if (a.href.indexOf('wa.me') > -1) track('contact_click', { method: 'whatsapp' });
+  if (a.href.indexOf('classroom.e4chessacademy.com') > -1) track('login_click');
+  else if (a.href.indexOf('wa.me') > -1) track('contact_click', { method: 'whatsapp' });
   else if (a.href.indexOf('mailto:') === 0) track('contact_click', { method: 'email' });
   else if (a.href.indexOf('instagram.com') > -1) track('contact_click', { method: 'instagram' });
 }, true);

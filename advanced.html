@@ -45,6 +45,12 @@ nav{position:sticky;top:0;z-index:100;padding:12px 24px;display:flex;justify-con
 .nav-logo-sub{font-size:10px;color:var(--ink3);font-weight:500;letter-spacing:0.5px;}
 .nav-back{display:flex;align-items:center;gap:8px;color:var(--ink2);text-decoration:none;font-size:13.5px;font-weight:500;padding:8px 16px;border-radius:100px;border:1.5px solid var(--rule);transition:all 0.15s;}
 .nav-back:hover{border-color:var(--ink);color:var(--ink);}
+.nav-cta .cta-short{display:none;}
+.nav-actions{display:flex;align-items:center;gap:10px;}
+.nav-login{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:100px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--navy);background:transparent;border:1.5px solid rgba(13,31,45,0.22);transition:all 0.15s;white-space:nowrap;}
+.nav-login:hover{border-color:var(--navy);background:rgba(13,31,45,0.06);}
+.nav-login:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;}
+.nav-login svg{flex:0 0 auto;}
 .nav-cta{background:var(--navy);color:white;padding:9px 20px;border-radius:100px;font-size:13.5px;font-weight:600;text-decoration:none;transition:all 0.15s;}
 .nav-cta:hover{background:var(--navy2);}
 .nav-right{display:flex;align-items:center;gap:12px;}
@@ -106,6 +112,15 @@ footer{background:#111;color:rgba(255,255,255,0.4);text-align:center;padding:28p
 footer a{color:rgba(255,255,255,0.4);text-decoration:none;}
 
 @media(max-width:768px){
+  .nav-back{display:none;}
+  .nav-logo-sub{display:none;}
+  .nav-logo-text{font-size:14px;white-space:nowrap;}
+  .nav-logo-mark img{width:36px;height:36px;}
+  .nav-actions{gap:6px;}
+  .nav-login,.nav-cta{padding:7px 12px;font-size:12px;white-space:nowrap;}
+  .nav-cta .cta-full{display:none;}
+  .nav-cta .cta-short{display:inline;}
+
   .course-hero{padding:48px 24px 0;}
   .content-wrap{padding:48px 24px;}
   .months-grid{grid-template-columns:1fr;}
@@ -128,7 +143,8 @@ footer a{color:rgba(255,255,255,0.4);text-decoration:none;}
   </a>
   <div class="nav-right">
     <a href="index.html#courses" class="nav-back">← All Courses</a>
-    <a href="index.html#demo" class="nav-cta">Book Free Demo →</a>
+    <a href="https://classroom.e4chessacademy.com/login" class="nav-login" target="_blank" rel="noopener"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Login</a>
+    <a href="index.html#demo" class="nav-cta"><span class="cta-full">Book Free Demo →</span><span class="cta-short">Demo →</span></a>
   </div>
 </nav>
 
@@ -392,5 +408,15 @@ footer a{color:rgba(255,255,255,0.4);text-decoration:none;}
 </div>
 
 <footer>© 2026 E4 Chess Academy · <a href="index.html">e4chessacademy.com</a></footer>
+<script>
+// Named event for the classroom login, so it is distinguishable from the
+// automatic outbound-click measurement.
+document.addEventListener('click', function (e) {
+  var a = e.target.closest && e.target.closest('a');
+  if (a && a.href && a.href.indexOf('classroom.e4chessacademy.com') > -1) {
+    try { if (typeof gtag === 'function') gtag('event', 'login_click'); } catch (err) {}
+  }
+}, true);
+</script>
 </body>
 </html>
