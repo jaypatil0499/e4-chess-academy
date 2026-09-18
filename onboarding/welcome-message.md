@@ -6,13 +6,13 @@ parent's name.
 
 ---
 
-## WhatsApp (short — most parents reply here)
+## WhatsApp (short version, where most parents reply)
 
 > Hello NAME, welcome to E4 Chess Academy! 🎉
 >
 > We're delighted your child is joining us.
 >
-> One quick step before we begin — please fill this short form so we can
+> One quick step before we begin. Please fill in this short form so we can
 > match your child with the right coach and schedule classes in your local
 > time. It takes about two minutes:
 >
@@ -23,13 +23,13 @@ parent's name.
 >
 > Any questions, just reply here.
 >
-> — Team E4 Chess Academy
+> Team E4 Chess Academy
 
 ---
 
 ## Email
 
-**Subject:** Welcome to E4 Chess Academy — one quick step before your first class
+**Subject:** Welcome to E4 Chess Academy, one quick step before your first class
 
 > Dear NAME,
 >
@@ -43,7 +43,7 @@ parent's name.
 > FORM_LINK
 >
 > It asks for your contact details, your child's date of birth and current
-> level, and when classes suit you. That last part matters: we teach across
+> level, and when classes suit you. That last part matters, because we teach across
 > more than 15 countries, so we schedule around your local time rather than
 > ours.
 >

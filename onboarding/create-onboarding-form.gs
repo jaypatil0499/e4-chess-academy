@@ -3,13 +3,13 @@
  *
  * Run createOnboardingForm() once from the Apps Script editor. It creates
  * the form, every question, the response spreadsheet, and links the two.
- * Running it again creates a second, separate form — so run it once.
+ * Running it again creates a second, separate form, so run it once.
  *
  * The form is for parents whose demo has already converted: it collects
  * what we need before issuing classroom credentials.
  */
 
-var FORM_TITLE = 'E4 Chess Academy — Student Onboarding';
+var FORM_TITLE = 'E4 Chess Academy Student Onboarding';
 var SHEET_TITLE = 'E4CA Onboarding Responses';
 
 function createOnboardingForm() {
@@ -98,7 +98,7 @@ function createOnboardingForm() {
   // ------------------------------------------------- placement (added)
   form.addMultipleChoiceItem()
       .setTitle("Your child's current chess experience")
-      .setHelpText('Be honest rather than generous — it helps us start at the right level.')
+      .setHelpText('Be honest rather than generous. It helps us start at the right level.')
       .setChoiceValues(['Complete beginner',
                         'Knows the basic rules',
                         'Has played casually',
@@ -114,7 +114,7 @@ function createOnboardingForm() {
 
   form.addParagraphTextItem()
       .setTitle('What do you hope your child gets out of the classes?')
-      .setHelpText('Tournament results, confidence, concentration, or simply enjoying the game — all valid answers.');
+      .setHelpText('Tournament results, confidence, concentration, or simply enjoying the game. All of those are valid answers.');
 
   form.addParagraphTextItem()
       .setTitle('Anything you would like us to know about your child?')
