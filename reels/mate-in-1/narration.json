@@ -1,0 +1,10 @@
+{
+ "0": "White to play, and mate in one.",
+ "1": "There are six checks in this position. Five of them let the king escape.",
+ "4": "Knight to f 7.",
+ "5": "But look closely. The knight is not the piece giving check. The rook is. The knight was blocking the file, and now it has moved out of the way.",
+ "6": "The king cannot take the knight, because the pawn on g 6 defends it. And every other square is covered.",
+ "7": "This is a discovered check. One piece moves, and a different piece delivers the check.",
+ "8": "Knight f 7. Checkmate.",
+ "9": "Learn tactics like this at E4 Chess Academy. Book your free demo class today."
+}

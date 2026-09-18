@@ -93,3 +93,20 @@ python3 reels/verify-mate-in-2.py
 ./reels/build-reel.sh mate-in-2 Tara
 ```
 
+## Reel 03 - Mate in one
+
+Position `r3k2r/pp5p/2P3PB/4N3/8/8/8/4R1K1`, White to play.
+
+`Nf7#` is a discovered check: the knight steps off the e-file and the rook
+on e1 delivers the mate. The king cannot capture the knight because the g6
+pawn defends it, and c6, h6 and the rook cover every other square.
+
+Hard because six checks are available and five of them fail. Verified with
+`verify-mate-in-1.py`, which asserts the key is unique and that decoy checks
+exist, so a change to the position that quietly makes it trivial is caught.
+
+```bash
+python3 reels/verify-mate-in-1.py
+./reels/build-reel.sh mate-in-1 Tara
+```
+
