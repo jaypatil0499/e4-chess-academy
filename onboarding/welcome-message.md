@@ -37,7 +37,7 @@ parent's name.
 > child with us.
 >
 > **Before we can set up your child's classroom account, we need a few
-> details.** Please fill in this short onboarding form — it takes about two
+> details.** Please fill in this short onboarding form. It takes about two
 > minutes:
 >
 > FORM_LINK
