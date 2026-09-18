@@ -1,0 +1,11 @@
+{
+ "0": "White to play. One move wins the rook.",
+ "3": "Bishop to f 4. Check.",
+ "4": "Now look at the diagonal. The king is in front, and the rook is sitting right behind it.",
+ "5": "The king has six squares to run to, and not one of them helps.",
+ "6": "It steps aside, and the diagonal is wide open.",
+ "7": "The bishop takes the rook.",
+ "8": "That is a skewer. The valuable piece is in front, it is forced to move, and whatever stands behind it is lost.",
+ "9": "A pin freezes a piece. A skewer forces it to run. Same line, opposite order.",
+ "10": "Learn tactics like this at E4 Chess Academy. Book your free demo class today."
+}

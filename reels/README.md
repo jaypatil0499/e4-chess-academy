@@ -131,3 +131,24 @@ python3 reels/verify-the-pin.py
 ./reels/build-reel.sh the-pin Tara
 ```
 
+## Reel 05 - The skewer
+
+Position `1r6/p4ppp/3k4/8/8/8/5PPP/2B3K1`, White to play.
+
+`Bf4+` puts the king in front and the rook behind it on the same diagonal.
+The king has six squares, none of them on the diagonal and none of them
+useful, and `Bxb8` follows.
+
+Paired deliberately with reel 04: a pin freezes a piece, a skewer forces it
+to run, same line in the opposite order. The closing card says exactly that.
+
+`verify-the-skewer.py` asserts the check, that every reply is a king move,
+and that no reply saves the rook. It also prints the six legal squares,
+because the reel highlights them: the first cut highlighted c7 and e5,
+which sit on the bishop's own diagonal and are therefore illegal.
+
+```bash
+python3 reels/verify-the-skewer.py
+./reels/build-reel.sh the-skewer Tara
+```
+
