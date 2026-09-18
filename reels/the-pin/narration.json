@@ -1,0 +1,11 @@
+{
+ "0": "White to play. Where can this black knight go?",
+ "1": "Nowhere. The bishop on b 5 aims straight through it at the king.",
+ "2": "If it moves, the king is exposed. That is illegal.",
+ "3": "Now look again. It seems to be guarding the pawn on e 5.",
+ "5": "But it cannot move. So White just takes.",
+ "6": "And it cannot recapture. It was never defending anything.",
+ "7": "That is a pin. A piece frozen in front of a more valuable one.",
+ "8": "A pinned piece defends nothing. Attack it again and it is lost.",
+ "9": "Learn tactics like this at E4 Chess Academy. Book your free demo class today."
+}

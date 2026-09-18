@@ -110,3 +110,24 @@ python3 reels/verify-mate-in-1.py
 ./reels/build-reel.sh mate-in-1 Tara
 ```
 
+## Reel 04 - The pin
+
+Position `r1bqkbnr/p4ppp/1pn5/1B1pp3/8/5N2/PPPP1PPP/RNBQK2R`, White to play.
+
+The knight on c6 is absolutely pinned by the bishop on b5, so it has no
+legal move at all. It appears to defend e5, and `Nxe5` shows that it does
+not: there is no recapture.
+
+Verified with `verify-the-pin.py`. It checks the knight is fully pinned and
+that nothing recaptures, and also that Black has no check in reply, because
+a reel claiming White simply wins a pawn is wrong if a counter-check is
+waiting. An earlier version of the position failed exactly that test:
+Black had `Qa5+` forking the king and the bishop. Moving the black b-pawn
+to b6 blocks the queen's route and removes the defender of c6 at the same
+time.
+
+```bash
+python3 reels/verify-the-pin.py
+./reels/build-reel.sh the-pin Tara
+```
+
