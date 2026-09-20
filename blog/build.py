@@ -152,7 +152,7 @@ def head(title, description, canonical, extra=''):
 
 NAV = f"""<nav>
   <a href="../index.html" class="nav-logo">
-    <div class="nav-logo-mark"><img src="../images/logo.png" alt="E4 Chess Academy" width="44" height="44"></div>
+    <div class="nav-logo-mark"><img src="../images/logo-black.png" alt="E4 Chess Academy" width="24" height="44"></div>
     <div>
       <div class="nav-logo-text">E4 Chess Academy</div>
       <div class="nav-logo-sub">Where Champions Begin</div>
