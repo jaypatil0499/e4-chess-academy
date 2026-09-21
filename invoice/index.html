@@ -64,6 +64,25 @@ textarea{resize:vertical;min-height:62px;}
 .item-n{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);}
 .x{background:none;border:none;color:#C0392B;font-size:12px;font-weight:600;padding:2px 6px;cursor:pointer;border-radius:6px;}
 .x:hover{background:rgba(192,57,43,.1);}
+.cur-field{position:relative;}
+.cur-list{
+  position:absolute;z-index:30;top:100%;left:0;right:0;margin-top:4px;
+  max-height:266px;overflow-y:auto;background:#fff;
+  border:1px solid var(--line);border-radius:10px;
+  box-shadow:0 14px 34px rgba(13,31,45,.16);
+}
+.cur-opt{padding:8px 11px;cursor:pointer;border-bottom:1px solid #F1EEE4;}
+.cur-opt:last-child{border-bottom:none;}
+.cur-opt:hover,.cur-opt.on{background:var(--cream);}
+.cur-opt .a{display:flex;justify-content:space-between;gap:10px;align-items:baseline;}
+.cur-opt .code{font-weight:700;font-size:13px;color:var(--navy);letter-spacing:.03em;}
+.cur-opt .sym{font-size:12.5px;color:var(--gold-dim);font-weight:600;}
+.cur-opt .nm{font-size:12.5px;color:var(--ink2);}
+.cur-opt .ct{font-size:11px;color:var(--ink3);margin-top:1px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.cur-head{padding:6px 11px;font-size:9.5px;font-weight:700;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--ink3);background:#FAF8F2;}
+.cur-none{padding:12px;font-size:12.5px;color:var(--ink3);text-align:center;}
 .add{width:100%;background:var(--cream2);color:var(--navy);border:1px dashed var(--line);margin-top:9px;}
 .add:hover{background:var(--cream);}
 
@@ -137,6 +156,7 @@ tbody td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap
   }
 }
 </style>
+<script src="currencies.js"></script>
 </head>
 <body>
 
@@ -206,8 +226,13 @@ tbody td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap
     <fieldset>
       <legend>Charges</legend>
       <div class="row">
-        <div class="field"><label for="cur">Currency</label>
-          <select id="cur"><option value="INR">INR &#8377;</option><option value="USD">USD $</option><option value="GBP">GBP &pound;</option><option value="AED">AED</option></select>
+        <div class="field cur-field">
+          <label for="curSearch">Currency</label>
+          <input id="curSearch" type="text" role="combobox" aria-expanded="false"
+                 aria-controls="curList" aria-autocomplete="list"
+                 placeholder="Search country or code" autocomplete="off">
+          <input id="cur" type="hidden" value="INR">
+          <div class="cur-list" id="curList" role="listbox" hidden></div>
         </div>
         <div class="field"><label for="paid">Payment date</label><input id="paid" type="date"></div>
       </div>
@@ -326,9 +351,24 @@ tbody td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap
     return parts.join(' ');
   }
 
+  // Intl knows each currency's symbol and decimal places, including the
+  // zero-decimal ones (yen, won, dong) and the three-decimal Gulf dinars.
+  function locale(cur) { return cur === 'INR' ? 'en-IN' : 'en-US'; }
+
+  function decimals(cur) {
+    try {
+      return new Intl.NumberFormat(locale(cur), { style: 'currency', currency: cur })
+        .resolvedOptions().maximumFractionDigits;
+    } catch (e) { return 2; }
+  }
+
   function money(v, cur) {
-    var s = (cur === 'INR' ? 'en-IN' : 'en-US');
-    return SYM[cur] + Number(v || 0).toLocaleString(s, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    try {
+      return new Intl.NumberFormat(locale(cur), { style: 'currency', currency: cur })
+        .format(Number(v) || 0);
+    } catch (e) {
+      return cur + ' ' + (Number(v) || 0).toFixed(2);
+    }
   }
 
   function niceDate(v) {
@@ -337,6 +377,124 @@ tbody td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap
     if (isNaN(d)) return '—';
     return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
   }
+
+  // ── currency picker ────────────────────────────────────────
+  var CUR = window.E4CA_CURRENCIES || [];
+  var PIN = window.E4CA_PINNED || [];
+  var byCode = {};
+  CUR.forEach(function (c) { byCode[c.c] = c; });
+
+  function unitNames(code) {
+    var c = byCode[code];
+    if (c && c.w) return c.w;
+    // Fall back to the currency's own name: "Kenyan Shilling" -> "kenyan shillings".
+    var n = (c ? c.n : code).toLowerCase().replace(/\s*\(.*\)$/, '');
+    return [/s$/.test(n) ? n : n + 's', 'cents'];
+  }
+
+  function symbolOf(code) {
+    try {
+      return new Intl.NumberFormat('en', { style: 'currency', currency: code,
+        currencyDisplay: 'narrowSymbol' }).formatToParts(0)
+        .filter(function (p) { return p.type === 'currency'; })[0].value;
+    } catch (e) { return code; }
+  }
+
+  function curLabel(code) {
+    var c = byCode[code];
+    if (!c) return code;
+    var sym = symbolOf(code);
+    return code + (sym && sym !== code ? '  ' + sym : '') + '  \u00B7  ' + c.n;
+  }
+
+  var search = $('curSearch'), list = $('curList'), cursor = -1, shown = [];
+
+  function matches(q) {
+    if (!q) {
+      var pin = PIN.map(function (k) { return byCode[k]; }).filter(Boolean);
+      var rest = CUR.filter(function (c) { return PIN.indexOf(c.c) < 0; });
+      return { pin: pin, rest: rest };
+    }
+    q = q.toLowerCase();
+    var starts = [], has = [];
+    CUR.forEach(function (c) {
+      var code = c.c.toLowerCase(), name = c.n.toLowerCase(), ks = c.k.toLowerCase();
+      if (code.indexOf(q) === 0) starts.push(c);
+      else if (name.indexOf(q) === 0 || ks.indexOf(q) === 0) starts.push(c);
+      else if (code.indexOf(q) > -1 || name.indexOf(q) > -1 || ks.indexOf(q) > -1) has.push(c);
+    });
+    return { pin: [], rest: starts.concat(has) };
+  }
+
+  function renderList(q) {
+    var m = matches(q), html = '';
+    shown = [];
+    function opt(c) {
+      var i = shown.length;
+      shown.push(c.c);
+      var sym = symbolOf(c.c);
+      html += '<div class="cur-opt" role="option" data-i="' + i + '" data-code="' + c.c + '">'
+        + '<div class="a"><span class="code">' + c.c + '</span>'
+        + '<span class="sym">' + esc(sym === c.c ? '' : sym) + '</span></div>'
+        + '<div class="nm">' + esc(c.n) + '</div>'
+        + '<div class="ct">' + esc(c.k) + '</div></div>';
+    }
+    if (m.pin.length) { html += '<div class="cur-head">Most used</div>'; m.pin.forEach(opt); }
+    if (m.rest.length) {
+      if (m.pin.length) html += '<div class="cur-head">All currencies</div>';
+      m.rest.forEach(opt);
+    }
+    if (!shown.length) html = '<div class="cur-none">No currency matches that.</div>';
+    list.innerHTML = html;
+    cursor = -1;
+  }
+
+  function openList() {
+    renderList(search.value.trim() === curLabel($('cur').value) ? '' : search.value.trim());
+    list.hidden = false;
+    search.setAttribute('aria-expanded', 'true');
+  }
+  function closeList() {
+    list.hidden = true;
+    search.setAttribute('aria-expanded', 'false');
+    search.value = curLabel($('cur').value);
+  }
+  function choose(code) {
+    $('cur').value = code;
+    closeList();
+    draw();
+  }
+  function move(d) {
+    if (list.hidden) { openList(); return; }
+    var els = list.querySelectorAll('.cur-opt');
+    if (!els.length) return;
+    cursor = (cursor + d + els.length) % els.length;
+    els.forEach(function (e) { e.classList.remove('on'); });
+    els[cursor].classList.add('on');
+    els[cursor].scrollIntoView({ block: 'nearest' });
+  }
+
+  search.addEventListener('focus', function () { search.select(); openList(); });
+  search.addEventListener('input', function () {
+    renderList(search.value.trim());
+    list.hidden = false;
+    search.setAttribute('aria-expanded', 'true');
+  });
+  search.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowDown') { e.preventDefault(); move(1); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); move(-1); }
+    else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (!list.hidden && shown.length) choose(shown[cursor < 0 ? 0 : cursor]);
+    } else if (e.key === 'Escape') { closeList(); }
+  });
+  list.addEventListener('mousedown', function (e) {
+    var o = e.target.closest('.cur-opt');
+    if (o) { e.preventDefault(); choose(o.dataset.code); }
+  });
+  document.addEventListener('mousedown', function (e) {
+    if (!list.hidden && !e.target.closest('.cur-field')) closeList();
+  });
 
   // ── line items ─────────────────────────────────────────────
   var items = $('items');
@@ -409,11 +567,12 @@ tbody td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap
     $('oSub2').textContent = money(total, cur);
     $('oTotal').textContent = money(total, cur);
 
-    var whole = Math.floor(total), paise = Math.round((total - whole) * 100);
-    var unit = { INR: 'rupees', USD: 'US dollars', GBP: 'pounds', AED: 'dirhams' }[cur];
-    var sub = { INR: 'paise', USD: 'cents', GBP: 'pence', AED: 'fils' }[cur];
-    var w = words(whole, cur) + ' ' + unit;
-    if (paise) w += ' and ' + words(paise, cur) + ' ' + sub;
+    var dp = decimals(cur);
+    var whole = Math.floor(total);
+    var frac = dp ? Math.round((total - whole) * Math.pow(10, dp)) : 0;
+    var u = unitNames(cur);
+    var w = words(whole, cur) + ' ' + u[0];
+    if (frac && u[1]) w += ' and ' + words(frac, cur) + ' ' + u[1];
     $('oWords').textContent = w.charAt(0).toUpperCase() + w.slice(1) + ' only.';
 
     $('oNotes').textContent = $('notes').value;
@@ -462,6 +621,7 @@ tbody td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap
       $('notes').value = 'Fees once paid are non-refundable. Missed sessions in group and '
         + 'buddy classes are counted as taken and cannot be rescheduled.';
     }
+    search.value = curLabel($('cur').value);
     addItem('Chess coaching programme', 1, '');
     draw();
   }
