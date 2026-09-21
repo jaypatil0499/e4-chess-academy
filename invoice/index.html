@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Invoice Generator | E4 Chess Academy</title>
+<!-- An internal tool. Keep it out of search results. -->
+<meta name="robots" content="noindex, nofollow">
+<link rel="shortcut icon" href="../favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+/* E4CA invoice generator.
+   Fill the form, the invoice redraws live, then print to PDF. Printing is
+   used rather than a JS PDF library because the browser's own engine keeps
+   the text selectable and the type crisp at any zoom, and there is nothing
+   to break when a dependency changes. */
+:root{
+  --cream:#F7F3EA; --cream2:#EFE9D8; --navy:#0D1F2D; --navy2:#1E3A4A;
+  --ink:#1A1A1A; --ink2:#4A4A4A; --ink3:#6B6B64;
+  --gold:#C9A84C; --gold-dim:#7A611F; --rule:#E4DCC8; --line:#D8D2C2;
+  --f-display:'Playfair Display',Georgia,serif;
+  --f-body:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--cream2);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;}
+img{display:block;max-width:100%;}
+
+/* ── app chrome ─────────────────────────────────────────────── */
+.bar{position:sticky;top:0;z-index:20;background:var(--navy);color:#fff;padding:14px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.bar-l{display:flex;align-items:center;gap:12px;}
+.bar-l img{width:26px;height:47px;object-fit:contain;filter:brightness(0) invert(1);}
+.bar-t{font-family:var(--f-display);font-size:19px;font-weight:700;line-height:1.1;}
+.bar-s{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.45);}
+.bar-r{display:flex;gap:10px;flex-wrap:wrap;}
+button{font-family:var(--f-body);font-size:14px;font-weight:600;border-radius:100px;border:none;cursor:pointer;padding:11px 22px;transition:all .15s;}
+.btn-print{background:var(--gold);color:var(--navy);}
+.btn-print:hover{background:#dcbd63;}
+.btn-ghost{background:transparent;color:rgba(255,255,255,.8);border:1.5px solid rgba(255,255,255,.28);}
+.btn-ghost:hover{border-color:#fff;color:#fff;}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+
+.wrap{max-width:1500px;margin:0 auto;padding:26px 22px 70px;display:grid;grid-template-columns:376px 1fr;gap:28px;align-items:start;}
+
+/* ── form ───────────────────────────────────────────────────── */
+.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:22px;position:sticky;top:86px;}
+.panel h2{font-family:var(--f-display);font-size:19px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.panel .hint{font-size:12.5px;color:var(--ink3);margin-bottom:18px;}
+fieldset{border:none;margin-bottom:20px;}
+legend{font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:10px;}
+label{display:block;font-size:12px;font-weight:600;color:var(--ink2);margin-bottom:5px;}
+input,select,textarea{width:100%;font-family:var(--f-body);font-size:14px;color:var(--ink);background:#fff;border:1px solid var(--line);border-radius:8px;padding:9px 11px;}
+textarea{resize:vertical;min-height:62px;}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.field{margin-bottom:11px;}
+.req::after{content:' *';color:#C0392B;}
+
+/* line items */
+.items{display:flex;flex-direction:column;gap:9px;}
+.item{border:1px solid var(--line);border-radius:10px;padding:10px;background:#FCFBF7;}
+.item .row{grid-template-columns:1fr 92px;}
+.item-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;}
+.item-n{font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);}
+.x{background:none;border:none;color:#C0392B;font-size:12px;font-weight:600;padding:2px 6px;cursor:pointer;border-radius:6px;}
+.x:hover{background:rgba(192,57,43,.1);}
+.add{width:100%;background:var(--cream2);color:var(--navy);border:1px dashed var(--line);margin-top:9px;}
+.add:hover{background:var(--cream);}
+
+/* ── invoice sheet ──────────────────────────────────────────── */
+.sheet-wrap{display:flex;justify-content:center;}
+.sheet{
+  width:210mm;min-height:297mm;background:#fff;color:var(--ink);
+  padding:18mm 16mm;box-shadow:0 18px 50px rgba(13,31,45,.16);
+  display:flex;flex-direction:column;
+}
+.inv-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;padding-bottom:16px;border-bottom:2px solid var(--navy);}
+.inv-brand{display:flex;align-items:center;gap:13px;}
+.inv-brand img{width:38px;height:68px;object-fit:contain;}
+.inv-name{font-family:var(--f-display);font-size:25px;font-weight:900;color:var(--navy);line-height:1.05;}
+.inv-tag{font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);margin-top:3px;}
+.inv-contact{font-size:11.5px;color:var(--ink2);line-height:1.65;text-align:right;}
+.inv-contact a{color:var(--ink2);text-decoration:none;}
+
+.inv-title{font-family:var(--f-display);font-size:38px;font-weight:900;color:var(--navy);letter-spacing:-.02em;margin:22px 0 4px;}
+.inv-sub{font-size:12.5px;color:var(--ink3);margin-bottom:20px;}
+
+.meta{display:grid;grid-template-columns:1fr 1fr;gap:0 26px;border:1px solid var(--rule);border-radius:9px;overflow:hidden;margin-bottom:22px;}
+.meta div{display:flex;justify-content:space-between;gap:12px;padding:9px 14px;font-size:12.5px;border-bottom:1px solid var(--rule);}
+.meta div:nth-last-child(-n+2){border-bottom:none;}
+.meta .k{color:var(--ink3);}
+.meta .v{font-weight:600;color:var(--ink);text-align:right;}
+
+.parties{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:22px;}
+.party-h{font-size:10px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:7px;}
+.party-n{font-size:15px;font-weight:700;color:var(--navy);}
+.party-d{font-size:12.5px;color:var(--ink2);line-height:1.6;}
+
+table{width:100%;border-collapse:collapse;margin-bottom:18px;}
+thead th{background:var(--navy);color:#fff;font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;padding:10px 12px;text-align:left;}
+thead th.n{text-align:right;}
+tbody td{padding:12px;border-bottom:1px solid var(--rule);font-size:13px;vertical-align:top;}
+tbody td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;}
+.desc-main{font-weight:600;color:var(--ink);}
+.desc-sub{font-size:11.5px;color:var(--ink3);margin-top:2px;}
+
+.totals{margin-left:auto;width:290px;}
+.totals div{display:flex;justify-content:space-between;padding:7px 0;font-size:13px;}
+.totals .grand{border-top:2px solid var(--navy);margin-top:6px;padding-top:11px;font-family:var(--f-display);font-size:21px;font-weight:900;color:var(--navy);}
+.words{margin-top:12px;padding:11px 14px;background:var(--cream);border-radius:8px;font-size:12px;color:var(--ink2);}
+.words b{color:var(--navy);}
+
+.inv-foot{margin-top:auto;padding-top:20px;border-top:1px solid var(--rule);}
+.notes{font-size:11.5px;color:var(--ink2);line-height:1.65;white-space:pre-wrap;}
+.thanks{text-align:center;font-family:var(--f-display);font-size:15px;font-weight:700;color:var(--navy);margin-top:16px;}
+.legal{text-align:center;font-size:10.5px;color:var(--ink3);margin-top:6px;}
+
+@media (max-width:1120px){
+  .wrap{grid-template-columns:1fr;}
+  .panel{position:static;}
+  .sheet{width:100%;min-height:0;padding:22px 18px;}
+}
+
+/* ── print: the sheet alone, one A4 page ────────────────────── */
+@media print{
+  @page{size:A4 portrait;margin:0;}
+  body{background:#fff;}
+  .bar,.panel,.no-print{display:none!important;}
+  .wrap{display:block;max-width:none;padding:0;}
+  .sheet-wrap{display:block;}
+  .sheet{
+    /* Exactly one page tall, so the flex footer anchors to the bottom of the
+       sheet instead of floating under the total. Content longer than a page
+       still flows to a second one. */
+    width:100%;min-height:100vh;box-shadow:none;padding:16mm 15mm;
+    -webkit-print-color-adjust:exact;print-color-adjust:exact;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar-l">
+    <img src="../images/logo-black.png" alt="">
+    <div>
+      <div class="bar-t">Invoice Generator</div>
+      <div class="bar-s">E4 Chess Academy &middot; internal tool</div>
+    </div>
+  </div>
+  <div class="bar-r">
+    <button class="btn-ghost" id="reset" type="button">Clear form</button>
+    <button class="btn-print" id="print" type="button">Download PDF</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <form class="panel no-print" id="form" autocomplete="off">
+    <h2>Invoice details</h2>
+    <p class="hint">The invoice on the right updates as you type. When it looks right, press Download PDF.</p>
+
+    <fieldset>
+      <legend>Invoice</legend>
+      <div class="row">
+        <div class="field"><label for="num">Invoice number</label><input id="num" type="text"></div>
+        <div class="field"><label for="date">Invoice date</label><input id="date" type="date"></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Parent</legend>
+      <div class="field"><label class="req" for="parent">Parent / guardian name</label><input id="parent" type="text" placeholder="Priya Sharma"></div>
+      <div class="field"><label for="email">Email</label><input id="email" type="email" placeholder="parent@example.com"></div>
+      <div class="row">
+        <div class="field"><label for="phone">Phone</label><input id="phone" type="tel" placeholder="+91 98765 43210"></div>
+        <div class="field"><label for="country">Country</label><input id="country" type="text" placeholder="India"></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Student</legend>
+      <div class="field"><label class="req" for="student">Student name</label><input id="student" type="text" placeholder="Aarav Sharma"></div>
+      <div class="row">
+        <div class="field"><label for="level">Programme</label>
+          <select id="level">
+            <option>Pawn to Player &mdash; Beginner</option>
+            <option>Knight's Journey &mdash; Intermediate</option>
+            <option>Champion's Path &mdash; Advanced</option>
+            <option>Custom</option>
+          </select>
+        </div>
+        <div class="field"><label for="ctype">Class type</label>
+          <select id="ctype">
+            <option>One-on-one</option>
+            <option>Buddy (2 students)</option>
+            <option>Group</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field"><label for="sessions">Sessions</label><input id="sessions" type="number" min="1" placeholder="24"></div>
+        <div class="field"><label for="mins">Minutes each</label><input id="mins" type="number" min="15" step="5" placeholder="45"></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Charges</legend>
+      <div class="row">
+        <div class="field"><label for="cur">Currency</label>
+          <select id="cur"><option value="INR">INR &#8377;</option><option value="USD">USD $</option><option value="GBP">GBP &pound;</option><option value="AED">AED</option></select>
+        </div>
+        <div class="field"><label for="paid">Payment date</label><input id="paid" type="date"></div>
+      </div>
+      <div class="field"><label for="method">Payment method</label>
+        <select id="method"><option>UPI</option><option>Bank transfer</option><option>Card</option><option>PayPal</option><option>Cash</option><option>Not yet paid</option></select>
+      </div>
+      <div class="items" id="items"></div>
+      <button class="add" id="addItem" type="button">+ Add another line</button>
+    </fieldset>
+
+    <fieldset>
+      <legend>Footer note</legend>
+      <div class="field"><textarea id="notes"></textarea></div>
+    </fieldset>
+  </form>
+
+  <div class="sheet-wrap">
+    <div class="sheet" id="sheet">
+      <div class="inv-head">
+        <div class="inv-brand">
+          <img src="../images/logo-black.png" alt="E4 Chess Academy">
+          <div>
+            <div class="inv-name">E4 Chess Academy</div>
+            <div class="inv-tag">Where Champions Begin</div>
+          </div>
+        </div>
+        <div class="inv-contact">
+          e4chessacademy.com<br>
+          e4cacademy@gmail.com<br>
+          +91 76767 82072
+        </div>
+      </div>
+
+      <div class="inv-title">Invoice</div>
+      <div class="inv-sub" id="oSub">Payment received with thanks.</div>
+
+      <div class="meta">
+        <div><span class="k">Invoice no.</span><span class="v" id="oNum">&mdash;</span></div>
+        <div><span class="k">Invoice date</span><span class="v" id="oDate">&mdash;</span></div>
+        <div><span class="k">Payment method</span><span class="v" id="oMethod">&mdash;</span></div>
+        <div><span class="k">Payment date</span><span class="v" id="oPaid">&mdash;</span></div>
+      </div>
+
+      <div class="parties">
+        <div>
+          <div class="party-h">Billed to</div>
+          <div class="party-n" id="oParent">&mdash;</div>
+          <div class="party-d" id="oParentD"></div>
+        </div>
+        <div>
+          <div class="party-h">Student</div>
+          <div class="party-n" id="oStudent">&mdash;</div>
+          <div class="party-d" id="oStudentD"></div>
+        </div>
+      </div>
+
+      <table>
+        <thead><tr><th>Description</th><th class="n">Qty</th><th class="n">Rate</th><th class="n">Amount</th></tr></thead>
+        <tbody id="oRows"></tbody>
+      </table>
+
+      <div class="totals">
+        <div><span>Subtotal</span><span id="oSub2">&mdash;</span></div>
+        <div class="grand"><span>Total</span><span id="oTotal">&mdash;</span></div>
+      </div>
+      <div class="words"><b>Amount in words:</b> <span id="oWords">&mdash;</span></div>
+
+      <div class="inv-foot">
+        <div class="notes" id="oNotes"></div>
+        <div class="thanks">Thank you for choosing E4 Chess Academy.</div>
+        <div class="legal">This is a computer-generated invoice and does not require a signature.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var SYM = { INR: '₹', USD: '$', GBP: '£', AED: 'AED ' };
+  var $ = function (id) { return document.getElementById(id); };
+
+  // ── number to words ────────────────────────────────────────
+  var ONES = ['','one','two','three','four','five','six','seven','eight','nine','ten',
+    'eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+  var TENS = ['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+
+  function under1000(n) {
+    var out = '';
+    if (n >= 100) { out += ONES[Math.floor(n / 100)] + ' hundred'; n %= 100; if (n) out += ' and '; }
+    if (n >= 20) { out += TENS[Math.floor(n / 10)]; if (n % 10) out += '-' + ONES[n % 10]; }
+    else if (n) out += ONES[n];
+    return out;
+  }
+
+  // Indian invoices are read in lakh and crore; everything else in thousands
+  // and millions. Using the wrong one looks careless to the person paying.
+  function words(n, cur) {
+    n = Math.floor(Math.abs(n));
+    if (n === 0) return 'zero';
+    var parts = [];
+    if (cur === 'INR') {
+      var cr = Math.floor(n / 10000000); n %= 10000000;
+      var lk = Math.floor(n / 100000);   n %= 100000;
+      var th = Math.floor(n / 1000);     n %= 1000;
+      if (cr) parts.push(under1000(cr) + ' crore');
+      if (lk) parts.push(under1000(lk) + ' lakh');
+      if (th) parts.push(under1000(th) + ' thousand');
+      if (n)  parts.push(under1000(n));
+    } else {
+      var mn = Math.floor(n / 1000000);  n %= 1000000;
+      var tt = Math.floor(n / 1000);     n %= 1000;
+      if (mn) parts.push(under1000(mn) + ' million');
+      if (tt) parts.push(under1000(tt) + ' thousand');
+      if (n)  parts.push(under1000(n));
+    }
+    return parts.join(' ');
+  }
+
+  function money(v, cur) {
+    var s = (cur === 'INR' ? 'en-IN' : 'en-US');
+    return SYM[cur] + Number(v || 0).toLocaleString(s, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function niceDate(v) {
+    if (!v) return '—';
+    var d = new Date(v + 'T00:00:00');
+    if (isNaN(d)) return '—';
+    return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
+  }
+
+  // ── line items ─────────────────────────────────────────────
+  var items = $('items');
+  function addItem(desc, qty, rate) {
+    var row = document.createElement('div');
+    row.className = 'item';
+    row.innerHTML =
+      '<div class="item-top"><span class="item-n">Line item</span>'
+      + '<button class="x" type="button">Remove</button></div>'
+      + '<div class="field"><label>Description</label>'
+      + '<input class="i-desc" type="text" placeholder="Chess coaching programme"></div>'
+      + '<div class="row"><div class="field"><label>Quantity</label>'
+      + '<input class="i-qty" type="number" min="0" step="1"></div>'
+      + '<div class="field"><label>Rate</label>'
+      + '<input class="i-rate" type="number" min="0" step="0.01"></div></div>';
+    row.querySelector('.i-desc').value = desc || '';
+    row.querySelector('.i-qty').value = qty == null ? 1 : qty;
+    row.querySelector('.i-rate').value = rate == null ? '' : rate;
+    row.querySelector('.x').addEventListener('click', function () {
+      if (items.children.length > 1) { row.remove(); draw(); }
+    });
+    items.appendChild(row);
+    return row;
+  }
+
+  // ── draw ───────────────────────────────────────────────────
+  function draw() {
+    var cur = $('cur').value;
+    var dash = '—';
+
+    $('oNum').textContent = $('num').value || dash;
+    $('oDate').textContent = niceDate($('date').value);
+    $('oMethod').textContent = $('method').value;
+    $('oPaid').textContent = $('method').value === 'Not yet paid' ? 'Pending' : niceDate($('paid').value);
+    $('oSub').textContent = $('method').value === 'Not yet paid'
+      ? 'Payment due on receipt.' : 'Payment received with thanks.';
+
+    $('oParent').textContent = $('parent').value || dash;
+    var pd = [];
+    if ($('email').value) pd.push($('email').value);
+    if ($('phone').value) pd.push($('phone').value);
+    if ($('country').value) pd.push($('country').value);
+    $('oParentD').innerHTML = pd.join('<br>');
+
+    $('oStudent').textContent = $('student').value || dash;
+    var sd = [];
+    if ($('level').value !== 'Custom') sd.push($('level').value);
+    var cls = $('ctype').value;
+    if ($('sessions').value) cls = $('sessions').value + ' sessions · ' + cls;
+    if ($('mins').value) cls += ' · ' + $('mins').value + ' min';
+    sd.push(cls);
+    $('oStudentD').innerHTML = sd.join('<br>');
+
+    var rows = '', total = 0;
+    Array.prototype.forEach.call(items.children, function (it) {
+      var d = it.querySelector('.i-desc').value.trim();
+      var q = parseFloat(it.querySelector('.i-qty').value) || 0;
+      var r = parseFloat(it.querySelector('.i-rate').value) || 0;
+      if (!d && !r) return;
+      var amt = q * r;
+      total += amt;
+      rows += '<tr><td><div class="desc-main">' + esc(d || 'Chess coaching') + '</div></td>'
+        + '<td class="n">' + (q || 1) + '</td>'
+        + '<td class="n">' + money(r, cur) + '</td>'
+        + '<td class="n">' + money(amt, cur) + '</td></tr>';
+    });
+    $('oRows').innerHTML = rows ||
+      '<tr><td colspan="4" style="color:#9b9b93;font-style:italic">Add a line item to see it here</td></tr>';
+
+    $('oSub2').textContent = money(total, cur);
+    $('oTotal').textContent = money(total, cur);
+
+    var whole = Math.floor(total), paise = Math.round((total - whole) * 100);
+    var unit = { INR: 'rupees', USD: 'US dollars', GBP: 'pounds', AED: 'dirhams' }[cur];
+    var sub = { INR: 'paise', USD: 'cents', GBP: 'pence', AED: 'fils' }[cur];
+    var w = words(whole, cur) + ' ' + unit;
+    if (paise) w += ' and ' + words(paise, cur) + ' ' + sub;
+    $('oWords').textContent = w.charAt(0).toUpperCase() + w.slice(1) + ' only.';
+
+    $('oNotes').textContent = $('notes').value;
+    save();
+  }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c];
+    });
+  }
+
+  // ── persistence: keep the details that rarely change ───────
+  var KEEP = ['num','notes','cur','method','level','ctype','mins'];
+  function save() {
+    try {
+      var o = {};
+      KEEP.forEach(function (k) { o[k] = $(k).value; });
+      localStorage.setItem('e4ca-invoice', JSON.stringify(o));
+    } catch (e) {}
+  }
+  function load() {
+    try { return JSON.parse(localStorage.getItem('e4ca-invoice') || '{}'); }
+    catch (e) { return {}; }
+  }
+
+  function nextNumber(prev) {
+    var d = new Date();
+    var stamp = 'E4CA-' + d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0');
+    var m = prev && prev.match(/^(E4CA-\d{6})-(\d+)$/);
+    if (m && m[1] === stamp) return stamp + '-' + String(parseInt(m[2], 10) + 1).padStart(3, '0');
+    return stamp + '-001';
+  }
+
+  function today() { return new Date().toISOString().slice(0, 10); }
+
+  function init() {
+    var saved = load();
+    $('date').value = today();
+    $('paid').value = today();
+    $('num').value = nextNumber(saved.num);
+    ['notes','cur','method','level','ctype','mins'].forEach(function (k) {
+      if (saved[k]) $(k).value = saved[k];
+    });
+    if (!$('notes').value) {
+      $('notes').value = 'Fees once paid are non-refundable. Missed sessions in group and '
+        + 'buddy classes are counted as taken and cannot be rescheduled.';
+    }
+    addItem('Chess coaching programme', 1, '');
+    draw();
+  }
+
+  $('form').addEventListener('input', draw);
+  $('form').addEventListener('change', draw);
+  $('addItem').addEventListener('click', function () { addItem('', 1, ''); draw(); });
+  $('print').addEventListener('click', function () { window.print(); });
+  $('reset').addEventListener('click', function () {
+    if (!confirm('Clear the form and start a new invoice?')) return;
+    ['parent','email','phone','country','student','sessions'].forEach(function (k) { $(k).value = ''; });
+    items.innerHTML = '';
+    addItem('Chess coaching programme', 1, '');
+    $('num').value = nextNumber($('num').value);
+    $('date').value = today(); $('paid').value = today();
+    draw();
+  });
+
+  init();
+})();
+</script>
+</body>
+</html>
