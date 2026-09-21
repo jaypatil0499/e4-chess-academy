@@ -27,14 +27,23 @@ def gen(board,color):
             d=-1 if c=='w' else 1
             start=6 if c=='w' else 1
             last=0 if c=='w' else 7
+            # All four promotions, not just the queen: a mate can exist only
+            # by underpromotion, and generating queens alone would miss it.
+            promos = ('q','r','b','n')
             if inside(f,r+d) and (f,r+d) not in board:
-                out.append(((f,r),(f,r+d),'q' if r+d==last else None))
-                if r==start and (f,r+2*d) not in board:
-                    out.append(((f,r),(f,r+2*d),None))
+                if r+d==last:
+                    for pr in promos: out.append(((f,r),(f,r+d),pr))
+                else:
+                    out.append(((f,r),(f,r+d),None))
+                    if r==start and (f,r+2*d) not in board:
+                        out.append(((f,r),(f,r+2*d),None))
             for df in (-1,1):
                 t=(f+df,r+d)
                 if inside(*t) and t in board and board[t][0]!=c:
-                    out.append(((f,r),t,'q' if r+d==last else None))
+                    if r+d==last:
+                        for pr in promos: out.append(((f,r),t,pr))
+                    else:
+                        out.append(((f,r),t,None))
         elif p=='n':
             for df,dr in N_OFF:
                 t=(f+df,r+dr)
@@ -79,7 +88,9 @@ def is_mate(board,color):
 def sq_name(s): return "abcdefgh"[s[0]]+str(8-s[1])
 def mv_name(board,m): 
     c,p=board[m[0]]
-    return (p.upper() if p!='p' else '')+sq_name(m[0])+('x' if m[1] in board else '-')+sq_name(m[1])
+    return ((p.upper() if p!='p' else '')+sq_name(m[0])
+            +('x' if m[1] in board else '-')+sq_name(m[1])
+            +('='+m[2].upper() if len(m)>2 and m[2] else ''))
 
 def mate_in_2(board):
     """Return every White first move that forces mate in 2."""

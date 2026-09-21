@@ -1,0 +1,10 @@
+{
+ "0": "Mate in one. White has eight checks here. Only one is mate.",
+ "1": "Notice the bishop. It stands in front of its own rook. Take ten seconds.",
+ "14": "Bishop to c 6. Checkmate.",
+ "15": "The bishop checks along the diagonal, and the rook checks down the file. Two pieces, one move.",
+ "16": "The b 7 pawn can take the bishop, but the rook would still be checking. So capturing does not help.",
+ "17": "This is a double check. You cannot block two lines at once, so the king must move. Here, it has nowhere to go.",
+ "18": "Bishop c 6. Checkmate.",
+ "19": "Learn tactics like this at E4 Chess Academy. Book your free demo class today."
+}

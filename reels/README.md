@@ -170,3 +170,34 @@ no hold still get the short glide length, so motion beats are unaffected.
 The scene numbers in `frame.html`, `narration.json` and `holds.json` have
 to agree. Inserting a pause means renumbering everything after it.
 
+## Reel 06 - Back-rank mate
+
+Position `6k1/5pp1/1q5p/8/8/3B4/1r3PPP/4R1K1`, White to play. `Re8#`.
+
+Black is a rook up, attacking, and has already pushed h6 to give the king
+air. The point is that the escape square is covered: the bishop on d3 has
+been watching h7 the whole game.
+
+`verify-back-rank.py` asserts Re8 is the only mate, and then removes the d3
+bishop and asserts there is then no mate at all. That second check is the
+one that matters, because the covered h7 square is the claim the reel makes
+out loud. An earlier draft put the black queen on c5, where `Qe7` blocks
+the check; from b6 it cannot reach the e-file.
+
+## Reel 07 - Double check
+
+Position `r1bqkbnr/pp3ppp/8/8/4B3/8/PPPP1PPP/RNBQR1K1`, White to play.
+`Bc6#`.
+
+Eight checks are available and only this one mates, because the bishop
+arrives with check while uncovering the rook on the e-file. The b7 pawn
+attacks the bishop and still cannot take it: capturing answers one check
+and leaves the other.
+
+`verify-double-check.py` asserts the unique mate, counts the pieces
+attacking the king to confirm it is genuinely a double check rather than a
+discovered one, and asserts the b7 capture exists as a pseudo-legal move
+but is illegal.
+
+Both reels pause for ten seconds before the answer, as reel 03 does.
+
