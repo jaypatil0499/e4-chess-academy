@@ -11,7 +11,11 @@ name: Publish blog and refresh live data
 # manually triggered run all produce the same result.
 on:
   schedule:
-    - cron: '30 3 * * *'
+    # 20:30 UTC is 02:00 IST the next day. GitHub's shared schedulers have
+    # been running this job roughly five hours late, so aiming at 02:00 IST
+    # lands the post in the early morning here rather than mid-afternoon.
+    # Safe because the build gates on the IST date, which has already rolled over.
+    - cron: '30 20 * * *'
   workflow_dispatch:
 
 permissions:

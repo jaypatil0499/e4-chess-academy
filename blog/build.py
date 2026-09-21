@@ -275,7 +275,11 @@ def write_sitemap(live):
 # ---------------------------------------------------------------- build
 def main():
     preview = '--preview' in sys.argv
-    today = dt.date.today()
+    # Gate on the Indian calendar day, not the runner's UTC day. The
+    # academy is in India and posts are dated in its local time, so a job
+    # that starts late on a UTC evening is already the next day here and
+    # must publish that day's post.
+    today = dt.datetime.now(dt.timezone(dt.timedelta(hours=5, minutes=30))).date()
     posts = sorted((parse(f) for f in POSTS.glob('*.md')),
                    key=lambda p: p['date'], reverse=True)
     live = [p for p in posts if preview or p['date'] <= today]
