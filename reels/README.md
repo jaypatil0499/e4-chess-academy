@@ -152,3 +152,21 @@ python3 reels/verify-the-skewer.py
 ./reels/build-reel.sh the-skewer Tara
 ```
 
+## Pausing for the viewer
+
+A puzzle reel that shows the answer immediately gives nobody a chance to
+solve it, and solving it is the reason to watch. `holds.json` in a reel
+folder sets a duration in seconds for frames that carry no narration:
+
+```json
+{ "2": 1.0, "3": 1.0, "...": 1.0, "11": 1.0 }
+```
+
+Reel 03 uses ten of these for a one second per number countdown, which is
+silent and shows the position with no rings or arrows on it, so nothing
+gives the answer away while the viewer is thinking. Frames with no line and
+no hold still get the short glide length, so motion beats are unaffected.
+
+The scene numbers in `frame.html`, `narration.json` and `holds.json` have
+to agree. Inserting a pause means renumbering everything after it.
+

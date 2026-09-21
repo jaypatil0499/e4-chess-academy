@@ -47,6 +47,15 @@ body{
 .move-chip{display:inline-block;font-size:50px;font-weight:700;color:var(--navy);background:var(--gold);
   padding:12px 34px;border-radius:14px;}
 .move-chip.big{font-size:58px;}
+.count{
+  display:block;font-family:var(--f-display);font-size:170px;font-weight:900;
+  line-height:.9;color:var(--gold);font-variant-numeric:tabular-nums;
+  text-shadow:0 10px 40px rgba(201,168,76,.28);
+}
+.count-l{
+  display:block;font-size:30px;font-weight:600;letter-spacing:.22em;
+  text-transform:uppercase;color:rgba(247,243,234,.45);margin-top:6px;
+}
 
 .card{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;
   padding:0 92px;text-align:center;gap:34px;}
@@ -173,27 +182,35 @@ function render(n){
     head='Six checks. <em>One</em> mate.';
     sub='Five of them let the king escape.';
     fx=ring(4,3,'#C9A84C');
-  } else if (n===2){
+  } else if (n >= 2 && n <= 11) {
+    // Ten one-second frames. The board stays clean here: no rings, no
+    // arrows, nothing that hints at the answer while they are thinking.
+    var left = 12 - n;
+    eyebrow = 'Your turn';
+    head = 'Find the <em>mate.</em>';
+    sub = '<span class="count">' + left + '</span>'
+        + '<span class="count-l">second' + (left === 1 ? '' : 's') + ' left</span>';
+  } else if (n===12){
     P('wn').f=4; P('wn').r=2;
     head='Six checks. <em>One</em> mate.'; sub='Five of them let the king escape.';
     fx=dot(4,3,'rgba(201,168,76,.4)');
-  } else if (n===3){
+  } else if (n===13){
     P('wn').f=5; P('wn').r=2;
     head='Six checks. <em>One</em> mate.'; sub='Five of them let the king escape.';
     fx=dot(4,3,'rgba(201,168,76,.4)');
-  } else if (n===4){
+  } else if (n===14){
     P('wn').f=5; P('wn').r=1;
     eyebrow='The move'; hot=true;
     head='Knight to <em>f7.</em>';
     sub='<span class="move-chip big">Nf7#</span>';
     fx=ring(5,1,'#E4572E')+dot(4,3,'rgba(201,168,76,.3)');
-  } else if (n===5){
+  } else if (n===15){
     P('wn').f=5; P('wn').r=1;
     eyebrow='The trick';
     head='The knight is <em>not</em> checking.';
     sub='The <b>rook</b> is. The knight was blocking the file.';
     fx=arrow(4,7,4,0,'#00B4D8')+ring(4,7,'#00B4D8')+ring(4,0,'#00B4D8');
-  } else if (n===6){
+  } else if (n===16){
     P('wn').f=5; P('wn').r=1;
     eyebrow='No escape';
     head='And the king is <em>trapped.</em>';
@@ -201,14 +218,14 @@ function render(n){
     fx=arrow(4,7,4,0,'rgba(0,180,216,.5)')
       +cross(3,0,'#E4572E')+cross(3,1,'#E4572E')+cross(4,1,'#E4572E')+cross(5,0,'#E4572E')
       +arrow(6,2,5,1,'#C9A84C',true);
-  } else if (n===7){
+  } else if (n===17){
     P('wn').f=5; P('wn').r=1;
     dim=1; cardOn=true; boardUI=false;
     set('cardBig','DISCOVERED<br>CHECK');
     set('cardDefn','One piece moves out of the way, and <b>a different piece</b> delivers the check.');
-  } else if (n===8){
+  } else if (n===18){
     boardUI=false; solOn=true;
-  } else if (n===9){
+  } else if (n===19){
     boardUI=false; ctaOn=true;
   }
 
