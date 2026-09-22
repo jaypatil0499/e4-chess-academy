@@ -1,0 +1,3 @@
+# Generated invoices hold real parent and student details. Keep them out of
+# the public repository; the generator at /invoice/ recreates any of them.
+*.pdf
