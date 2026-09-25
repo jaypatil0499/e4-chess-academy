@@ -182,7 +182,7 @@ def footer():
       <a href="../intermediate.html">Intermediate</a>
       <a href="../advanced.html">Advanced</a>
       <a href="index.html">Blog</a>
-      <a href="https://www.instagram.com/e4.chess_academy" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://www.instagram.com/e4.chess.academy" target="_blank" rel="noopener">Instagram</a>
     </div>
     <div class="foot-legal">© {dt.date.today().year} E4 Chess Academy</div>
   </div>

@@ -61,4 +61,4 @@ parent's name.
 >
 > Warm regards,
 > **Team E4 Chess Academy**
-> e4chessacademy.com · @e4.chess_academy
+> e4chessacademy.com · @e4.chess.academy
