@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Staff-only hub: keep it out of search results -->
+<meta name="robots" content="noindex, nofollow">
+<title>E4CA Ops &amp; CRM | E4 Chess Academy</title>
+<link rel="icon" type="image/x-icon" href="../favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#F7F3EA;--cream2:#EFE9D8;--navy:#0D1F2D;--navy2:#1E3A4A;
+  --ink:#1A1A1A;--ink2:#4A4A4A;--ink3:#5E5E58;--gold:#C9A84C;--gold2:#A8873A;
+  --cyan:#00B4D8;--white:#FFFFFF;--rule:#E4DCC8;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;display:flex;flex-direction:column;}
+a{color:inherit}
+
+nav{padding:12px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--rule);}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo img{width:48px;height:48px;object-fit:contain;filter:brightness(0) saturate(100%) invert(8%) sepia(100%) saturate(600%) hue-rotate(185deg) brightness(75%);}
+.nav-logo-text{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--navy);letter-spacing:-0.02em;}
+.nav-logo-sub{font-size:10px;color:var(--ink3);font-weight:500;letter-spacing:0.5px;margin-top:1px;}
+.back{padding:8px 18px;border-radius:100px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--navy);border:1.5px solid rgba(13,31,45,0.22);transition:all .15s;white-space:nowrap;}
+.back:hover{background:var(--navy);color:var(--white);border-color:var(--navy);}
+
+main{flex:1;width:100%;max-width:980px;margin:0 auto;padding:64px 24px 80px;}
+.eyebrow{display:inline-block;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold2);margin-bottom:14px;}
+h1{font-family:'Playfair Display',serif;font-size:clamp(34px,5vw,52px);font-weight:900;color:var(--navy);line-height:1.08;letter-spacing:-0.02em;}
+h1 em{font-style:normal;color:var(--gold2);}
+.lede{margin-top:16px;max-width:560px;font-size:16px;line-height:1.65;color:var(--ink2);}
+
+.tools{margin-top:44px;display:grid;grid-template-columns:1.35fr 1fr;gap:20px;}
+.tool{position:relative;display:flex;flex-direction:column;gap:14px;padding:30px;border-radius:20px;text-decoration:none;transition:transform .15s,box-shadow .15s;}
+.tool:hover{transform:translateY(-3px);}
+.tool-primary{background:var(--navy);color:var(--white);box-shadow:0 18px 40px -18px rgba(13,31,45,.55);}
+.tool-primary:hover{box-shadow:0 24px 48px -18px rgba(13,31,45,.65);}
+.tool-secondary{background:var(--white);border:1px solid var(--rule);color:var(--ink);}
+.tool-secondary:hover{box-shadow:0 14px 30px -16px rgba(13,31,45,.25);}
+.icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;}
+.icon{font-family:'DM Sans',sans-serif;font-variant-emoji:text;}
+.tool-primary .icon{background:rgba(201,168,76,.18);color:var(--gold);}
+.tool-secondary .icon{background:var(--cream2);color:var(--navy);}
+.tool h2{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;letter-spacing:-0.01em;}
+.tool p{font-size:14.5px;line-height:1.6;}
+.tool-primary p{color:rgba(255,255,255,.7);}
+.tool-secondary p{color:var(--ink2);}
+.tool ul{list-style:none;display:flex;flex-wrap:wrap;gap:6px;}
+.tool li{font-size:12px;font-weight:500;padding:4px 10px;border-radius:100px;}
+.tool-primary li{background:rgba(255,255,255,.08);color:rgba(255,255,255,.8);}
+.tool-secondary li{background:var(--cream);color:var(--ink3);}
+.go{margin-top:auto;display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:700;}
+.tool-primary .go{color:var(--gold);}
+.tool-secondary .go{color:var(--navy);}
+.who{position:absolute;top:26px;right:26px;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:5px 10px;border-radius:100px;}
+.tool-primary .who{background:rgba(201,168,76,.18);color:var(--gold);}
+.tool-secondary .who{background:var(--cream2);color:var(--ink3);}
+
+.help{margin-top:28px;padding:18px 22px;border-radius:14px;background:var(--cream2);font-size:13.5px;line-height:1.6;color:var(--ink2);}
+.help strong{color:var(--navy);}
+
+footer{border-top:1px solid var(--rule);padding:22px 24px;text-align:center;font-size:12px;color:var(--ink3);}
+
+@media (max-width:760px){
+  .tools{grid-template-columns:1fr;}
+  main{padding:40px 20px 60px;}
+  .back{padding:7px 14px;font-size:12.5px;}
+  .nav-logo-sub{display:none;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">
+    <img src="../images/logo-black.png" alt="E4 Chess Academy">
+    <div>
+      <div class="nav-logo-text">E4 Chess Academy</div>
+      <div class="nav-logo-sub">TEAM PORTAL</div>
+    </div>
+  </a>
+  <a class="back" href="/">← Back to website</a>
+</nav>
+
+<main>
+  <span class="eyebrow">For the E4CA team</span>
+  <h1>E4CA <em>Ops</em> &amp; CRM</h1>
+  <p class="lede">Everything the team uses to run the academy — leads and demos, students and batches, payments, invoices and follow-ups.</p>
+
+  <div class="tools">
+    <a class="tool tool-primary" href="https://crm.e4chessacademy.com">
+      <span class="who">Sales &amp; Ops</span>
+      <div class="icon">♞</div>
+      <h2>CRM</h2>
+      <p>Track every lead from first enquiry to enrolment, book demos, convert students, send invoices and stay on top of renewals.</p>
+      <ul>
+        <li>Leads</li><li>Demos</li><li>Students</li><li>Batches</li><li>Invoices</li><li>Tasks</li>
+      </ul>
+      <span class="go">Open the CRM →</span>
+    </a>
+
+    <a class="tool tool-secondary" href="https://classroom.e4chessacademy.com/login" target="_blank" rel="noopener">
+      <span class="who">Coaches</span>
+      <div class="icon">♛</div>
+      <h2>Classroom</h2>
+      <p>Where coaches and students meet for live classes.</p>
+      <span class="go">Open Classroom ↗</span>
+    </a>
+  </div>
+
+  <div class="help">
+    <strong>New to the CRM?</strong> Accounts are invite-only — ask an admin to add you under <em>Users</em>. You'll get a link to set your own password.
+    Forgot your password? An admin can send you a reset link from the same screen.
+  </div>
+</main>
+
+<footer>© 2026 E4 Chess Academy · Internal tools for the E4CA team</footer>
+
+</body>
+</html>
