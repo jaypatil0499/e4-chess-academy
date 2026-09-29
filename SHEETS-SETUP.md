@@ -1,5 +1,12 @@
 # Lead capture — live
 
+> **Update (29 Sep 2026): bookings now go straight into the CRM**
+> (crm.e4chessacademy.com → Leads, source "Website demo form"), and the team
+> alert email is sent from the website with the CRM lead number. This sheet
+> is now only a **backup**: it gets a row (and sends its own alert) only when
+> the CRM can't be reached. Older bookings in the sheet can be brought into
+> the CRM once: File → Download → CSV, then CRM → Leads → Import → Leads CSV.
+
 Every demo booking is captured **twice, independently**:
 
 1. **Email** to e4cacademy@gmail.com via Web3Forms (free plan, 250/month)

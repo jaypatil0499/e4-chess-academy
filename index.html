@@ -1051,9 +1051,9 @@ function toggleFaq(btn){
 const WEB3FORMS_KEY  = 'e6a26003-3533-4f50-b2e5-f925f5c034ad';
 const WHATSAPP_NUMBER = '917676782072';
 const CONTACT_EMAIL   = 'e4cacademy@gmail.com';
-/* Optional Google Sheet copy of every lead. Paste the Apps Script web-app
-   URL here (see SHEETS-SETUP.md). Leave empty to send email only. The
-   form works either way, and a Sheets failure never blocks a booking. */
+/* Backup only: bookings go to the CRM (CRM_ENDPOINT below). This Apps
+   Script sheet is used just when the CRM can't be reached, so a booking is
+   never lost. See SHEETS-SETUP.md. Leave empty to skip the backup. */
 const SHEETS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbz38fhpHeU3rSYNskRr9MIuZ3HPTveWfLBzQ9VLi7rVq110J3b83Su-TBu0kFibPjU6/exec';
 
 // Every booking also lands in the team's CRM as a new lead (see
@@ -1205,8 +1205,8 @@ async function saveToSheet(d) {
   }
 }
 
-// Straight into the CRM as a lead. Independent of the sheet and email:
-// any one of them succeeding means the booking is safe.
+// Straight into the CRM as a lead: the main destination for every booking.
+// Returns the CRM's reply ({ leadNumber, leadId, duplicate }) or null.
 async function saveToCrm(d) {
   try {
     const res = await fetch(CRM_ENDPOINT, {
@@ -1219,24 +1219,37 @@ async function saveToCrm(d) {
       keepalive: true,
     });
     const out = await res.json().catch(() => ({}));
-    return res.ok && out.ok === true;
+    return res.ok && out.ok === true ? out : null;
   } catch (err) {
     console.error('CRM save failed:', err);
-    return false;
+    return null;
   }
 }
 
-// Fallback only, so a working primary never sends a duplicate email.
-async function emailFallback(d) {
+// The team's "new booking" email. Sent once per booking: after the CRM has
+// it (with the lead number), or as the last resort if the CRM and the
+// backup sheet are both unreachable.
+async function bookingEmail(d, crm) {
   if (!WEB3FORMS_KEY) return false;
   try {
+    const fields = {
+      access_key: WEB3FORMS_KEY,
+      subject: (crm && crm.duplicate ? 'Repeat demo booking: ' : 'New Demo Booking: ')
+        + d.name + ' (' + (d.country || 'Unknown') + ')' + (crm ? ' · ' + crm.leadNumber : ''),
+      from_name: 'E4 Chess Academy Website',
+      replyto: d.email,
+    };
+    if (crm) {
+      fields['CRM lead'] = crm.leadNumber + (crm.duplicate ? ' (already in the CRM, booked again)' : '')
+        + ' · https://crm.e4chessacademy.com/leads/' + crm.leadId;
+    } else {
+      fields['CRM lead'] = 'NOT in the CRM yet (it could not be reached). Add this lead by hand.';
+    }
     const res = await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({
-        access_key: WEB3FORMS_KEY,
-        subject: 'New Demo Booking: ' + d.name + ' (' + (d.country || 'Unknown') + ')',
-        from_name: 'E4 Chess Academy Website',
+      keepalive: true,
+      body: JSON.stringify(Object.assign(fields, {
         'Parent Name': d.name,
         "Child's Name": d.childName || 'Not given',
         'Email': d.email,
@@ -1244,12 +1257,12 @@ async function emailFallback(d) {
         "Child's Age": d.childAge || 'Not given',
         'Chess Experience': d.experience || 'Not given',
         'Country': d.country || 'Not given',
-      }),
+      })),
     });
     const out = await res.json().catch(() => ({}));
     return res.ok && out.success !== false;
   } catch (err) {
-    console.error('Email fallback failed:', err);
+    console.error('Booking email failed:', err);
     return false;
   }
 }
@@ -1279,14 +1292,17 @@ async function submitForm(ev) {
   btn.textContent = 'Submitting…';
   btn.disabled = true;
 
-  // Sheet first, it also triggers the email and WhatsApp alerts server-side.
-  // Only if that fails do we try the backup email service, so a healthy
-  // primary path never produces two notifications for one booking.
-  // The CRM save runs alongside; it never delays or decides the sheet path.
-  const crm = saveToCrm(d);
-  let saved = await saveToSheet(d);
-  if (!saved) saved = await emailFallback(d);
-  saved = (await crm) || saved;
+  // The CRM is where bookings live. If it has the booking, email the team
+  // and we're done. Only if the CRM can't be reached does the booking go to
+  // the backup sheet (which emails the team itself), then email alone.
+  const crm = await saveToCrm(d);
+  let saved = !!crm;
+  if (crm) {
+    if (crm.leadNumber) bookingEmail(d, crm);   // alert only; never blocks the parent
+  } else {
+    saved = await saveToSheet(d);
+    if (!saved) saved = await bookingEmail(d, null);
+  }
 
   if (saved) {
     showSuccess();
