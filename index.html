@@ -732,12 +732,16 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
           <input type="text" placeholder="Your full name" id="parentName" name="parentName" autocomplete="name" required>
         </div>
         <div class="form-field">
+          <label for="childName">Child's Name</label>
+          <input type="text" placeholder="Your child's first name" id="childName" name="childName" autocomplete="off">
+        </div>
+        <div class="form-field">
           <label for="email">Email Address</label>
           <input type="email" placeholder="email@example.com" id="email" name="email" autocomplete="email" required>
         </div>
         <div class="form-field">
           <label for="phone">Phone Number</label>
-          <input type="tel" placeholder="+91 98765 43210" id="phone" name="phone" autocomplete="tel">
+          <input type="tel" placeholder="+91 98765 43210" id="phone" name="phone" autocomplete="tel" required>
         </div>
         <div class="form-field">
           <label for="childAge">Child's Age</label>
@@ -759,7 +763,7 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
             <option>Has competed in tournaments</option>
           </select>
         </div>
-        <div class="form-field">
+        <div class="form-field" style="grid-column:1/-1;">
           <label for="country">Country</label>
           <select id="country">
             <option value="">Select country</option>
@@ -769,6 +773,10 @@ footer{background:#111;color:rgba(255,255,255,0.5);padding:60px 80px 40px;}
             <option>Australia</option><option>Other</option>
           </select>
         </div>
+      </div>
+      <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;">
+        <label for="company">Company</label>
+        <input type="text" id="company" name="company" tabindex="-1" autocomplete="off">
       </div>
       <button type="submit" class="form-submit">Book My Free Demo Session →</button>
       </form>
@@ -1048,6 +1056,22 @@ const CONTACT_EMAIL   = 'e4cacademy@gmail.com';
    form works either way, and a Sheets failure never blocks a booking. */
 const SHEETS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbz38fhpHeU3rSYNskRr9MIuZ3HPTveWfLBzQ9VLi7rVq110J3b83Su-TBu0kFibPjU6/exec';
 
+// Every booking also lands in the team's CRM as a new lead (see
+// crm.e4chessacademy.com /api/leads/website — it only accepts this site).
+const CRM_ENDPOINT = 'https://crm.e4chessacademy.com/api/leads/website';
+
+// Remember where the visitor came from (?utm_source=instagram etc.) for the
+// whole visit, so the CRM can report which campaigns bring leads.
+const UTM = (() => {
+  const keys = { utm_source: 'utmSource', utm_medium: 'utmMedium', utm_campaign: 'utmCampaign' };
+  let saved = {};
+  try { saved = JSON.parse(sessionStorage.getItem('e4ca_utm') || '{}'); } catch (e) {}
+  const q = new URLSearchParams(location.search);
+  Object.keys(keys).forEach(k => { if (q.get(k)) saved[keys[k]] = q.get(k); });
+  try { sessionStorage.setItem('e4ca_utm', JSON.stringify(saved)); } catch (e) {}
+  return saved;
+})();
+
 function waLink(text) {
   const msg = encodeURIComponent(text || "Hi E4 Chess Academy! I'd like to know more about your chess courses.");
   return WHATSAPP_NUMBER
@@ -1104,6 +1128,7 @@ function collectLead() {
   const val = id => (document.getElementById(id) || {}).value ? document.getElementById(id).value.trim() : '';
   return {
     name: val('parentName'),
+    childName: val('childName'),
     email: val('email'),
     phone: val('phone'),
     childAge: val('childAge'),
@@ -1115,6 +1140,7 @@ function collectLead() {
 function leadSummary(d) {
   return 'Hi E4 Chess Academy! I would like to book a free demo session.\n\n'
     + 'Parent name: ' + d.name + '\n'
+    + (d.childName ? "Child's name: " + d.childName + '\n' : '')
     + 'Email: ' + d.email + '\n'
     + (d.phone ? 'Phone: ' + d.phone + '\n' : '')
     + (d.childAge ? "Child's age: " + d.childAge + '\n' : '')
@@ -1179,6 +1205,27 @@ async function saveToSheet(d) {
   }
 }
 
+// Straight into the CRM as a lead. Independent of the sheet and email:
+// any one of them succeeding means the booking is safe.
+async function saveToCrm(d) {
+  try {
+    const res = await fetch(CRM_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(Object.assign({}, d, UTM, {
+        page: location.pathname,
+        company: (document.getElementById('company') || {}).value || '',
+      })),
+      keepalive: true,
+    });
+    const out = await res.json().catch(() => ({}));
+    return res.ok && out.ok === true;
+  } catch (err) {
+    console.error('CRM save failed:', err);
+    return false;
+  }
+}
+
 // Fallback only, so a working primary never sends a duplicate email.
 async function emailFallback(d) {
   if (!WEB3FORMS_KEY) return false;
@@ -1191,6 +1238,7 @@ async function emailFallback(d) {
         subject: 'New Demo Booking: ' + d.name + ' (' + (d.country || 'Unknown') + ')',
         from_name: 'E4 Chess Academy Website',
         'Parent Name': d.name,
+        "Child's Name": d.childName || 'Not given',
         'Email': d.email,
         'Phone': d.phone || 'Not given',
         "Child's Age": d.childAge || 'Not given',
@@ -1215,6 +1263,11 @@ async function submitForm(ev) {
 
   if (!d.name) { showFormError('Please tell us your name to continue.'); document.getElementById('parentName').focus(); return; }
   if (!d.email) { showFormError('Please add your email so we can confirm your session.'); document.getElementById('email').focus(); return; }
+  if (d.phone.replace(/\D/g, '').length < 7) {
+    showFormError('Please add a phone number so we can reach you on WhatsApp to confirm the session.');
+    document.getElementById('phone').focus();
+    return;
+  }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(d.email)) {
     showFormError('That email address doesn\'t look right. Please check it and try again.');
     document.getElementById('email').focus();
@@ -1229,8 +1282,11 @@ async function submitForm(ev) {
   // Sheet first, it also triggers the email and WhatsApp alerts server-side.
   // Only if that fails do we try the backup email service, so a healthy
   // primary path never produces two notifications for one booking.
+  // The CRM save runs alongside; it never delays or decides the sheet path.
+  const crm = saveToCrm(d);
   let saved = await saveToSheet(d);
   if (!saved) saved = await emailFallback(d);
+  saved = (await crm) || saved;
 
   if (saved) {
     showSuccess();
